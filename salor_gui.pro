@@ -6,7 +6,7 @@
 
 QT       += core gui webkit network
 
-TARGET = SalorGUI
+TARGET = salor
 TEMPLATE = app
 
 
