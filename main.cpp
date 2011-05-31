@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     SalorSettings::getSelf()->application = &a;
     MainWindow w;
     w.init();
-    w.show();
+    w.showMaximized();
     w.linkClicked(QUrl(
                 SalorSettings::getSelf()->getValue("start").toString()
               )
