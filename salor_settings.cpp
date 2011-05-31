@@ -23,7 +23,7 @@ SalorSettings* SalorSettings::getSelf() {
 void SalorSettings::init() {
     //Ideally, this should be read once, and from then on, it should be using the file
     //we'll be creating with the code below.
-    this->iniFile = "salor.ini"; //Use app's executable name for ini file.
+    this->iniFile = "/etc/salor_pos/salor.ini"; //Use app's executable name for ini file.
     //Default ini file has fallback:
     QString defIniFile = QFile::exists(this->iniFile) ? this->iniFile : "salor.ini";
     qDebug() << "Default ini file: " << defIniFile;
