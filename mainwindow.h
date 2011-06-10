@@ -16,6 +16,7 @@ private slots:
 
 public slots:
     void linkClicked(QUrl);
+    void repaintViews();
     QWebView* getWebView();
     void addJavascriptObjects();
 protected:

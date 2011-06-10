@@ -46,7 +46,7 @@ void MainWindow::init() {
 
     setCentralWidget(webView);
     webView->show();
-
+    
     connectSlots();
 
 }
@@ -56,7 +56,10 @@ QWebView* MainWindow::getWebView() {
 
 void MainWindow::connectSlots() {
 
-    connect(webView->page(),SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
+  connect(webView->page(),SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
+  QTimer *timer = new QTimer(this);
+  connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
+  timer->start(25);
    // connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
 }
 void MainWindow::addJavascriptObjects() {
@@ -66,6 +69,9 @@ void MainWindow::addJavascriptObjects() {
 void MainWindow::linkClicked(QUrl url) {
 
     webView->load(url);
+}
+void MainWindow::repaintViews() {
+  webView->page()->view()->update();
 }
 void MainWindow::attach(){
 
