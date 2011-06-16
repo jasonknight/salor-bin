@@ -59,7 +59,7 @@ void MainWindow::connectSlots() {
   connect(webView->page(),SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
   QTimer *timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
-  timer->start(25);
+  timer->start(20);
    // connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
 }
 void MainWindow::addJavascriptObjects() {
