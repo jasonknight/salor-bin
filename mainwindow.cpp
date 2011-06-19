@@ -5,7 +5,6 @@
 #include <QDesktopServices>
 #include <QSysInfo>
 #include "salor_page.h"
-#include "timer.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -76,7 +75,6 @@ void MainWindow::repaintViews() {
     int x = 0;
     QRect r(x,y,s.width(),y);
      webView->page()->view()->repaint(r);
-     qDebug() << "Painted";
 }
 void MainWindow::attach(){
 
@@ -96,7 +94,6 @@ void MainWindow::changeEvent(QEvent *e){
 }
 bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
-    qDebug() << e;
     switch (e->type()) {
     case QEvent::MouseButtonPress:
         if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton) {
