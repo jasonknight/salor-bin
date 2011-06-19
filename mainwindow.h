@@ -11,7 +11,7 @@ public:
     ~MainWindow();
     void init();
     void connectSlots();
-
+    bool mousePressed;
 private slots:
 
 public slots:
@@ -19,6 +19,7 @@ public slots:
     void repaintViews();
     QWebView* getWebView();
     void addJavascriptObjects();
+    bool eventFilter(QObject *, QEvent *);
 protected:
     void changeEvent(QEvent *e);
 private:

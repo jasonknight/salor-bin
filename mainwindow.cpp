@@ -5,6 +5,7 @@
 #include <QDesktopServices>
 #include <QSysInfo>
 #include "salor_page.h"
+#include "timer.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -46,6 +47,7 @@ void MainWindow::init() {
 
     setCentralWidget(webView);
     webView->show();
+    webView->installEventFilter(this);
     
     connectSlots();
 
@@ -57,10 +59,7 @@ QWebView* MainWindow::getWebView() {
 void MainWindow::connectSlots() {
 
   connect(webView->page(),SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
-  //QTimer *timer = new QTimer(this);
-  //connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
-  //timer->start(20);
-   // connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
+  connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
 }
 void MainWindow::addJavascriptObjects() {
 
@@ -71,7 +70,13 @@ void MainWindow::linkClicked(QUrl url) {
     webView->load(url);
 }
 void MainWindow::repaintViews() {
-  webView->page()->view()->update();
+
+    QSize s = webView->page()->view()->size();
+    int y = s.height() / 2;
+    int x = 0;
+    QRect r(x,y,s.width(),y);
+     webView->page()->view()->repaint(r);
+     qDebug() << "Painted";
 }
 void MainWindow::attach(){
 
@@ -89,4 +94,39 @@ void MainWindow::changeEvent(QEvent *e){
         break;
     }
 }
-
+bool MainWindow::eventFilter(QObject *, QEvent *e)
+{
+    qDebug() << e;
+    switch (e->type()) {
+    case QEvent::MouseButtonPress:
+        if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton) {
+            mousePressed = true;
+        }
+        repaintViews();
+        break;
+    case QEvent::ContentsRectChange:
+        repaintViews();
+        break;
+    case QEvent::ToolTipChange:
+        repaintViews();
+        break;
+    case QEvent::Wheel:
+        repaintViews();
+        break;
+    case QEvent::MouseButtonRelease:
+        if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton) {
+            mousePressed = false;
+        }
+       repaintViews();
+        break;
+    case QEvent::MouseMove:
+        if (mousePressed) {
+            return false;
+        }
+        repaintViews();
+        break;
+    default:
+        break;
+    }
+    return false;
+}
