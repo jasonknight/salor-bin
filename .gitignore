@@ -2,3 +2,6 @@ SalorGui.pro.user
 *~
 *#
 *.swp
+*.o
+*.moc
+moc_*
