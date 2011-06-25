@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     sp.showMessage("initializing");
     w.init();
-    sp.showMessage("initialization completing, waiting for load");
+    sp.showMessage("initialization completed, waiting for load");
     while (w.shown == false) {
         a.processEvents();
     }
