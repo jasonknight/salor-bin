@@ -16,6 +16,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::init() {
+    this->shown = false;
+
     SalorPage* page = new SalorPage(this);
     SalorSettings* s = SalorSettings::getSelf();
     this->resize(
@@ -50,18 +52,27 @@ void MainWindow::init() {
     
     connectSlots();
 
+    linkClicked(QUrl(
+                SalorSettings::getSelf()->getValue("start").toString()
+              )
+         );
+    qDebug() << "End of Init";
 }
 QWebView* MainWindow::getWebView() {
     return this->webView;
 }
 
 void MainWindow::connectSlots() {
+    qDebug() << "Connecting Slots";
 
   connect(webView->page(),SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
   connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
+  qDebug() << "Slots Connected";
 }
 void MainWindow::addJavascriptObjects() {
-
+    if (!this->shown) {
+       this->shown = true; // i.e. this is ready
+    }
     attach();
 }
 void MainWindow::linkClicked(QUrl url) {

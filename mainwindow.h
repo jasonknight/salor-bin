@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWebKit>
+#include <QSplashScreen>
 #include "salor_settings.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -12,6 +13,7 @@ public:
     void init();
     void connectSlots();
     bool mousePressed;
+    bool shown;
 private slots:
 
 public slots:

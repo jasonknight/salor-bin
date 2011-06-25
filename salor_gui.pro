@@ -24,3 +24,6 @@ HEADERS  += mainwindow.h \
     salor_web_plugin.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resources.qrc
