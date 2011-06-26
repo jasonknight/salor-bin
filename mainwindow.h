@@ -5,6 +5,7 @@
 #include <QtWebKit>
 #include <QSplashScreen>
 #include "salor_settings.h"
+#include "salor_customer_screen.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -14,6 +15,7 @@ public:
     void connectSlots();
     bool mousePressed;
     bool shown;
+    SalorCustomerScreen * scs;
 private slots:
 
 public slots:

@@ -5,6 +5,7 @@
 #include <QPicture>
 #include <QPainter>
 #include <salor_settings.h>
+#include "salor_page.h"
 
 class SalorCustomerScreen : public QObject
 {
@@ -14,11 +15,11 @@ public:
     QPicture * background;
     QPicture * screen;
     QPainter * painter;
+    SalorCapture * capt;
 signals:
     void painted();
 public slots:
-
-    void paintImage();
+    void refresh(QString url,int delay, int h, int w);
     void flush();
 
 };

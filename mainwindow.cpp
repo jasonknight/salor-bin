@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::init() {
     this->shown = false;
-
+    this->scs = new SalorCustomerScreen(this);
     SalorPage* page = new SalorPage(this);
     SalorSettings* s = SalorSettings::getSelf();
     this->resize(
@@ -88,7 +88,8 @@ void MainWindow::repaintViews() {
      webView->page()->view()->repaint(r);
 }
 void MainWindow::attach(){
-
+    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorSettings", SalorSettings::getSelf());
+    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
 }
 
 

@@ -15,15 +15,20 @@ SOURCES += main.cpp\
     salor_settings.cpp \
     salor_page.cpp \
     salor_web_plugin.cpp \
-    salor_plugin_factory.cpp
+    salor_plugin_factory.cpp \
+    salor_customer_screen.cpp \
+    display_link.cpp
 
 HEADERS  += mainwindow.h \
     salor_settings.h \
     salor_page.h \
     salor_plugin_factory.h \
-    salor_web_plugin.h
+    salor_web_plugin.h \
+    salor_customer_screen.h \
+    display_link.h
 
 FORMS    += mainwindow.ui
 
 RESOURCES += \
     resources.qrc
+LIBS += /usr/lib/libdlo.a -ldlo
