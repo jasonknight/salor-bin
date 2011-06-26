@@ -17,7 +17,7 @@ SalorPage::SalorPage(QObject* parent):QWebPage(parent)
     //this->setPluginFactory(wpf);
 }
 void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  ) {
-    QMessageBox::critical(0, QObject::tr("Critical Script Error"), QString() + "A Javascript error Occurred:\n" + message + "\nat line " + QString(lineNumber) + "\nin " + sourceID);
+    //QMessageBox::critical(0, QObject::tr("Critical Script Error"), QString() + "A Javascript error Occurred:\n" + message + "\nat line " + QString(lineNumber) + "\nin " + sourceID);
 }
 QString SalorPage::chooseFile(QWebFrame* /*frame*/, const QString& /*suggestedFile*/) {
   return QString::null;
