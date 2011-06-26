@@ -19,7 +19,8 @@ public:
 signals:
     void painted();
 public slots:
-    void refresh(QString url,int delay, int h, int w);
+    void refresh(QString url,int h, int w);
+    void print(QString url);
     void flush();
 
 };

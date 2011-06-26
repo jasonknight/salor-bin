@@ -150,8 +150,6 @@ void SalorCapture::saveSnapshot() {
     qDebug() << "saveSnapshot was called";
     QWebFrame *mainFrame = mPage->mainFrame();
     QPainter painter;
-    const char* format = NULL;
-
     mPage->setViewportSize( mainFrame->contentsSize() );
     QImage image(mPage->viewportSize(), QImage::Format_ARGB32);
     painter.begin(&image);
@@ -162,4 +160,12 @@ void SalorCapture::saveSnapshot() {
     image.save(mOutput, "bmp");
     qDebug() << "calling display_link_write_image";
     display_link_write_image(mOutput.toAscii());
+}
+void SalorCapture::DocumentPrint(bool ok) {
+    qDebug() << "print was called";
+    QWebFrame *mainFrame = mPage->mainFrame();
+    QPrinter printer;
+    printer.setPageSize(QPrinter::A4);
+    printer.setOutputFileName("/tmp/salor_document.ps");
+    mainFrame->print(&printer);
 }
