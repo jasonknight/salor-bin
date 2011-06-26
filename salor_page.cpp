@@ -168,4 +168,9 @@ void SalorCapture::DocumentPrint(bool ok) {
     printer.setPageSize(QPrinter::A4);
     printer.setOutputFileName("/tmp/salor_document.ps");
     mainFrame->print(&printer);
+
+    //sprintf(cmd,"ps2pdf /tmp/salor_document.ps %s/labels.pdf",);
+    QString cmd = "ps2pdf /tmp/salor_document.ps " + QDesktopServices::storageLocation(QDesktopServices::DesktopLocation) + "/labels.pdf";
+    qDebug() << cmd;
+    system(cmd.toAscii());
 }
