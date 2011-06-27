@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     sp.show();
     sp.showMessage("Loading salor");
     SalorSettings::getSelf()->application = &a;
+    qDebug() << SalorSettings::getSelf()->getValue("ps2pdf").toString();
     MainWindow w;
     sp.showMessage("initializing");
     w.init();
