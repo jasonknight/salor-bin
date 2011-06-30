@@ -15,6 +15,7 @@ public:
     bool mousePressed;
     bool shown;
     SalorCustomerScreen * scs;
+    QString to_url;
 private slots:
 
 public slots:

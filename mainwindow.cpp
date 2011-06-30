@@ -31,7 +31,7 @@ void MainWindow::init() {
 
     setCentralWidget(webView);
     webView->show();
-    webView->load(QUrl("http://salor"));
+    webView->load(this->to_url);
     connectSlots();
 }
 QWebView* MainWindow::getWebView() {
