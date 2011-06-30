@@ -9,7 +9,6 @@
 #include <QByteArray>
 #include <QNetworkRequest>
 #include "display_link.h"
-#include "salor_settings.h"
 
 SalorPage::SalorPage(QObject* parent):QWebPage(parent)
 {
@@ -163,15 +162,5 @@ void SalorCapture::saveSnapshot() {
     display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint(bool ok) {
-    qDebug() << "print was called";
-    QWebFrame *mainFrame = mPage->mainFrame();
-    QPrinter printer;
-    printer.setPageSize(QPrinter::A4);
-    printer.setOutputFileName("/tmp/salor_document.ps");
-    mainFrame->print(&printer);
 
-    //sprintf(cmd,"ps2pdf /tmp/salor_document.ps %s/labels.pdf",);
-    QString cmd = SalorSettings::getSelf()->getValue("ps2pdf").toString() + " " + QDesktopServices::storageLocation(QDesktopServices::DesktopLocation) + "/labels.pdf";
-    qDebug() << cmd;
-    system(cmd.toAscii());
 }

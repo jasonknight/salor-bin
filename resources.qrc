@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>salor.ini</file>
         <file>salor-splash.png</file>
     </qresource>
 </RCC>

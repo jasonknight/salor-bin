@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QtWebKit>
 #include <QSplashScreen>
-#include "salor_settings.h"
 #include "salor_customer_screen.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -28,9 +27,6 @@ protected:
     void changeEvent(QEvent *e);
 private:
     QWebView *webView;
-    SalorSettings *s;
-
-
     void attach();
 };
 

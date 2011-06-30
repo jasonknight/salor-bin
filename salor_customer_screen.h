@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QPicture>
 #include <QPainter>
-#include <salor_settings.h>
 #include "salor_page.h"
 
 class SalorCustomerScreen : public QObject

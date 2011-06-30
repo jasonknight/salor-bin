@@ -7,8 +7,6 @@
 SalorCustomerScreen::SalorCustomerScreen(QObject *parent) :
     QObject(parent)
 {
-    QString background_path = SalorSettings::getSelf()->getValue("customer_screen_background").toString();
-    this->background->load(background_path);
 }
 void SalorCustomerScreen::refresh(QString url,int h, int w) {
     // The screenshot taking is done in salor_page.cpp, scroll down and look at SalorCapture class
