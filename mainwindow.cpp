@@ -1,6 +1,4 @@
 #include "mainwindow.h"
-#include "salor_settings.h"
-
 #include <QWebPage>
 #include <QDesktopServices>
 #include <QSysInfo>
@@ -19,22 +17,8 @@ void MainWindow::init() {
     this->shown = false;
     this->scs = new SalorCustomerScreen(this);
     SalorPage* page = new SalorPage(this);
-    SalorSettings* s = SalorSettings::getSelf();
-    this->resize(
-            QSize(
-                  s->getValue("width").toInt(),
-                  s->getValue("height").toInt()
-                   )
-            );
-
     webView = new QWebView();
-
     webView->setPage((QWebPage*)page);
-    webView->resize(
-               s->getValue("width").toInt(),
-               s->getValue("height").toInt()
-                );
-    QWebSettings *defaultSettings = QWebSettings::globalSettings();
 /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -44,30 +28,21 @@ void MainWindow::init() {
         defaultSettings->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     }
 */
-    webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
     setCentralWidget(webView);
     webView->show();
-    webView->installEventFilter(this);
-    
+    webView->load(QUrl("http://salor"));
     connectSlots();
-
-    linkClicked(QUrl(
-                SalorSettings::getSelf()->getValue("start").toString()
-              )
-         );
-    qDebug() << "End of Init";
 }
 QWebView* MainWindow::getWebView() {
     return this->webView;
 }
 
 void MainWindow::connectSlots() {
-    qDebug() << "Connecting Slots";
-
-  connect(webView->page(),SIGNAL(linkClicked(QUrl)),this,SLOT(linkClicked(QUrl)));
-  connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
-  qDebug() << "Slots Connected";
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
+    timer->start(500);
+    connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
 }
 void MainWindow::addJavascriptObjects() {
     if (!this->shown) {
@@ -77,18 +52,13 @@ void MainWindow::addJavascriptObjects() {
 }
 void MainWindow::linkClicked(QUrl url) {
 
-    webView->load(url);
+
 }
 void MainWindow::repaintViews() {
 
-    QSize s = webView->page()->view()->size();
-    int y = s.height() / 2;
-    int x = 0;
-    QRect r(x,y,s.width(),y);
-     webView->page()->view()->repaint(r);
+    webView->update();
 }
 void MainWindow::attach(){
-    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorSettings", SalorSettings::getSelf());
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
 }
 
