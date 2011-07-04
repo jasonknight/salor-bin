@@ -3,28 +3,33 @@
 #include <iostream>
 void help() {
     std::cout << "Usage:\n";
-    std::cout << "\tsalor -[uh] [value]";
+    std::cout << "\tsalor -[uh] [value]\n";
     std::cout << "Example: \n";
-    std::cout << "\tsalor -u http://localhost:3000";
+    std::cout << "\tsalor -u http://localhost:3000\n";
+    std::cout << "\tRunning salor with no arguments will load http://salor\n";
+    std::cout << "\tOther arguments could be: salor -u http://salortrainer\n";
+    exit(0);
+    return;
 }
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    qDebug() << "Here I am";
     w.to_url = QString("http://salor");
+    QString arg;
     for (int i = 1; i < argc; i++) {
-        if (i + 1 != argc) { // Check that we haven't finished parsing already
-           qDebug() << "Arg is: " << argv[i];
-           if (argv[i] == "-u") {
-               w.to_url = QString(argv[i + 1]);
-           } else if (argv[i] == "-h") {
-               help();
-               w.close();
-               a.exit(0);
-           }
-       }
-       std::cout << argv[i] << " ";
+      arg = QString(argv[i]);
+      if (arg == "-h") {
+        help();
+      } 
+      if (i + 1 != argc) { // Check that we haven't finished parsing already
+         if (arg == "-u") {
+           qDebug() << "Setting to_url to: " << argv[i + 1];
+             w.to_url = QString(argv[i + 1]);
+         } else if (arg == "-h") {
+             help();
+         }
+      }
     }
     QPixmap pixmap(":/salor-splash.png");
     QSplashScreen sp(pixmap);
