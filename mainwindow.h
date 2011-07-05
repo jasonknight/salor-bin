@@ -24,6 +24,8 @@ public slots:
     QWebView* getWebView();
     void addJavascriptObjects();
     bool eventFilter(QObject *, QEvent *);
+    void windowCloseRequested();
+    void shutdown();
 protected:
     void changeEvent(QEvent *e);
 private:

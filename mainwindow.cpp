@@ -3,6 +3,7 @@
 #include <QDesktopServices>
 #include <QSysInfo>
 #include "salor_page.h"
+#include <QApplication>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -43,6 +44,7 @@ void MainWindow::connectSlots() {
     connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
     timer->start(500);
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
+    connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
 }
 void MainWindow::addJavascriptObjects() {
     if (!this->shown) {
@@ -60,6 +62,7 @@ void MainWindow::repaintViews() {
 }
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
+    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this);
 }
 
 
@@ -73,6 +76,13 @@ void MainWindow::changeEvent(QEvent *e){
     default:
         break;
     }
+}
+void MainWindow::shutdown() {
+  windowCloseRequested();
+}
+void MainWindow::windowCloseRequested() {
+  qDebug() << "Called";
+  QApplication::closeAllWindows();
 }
 bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
