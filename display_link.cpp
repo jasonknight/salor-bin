@@ -34,15 +34,24 @@ static bmp_t *load_bmp(const char * const bmpfile)
   FILE         *fp;
   char         filename[255];
 
-  strncat(filename, bmpfile, sizeof(filename) - 8);
-  fp = fopen(filename, "rb");
-  if (!fp) {
-    strncat(filename, bmpfile, sizeof(filename) - 14);
-    fp = fopen(filename, "rb");
-    if (!fp) {
-      return NULL;
-    }
-  }
+  //strncat(filename, bmpfile, sizeof(filename) - 8);
+  //fp = fopen(filename, "rb");
+  //if (!fp) {
+  //  strncat(filename, bmpfile, sizeof(filename) - 14);
+  //  fp = fopen(filename, "rb");
+  //  if (!fp) {
+  //    return NULL;
+  //  }
+  //}
+
+strncat(filename, bmpfile, 7);
+qDebug() << "load_bmp trying to open" << bmpfile;
+fp = fopen(bmpfile, "rb");
+if (!fp) {
+  return NULL;
+qDebug() << "NULL";
+}
+qDebug() << "load_bmp OPENED";
 
   if (fseek(fp, 0, SEEK_END))
     return NULL;
@@ -53,7 +62,7 @@ static bmp_t *load_bmp(const char * const bmpfile)
 
   if (fseek(fp, 0, SEEK_SET))
     return NULL;
-
+qDebug() << "load_bmp before malloc";
   bmp = (bmp_t*)malloc(size);
   if (!bmp)
     return NULL;
@@ -152,14 +161,6 @@ static dlo_fbuf_t *bmp_to_fbuf(const bmp_t * const bmp)
   fbuf.stride = fbuf.width;
   switch (bmp->dib.bpp)
   {
-    case 8:
-    {
-          // Jason -  The compiler seems to want sizeof(bmp_header_t) to be dereferenced...
-      fbuf.fmt = (dlo_pixfmt_t)*(sizeof(bmp_header_t) + sizeof(dib_header_t) + (uint8_t *)bmp);
-      if (bmp->dib.pal_entries != 256)
-        my_error("Unsupported bitmap palette size");
-      break;
-    }
     case 16:
     {
       fbuf.fmt = dlo_pixfmt_srgb1555;
@@ -183,6 +184,7 @@ static dlo_fbuf_t *bmp_to_fbuf(const bmp_t * const bmp)
 
 
 
+
 int display_link_write_image(char const * bmpfile){
 qDebug() << "display_link_write called..." << bmpfile;
 dlo_init_t ini_flags = { 0 };
@@ -195,6 +197,7 @@ dlo_dev_t uid = 0;
 ERR_GOTO(dlo_init(ini_flags));
 
 /* Look for a DisplayLink device to connect to */
+qDebug() << "Trying to get uid ...";
 uid = dlo_claim_first_device(cnf_flags, 0);
 if (uid) {
     /* we claimed a device */
@@ -222,7 +225,7 @@ if (uid) {
       qDebug() << "Loading: " << bmpfile;
       bmp = load_bmp(bmpfile);
       NERR(bmp);
-
+      qDebug() << "bmp loaded";
       /* Initialise a dlo_fbuf structure from our loaded bitmap file  */
       fbuf = bmp_to_fbuf(bmp);
       NERR_GOTO(fbuf);
@@ -234,7 +237,7 @@ if (uid) {
 
       free(bmp);
 
-
+    qDebug() << "almost done";
 
     /* Release the device when we're finished with it */
     ERR_GOTO(dlo_release_device(uid));
@@ -242,7 +245,9 @@ if (uid) {
     qDebug() << "display_link_write_image: No Device Found";
 }
 /* Finalise libdlo */
+qDebug() << "before final";
 ERR_GOTO(dlo_final(fin_flags));
+qDebug() << "after final";
 return 0;
 error:
 /* The ERR_GOTO() macro jumps here if there was an error */

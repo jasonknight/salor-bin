@@ -53,5 +53,6 @@ typedef struct __packed bmp_s
   dib_header_t dib;        /**< DIB header block. */
   uint8_t      data[];     /**< Pixel data. */
 } bmp_t;                   /**< A struct @a bmp_s. */
+
 int display_link_write_image(char const * bmpfile);
 #endif // DISPLAY_LINK_H

@@ -8,7 +8,7 @@ SalorCustomerScreen::SalorCustomerScreen(QObject *parent) :
     QObject(parent)
 {
 }
-void SalorCustomerScreen::refresh(QString url,int h, int w) {
+void SalorCustomerScreen::refresh(QString url,int w, int h) {
     // The screenshot taking is done in salor_page.cpp, scroll down and look at SalorCapture class
     qDebug() << "CustomerScreen.refresh called with " << url;
     QWebView * webView = new QWebView();
