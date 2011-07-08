@@ -113,6 +113,7 @@ void SalorCapture::InitialLayoutCompleted() {
 
 void SalorCapture::DocumentComplete(bool /*ok*/) {
   qDebug() << "In DocumentComplete";
+
   saveSnapshot();
   return;
   mSawDocumentComplete = true;
@@ -136,7 +137,6 @@ void SalorCapture::TryDelayedRender() {
   }
 
   saveSnapshot();
-
 }
 
 void SalorCapture::Timeout() {
@@ -149,15 +149,22 @@ void SalorCapture::Delayed() {
 void SalorCapture::saveSnapshot() {
     qDebug() << "saveSnapshot was called";
     QWebFrame *mainFrame = mPage->mainFrame();
+
+    QSize size(800,480);
+    //mainFrame->contentsSize(size);
+
+    mPage->setViewportSize(size); //mainFrame->contentsSize()
+    QImage image(size, QImage::Format_ARGB32); // mPage->viewportSize()
+
     QPainter painter;
-    mPage->setViewportSize( mainFrame->contentsSize() );
-    QImage image(mPage->viewportSize(), QImage::Format_ARGB32);
     painter.begin(&image);
     mainFrame->render(&painter);
     painter.end();
+
     // Here is where we hook in.
     qDebug() << "Saving to: " << mOutput;
     image.save(mOutput, "bmp");
+
     qDebug() << "calling display_link_write_image";
     display_link_write_image(mOutput.toAscii());
 }

@@ -37,6 +37,7 @@ void SalorCustomerScreen::refresh(QString url,int w, int h) {
     webView->load(QUrl(url));
     qDebug() << "CustomerScreen.refresh end of method.";
 }
+
 void SalorCustomerScreen::print(QString url) {
     // The screenshot taking is done in salor_page.cpp, scroll down and look at SalorCapture class
     qDebug() << "CustomerScreen.refresh called with " << url;
