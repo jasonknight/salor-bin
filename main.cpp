@@ -42,7 +42,8 @@ int main(int argc, char *argv[])
     while (w.shown == false) {
         a.processEvents();
     }
-    w.showFullScreen();
+    //w.showFullScreen();
+    w.show();
     sp.finish(&w);
     return a.exec();
 }

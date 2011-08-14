@@ -4,6 +4,7 @@
 #include <QSysInfo>
 #include "salor_page.h"
 #include <QApplication>
+#include <QKeyEvent>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -45,6 +46,7 @@ void MainWindow::connectSlots() {
     timer->start(500);
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
+    this->installEventFilter(this);
 }
 void MainWindow::addJavascriptObjects() {
     if (!this->shown) {
@@ -87,35 +89,18 @@ void MainWindow::windowCloseRequested() {
 bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
     switch (e->type()) {
-    case QEvent::MouseButtonPress:
-        if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton) {
-            mousePressed = true;
-        }
-        repaintViews();
-        break;
-    case QEvent::ContentsRectChange:
-        repaintViews();
-        break;
-    case QEvent::ToolTipChange:
-        repaintViews();
-        break;
-    case QEvent::Wheel:
-        repaintViews();
-        break;
-    case QEvent::MouseButtonRelease:
-        if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton) {
-            mousePressed = false;
-        }
-       repaintViews();
-        break;
-    case QEvent::MouseMove:
-        if (mousePressed) {
-            return false;
-        }
-        repaintViews();
-        break;
-    default:
-        break;
+      case QEvent::KeyRelease: 
+          {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+            QString key = "salorKeyRelease(";
+            key = key + QString::number(keyEvent->key());
+            key = key +  "); null";
+            this->webView->page()->mainFrame()->evaluateJavaScript(key);
+          }
+          break;
+      default:
+        return false;
+          break;
     }
     return false;
 }
