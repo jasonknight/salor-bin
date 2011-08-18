@@ -45,16 +45,11 @@ int main(int argc, char *argv[])
     while (w.shown == false) {
         a.processEvents();
     }
-<<<<<<< HEAD
     if (fs) {
       w.showFullScreen();
     } else {
       w.show();
     }
-=======
-    //w.showFullScreen();
-    w.show();
->>>>>>> 1aea25039835d1b22e8a3fd6a5569398cc169638
     sp.finish(&w);
     return a.exec();
 }
