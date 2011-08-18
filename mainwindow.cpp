@@ -4,6 +4,7 @@
 #include <QSysInfo>
 #include "salor_page.h"
 #include <QApplication>
+#include "scales.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -40,9 +41,9 @@ QWebView* MainWindow::getWebView() {
 }
 
 void MainWindow::connectSlots() {
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
-    timer->start(500);
+//    QTimer *timer = new QTimer(this);
+//    connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
+//    timer->start(500);
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
 }
@@ -56,10 +57,10 @@ void MainWindow::linkClicked(QUrl url) {
 
 
 }
-void MainWindow::repaintViews() {
+/* void MainWindow::repaintViews() {
 
     webView->update();
-}
+}*/
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this);
@@ -67,7 +68,7 @@ void MainWindow::attach(){
 
 
 
-void MainWindow::changeEvent(QEvent *e){
+/*void MainWindow::changeEvent(QEvent *e){
     QMainWindow::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
@@ -76,7 +77,7 @@ void MainWindow::changeEvent(QEvent *e){
     default:
         break;
     }
-}
+}*/
 void MainWindow::shutdown() {
   windowCloseRequested();
 }
@@ -84,7 +85,7 @@ void MainWindow::windowCloseRequested() {
   qDebug() << "Called";
   QApplication::closeAllWindows();
 }
-bool MainWindow::eventFilter(QObject *, QEvent *e)
+/* bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
     switch (e->type()) {
     case QEvent::MouseButtonPress:
@@ -118,4 +119,19 @@ bool MainWindow::eventFilter(QObject *, QEvent *e)
         break;
     }
     return false;
+}
+*/
+
+// Scale functions, static functions are defined in scales.h
+
+QString MainWindow::toperScale(QString addy) {
+  int fd, j, count;
+  float weight;
+  fd = open_serial_port(addy.toLatin1().data());
+  request_weight_toperczer_f200_samsung_spain(fd);
+  sleep(1); // do something else until bytes are in the buffer
+  weight = read_weight_toperczer_f200_samsung_spain(fd);
+  close_fd(fd);
+  qDebug() << "Reading from Toper: " << QString::number(weight);
+  return QString::number(weight);
 }

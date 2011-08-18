@@ -165,7 +165,6 @@ void SalorCapture::saveSnapshot() {
     // Here is where we hook in.
     qDebug() << "Saving to: " << mOutput;
     image.save(mOutput, "bmp");
-
     qDebug() << "calling display_link_write_image";
     display_link_write_image(mOutput.toAscii());
 }
