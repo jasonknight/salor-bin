@@ -23,11 +23,18 @@ public slots:
     void repaintViews();
     QWebView* getWebView();
     void addJavascriptObjects();
-    bool eventFilter(QObject *, QEvent *);
+   // bool eventFilter(QObject *, QEvent *);
     void windowCloseRequested();
+    QString toperScale(QString addy);
+    QString testScale() {
+      qDebug() << "Reading from Test: " << "2.754";
+      return QString("2.754");
+    }
+    void openCashDrawer(QString addy);
+    bool cashDrawerClosed(QString addy);
     void shutdown();
 protected:
-    void changeEvent(QEvent *e);
+    //void changeEvent(QEvent *e);
 private:
     QWebView *webView;
     void attach();

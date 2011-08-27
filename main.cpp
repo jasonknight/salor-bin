@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.to_url = QString("http://salor");
     QString arg;
+    bool fs = true;
     for (int i = 1; i < argc; i++) {
       arg = QString(argv[i]);
       if (arg == "-h") {
@@ -28,6 +29,8 @@ int main(int argc, char *argv[])
              w.to_url = QString(argv[i + 1]);
          } else if (arg == "-h") {
              help();
+         } else if (arg == "-w") {
+             fs = false;
          }
       }
     }
@@ -42,8 +45,11 @@ int main(int argc, char *argv[])
     while (w.shown == false) {
         a.processEvents();
     }
-    //w.showFullScreen();
-    w.show();
+    if (fs) {
+      w.showFullScreen();
+    } else {
+      w.show();
+    }
     sp.finish(&w);
     return a.exec();
 }

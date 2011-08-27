@@ -4,7 +4,7 @@
 #include <QSysInfo>
 #include "salor_page.h"
 #include <QApplication>
-#include <QKeyEvent>
+#include "scales.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -20,7 +20,7 @@ void MainWindow::init() {
     this->scs = new SalorCustomerScreen(this);
     SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-    webView->setPage((QWebPage*)page);
+    //webView->setPage((QWebPage*)page);
 /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -58,18 +58,19 @@ void MainWindow::linkClicked(QUrl url) {
 
 
 }
-void MainWindow::repaintViews() {
+ void MainWindow::repaintViews() {
 
     webView->update();
 }
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this);
+    repaintViews();
 }
 
 
 
-void MainWindow::changeEvent(QEvent *e){
+/*void MainWindow::changeEvent(QEvent *e){
     QMainWindow::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
@@ -78,7 +79,7 @@ void MainWindow::changeEvent(QEvent *e){
     default:
         break;
     }
-}
+}*/
 void MainWindow::shutdown() {
   windowCloseRequested();
 }
@@ -86,7 +87,7 @@ void MainWindow::windowCloseRequested() {
   qDebug() << "Called";
   QApplication::closeAllWindows();
 }
-bool MainWindow::eventFilter(QObject *, QEvent *e)
+/* bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
     switch (e->type()) {
       case QEvent::KeyRelease: 
@@ -103,4 +104,44 @@ bool MainWindow::eventFilter(QObject *, QEvent *e)
           break;
     }
     return false;
+}
+*/
+
+// Cash Drawer functions
+
+void MainWindow::openCashDrawer(QString addy) {
+  int fd;
+  fd = open_serial_port(addy.toLatin1().data());
+  write(fd, "\x1D\x61\xFF", 3);
+  usleep(20000); //i.e. 20ms
+  write(fd, "\x1B\x70\x00\xFF\xFF", 5);
+  close_fd(fd);
+
+}
+bool MainWindow::cashDrawerClosed(QString addy) {
+  /*
+  int fd;
+  char buf[20];
+  fd = open_serial_port(addy.toLatin1().data());
+  read(fd, &buf, 19);
+  strcpy(buf,"");
+  while( strcmp(cash_drawer_closed,buf) != 0 ) {
+    usleep(20000); //i.e. 20ms
+  }
+  close_fd(fd);
+  */
+}
+
+// Scale functions, static functions are defined in scales.h
+
+QString MainWindow::toperScale(QString addy) {
+  int fd, j, count;
+  float weight;
+  fd = open_serial_port(addy.toLatin1().data());
+  request_weight_toperczer_f200_samsung_spain(fd);
+  sleep(1); // do something else until bytes are in the buffer
+  weight = read_weight_toperczer_f200_samsung_spain(fd);
+  close_fd(fd);
+  qDebug() << "Reading from Toper: " << QString::number(weight);
+  return QString::number(weight);
 }
