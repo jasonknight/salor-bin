@@ -20,7 +20,7 @@ void MainWindow::init() {
     this->scs = new SalorCustomerScreen(this);
     SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-    //webView->setPage((QWebPage*)page);
+    webView->setPage((QWebPage*)page);
 /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -58,7 +58,7 @@ void MainWindow::linkClicked(QUrl url) {
 
 
 }
- void MainWindow::repaintViews() {
+void MainWindow::repaintViews() {
 
     webView->update();
 }
@@ -90,7 +90,7 @@ void MainWindow::windowCloseRequested() {
 /* bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
     switch (e->type()) {
-      case QEvent::KeyRelease: 
+      case QEvent::KeyRelease:
           {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
             QString key = "salorKeyRelease(";
@@ -139,9 +139,10 @@ QString MainWindow::toperScale(QString addy) {
   float weight;
   fd = open_serial_port(addy.toLatin1().data());
   request_weight_toperczer_f200_samsung_spain(fd);
-  sleep(1); // do something else until bytes are in the buffer
+  usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
   weight = read_weight_toperczer_f200_samsung_spain(fd);
   close_fd(fd);
   qDebug() << "Reading from Toper: " << QString::number(weight);
   return QString::number(weight);
 }
+
