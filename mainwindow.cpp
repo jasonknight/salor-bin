@@ -113,7 +113,7 @@ QString MainWindow::toperScale(QString addy) {
   float weight;
   fd = open_serial_port(addy.toLatin1().data());
   request_weight_toperczer_f200_samsung_spain(fd);
-  sleep(1); // do something else until bytes are in the buffer
+  usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
   weight = read_weight_toperczer_f200_samsung_spain(fd);
   close_fd(fd);
   qDebug() << "Reading from Toper: " << QString::number(weight);
