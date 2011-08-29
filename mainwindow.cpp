@@ -136,13 +136,14 @@ bool MainWindow::cashDrawerClosed(QString addy) {
 
 QString MainWindow::toperScale(QString addy) {
   int fd, j, count;
-  float weight;
+  char * weight;
   fd = open_serial_port(addy.toLatin1().data());
   request_weight_toperczer_f200_samsung_spain(fd);
   usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
   weight = read_weight_toperczer_f200_samsung_spain(fd);
   close_fd(fd);
-  qDebug() << "Reading from Toper: " << QString::number(weight);
-  return QString::number(weight);
+  //qDebug() << "Reading from Toper: " << QString::number(weight);
+  //return QString::number(weight);
+  return weight;
 }
 
