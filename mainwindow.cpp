@@ -131,7 +131,7 @@ void MainWindow::cashDrawerClosed(QString addy) {
 }
 void MainWindow::_cashDrawerClosed() {
     printf("Exiting complete_order_hide();.\n");
-    this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();NULL");
+    this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();");
 }
 // Scale functions, static functions are defined in scales.h
 

@@ -5,7 +5,7 @@ CashDrawer::CashDrawer(QObject *parent) :
 {
 }
 void CashDrawer::run() {
-    printf("Starting CashDrawer Thread.\n");
+    printf("THREAD: Starting CashDrawer Thread.\n");
     char buf[20];
     char cash_drawer_closed[20] = "\x10\x00\x00\x0f";
     int cap = 100;
@@ -18,7 +18,7 @@ void CashDrawer::run() {
         read(fd, &buf[0], 19);
         usleep(500 * 1000);
         if (x == cap) {
-            printf("CashDrawer Thread cap reached, exiting.\n");
+            printf("\nTHREAD: CashDrawer Thread cap reached, exiting.\n");
             close_fd(fd);
             return;
         } else {
@@ -26,7 +26,7 @@ void CashDrawer::run() {
         }
     }
     close_fd(fd);
-    printf("Emitting cashDrawerClosed().\n");
+    printf("THREAD: Emitting cashDrawerClosed().\n");
     emit cashDrawerClosed();
     return;
 }
