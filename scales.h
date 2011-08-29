@@ -1,3 +1,5 @@
+#ifndef SCALES_H
+#define SCALES_H
 #include <stdio.h>   /* Standard input/output definitions */
 #include <string.h>  /* String function definitions */
 #include <unistd.h>  /* UNIX standard function definitions */
@@ -49,6 +51,10 @@ static char * read_weight_toperczer_f200_samsung_spain(int fd) {
   //for (i=0;i<count;i++) { printf("%X|",*(buffer+i)); } // debug
   return buffer;
 }
+static void read_fd(int fd,char &buf, int bytes) {
+    read(fd, &buf, bytes);
+}
 static void close_fd(int i) {
   close(i);
 }
+#endif

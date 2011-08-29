@@ -14,12 +14,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     salor_page.cpp \
     salor_customer_screen.cpp \
-    display_link.cpp
+    display_link.cpp \
+    cashdrawer.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
     salor_customer_screen.h \
-    display_link.h
+    display_link.h \
+    cashdrawer.h \
+    scales.h
 
 FORMS    += mainwindow.ui
 
