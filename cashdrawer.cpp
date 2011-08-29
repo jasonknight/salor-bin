@@ -8,7 +8,7 @@ void CashDrawer::run() {
     printf("THREAD: Starting CashDrawer Thread.\n");
     char buf[20];
     char cash_drawer_closed[20] = "\x10\x00\x00\x0f";
-    int cap = 100;
+    int cap = 1000;
     int x = 0;
     int fd;
     fd = open_serial_port(this->addy.toLatin1().data());
