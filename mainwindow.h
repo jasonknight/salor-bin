@@ -31,7 +31,8 @@ public slots:
       return QString("2.754");
     }
     void openCashDrawer(QString addy);
-    bool cashDrawerClosed(QString addy);
+    void cashDrawerClosed(QString addy);
+    void _cashDrawerClosed();
     void shutdown();
 protected:
     //void changeEvent(QEvent *e);

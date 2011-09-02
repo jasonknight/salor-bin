@@ -1,3 +1,5 @@
+#ifndef SCALES_H
+#define SCALES_H
 #include <stdio.h>   /* Standard input/output definitions */
 #include <string.h>  /* String function definitions */
 #include <unistd.h>  /* UNIX standard function definitions */
@@ -37,16 +39,22 @@ static int request_weight_toperczer_f200_samsung_spain(int fd) {
 }
 
 
-static float read_weight_toperczer_f200_samsung_spain(int fd) {
+static char * read_weight_toperczer_f200_samsung_spain(int fd) {
   // Scale: Toperczer F-200 (branded DIBAL), Protocol: Samsung Spain
   int count, i;
-  float weight;
+  char * weight;
   char buffer[10];
-  count = read(fd, buffer, 8);
-  //for (i=0;i<8;i++) { printf("%H ",*(buffer+i)); } // debug
-  sscanf(buffer, "%f", &weight);
-  return weight;
+  count = read(fd, buffer, 7);
+  //printf("\n");
+  //printf("Buffer read from scale: %s",buffer);
+  //printf("\n");
+  //for (i=0;i<count;i++) { printf("%X|",*(buffer+i)); } // debug
+  return buffer;
+}
+static void read_fd(int fd,char &buf, int bytes) {
+    read(fd, &buf, bytes);
 }
 static void close_fd(int i) {
   close(i);
 }
+#endif

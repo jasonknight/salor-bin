@@ -5,6 +5,7 @@
 #include "salor_page.h"
 #include <QApplication>
 #include "scales.h"
+#include "cashdrawer.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -59,7 +60,6 @@ void MainWindow::linkClicked(QUrl url) {
 
 }
  void MainWindow::repaintViews() {
-
     webView->update();
 }
 void MainWindow::attach(){
@@ -90,7 +90,7 @@ void MainWindow::windowCloseRequested() {
 /* bool MainWindow::eventFilter(QObject *, QEvent *e)
 {
     switch (e->type()) {
-      case QEvent::KeyRelease: 
+      case QEvent::KeyRelease:
           {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
             QString key = "salorKeyRelease(";
@@ -118,30 +118,32 @@ void MainWindow::openCashDrawer(QString addy) {
   close_fd(fd);
 
 }
-bool MainWindow::cashDrawerClosed(QString addy) {
-  /*
-  int fd;
-  char buf[20];
-  fd = open_serial_port(addy.toLatin1().data());
-  read(fd, &buf, 19);
-  strcpy(buf,"");
-  while( strcmp(cash_drawer_closed,buf) != 0 ) {
-    usleep(20000); //i.e. 20ms
-  }
-  close_fd(fd);
-  */
+void MainWindow::cashDrawerClosed(QString addy) {
+    printf("Creating CashDrawer Thread.\n");
+    CashDrawer * cd = new CashDrawer(this);
+    cd->addy = addy;
+    printf("Connecting Signals.\n");
+    connect(cd,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
+    connect(cd,SIGNAL(finished()),cd,SLOT(deleteLater()));
+    cd->start();
+    printf("Thread Started.\n");
 }
-
+void MainWindow::_cashDrawerClosed() {
+    printf("Exiting complete_order_hide();.\n");
+    this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();");
+}
 // Scale functions, static functions are defined in scales.h
 
 QString MainWindow::toperScale(QString addy) {
   int fd, j, count;
-  float weight;
+  char * weight;
   fd = open_serial_port(addy.toLatin1().data());
   request_weight_toperczer_f200_samsung_spain(fd);
-  sleep(1); // do something else until bytes are in the buffer
+  usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
   weight = read_weight_toperczer_f200_samsung_spain(fd);
   close_fd(fd);
-  qDebug() << "Reading from Toper: " << QString::number(weight);
-  return QString::number(weight);
+  //qDebug() << "Reading from Toper: " << QString::number(weight);
+  //return QString::number(weight);
+  return weight;
 }
+
