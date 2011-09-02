@@ -20,7 +20,7 @@ private slots:
 
 public slots:
     void linkClicked(QUrl);
-    //void repaintViews();
+    void repaintViews();
     QWebView* getWebView();
     void addJavascriptObjects();
    // bool eventFilter(QObject *, QEvent *);
@@ -30,6 +30,8 @@ public slots:
       qDebug() << "Reading from Test: " << "2.754";
       return QString("2.754");
     }
+    void openCashDrawer(QString addy);
+    bool cashDrawerClosed(QString addy);
     void shutdown();
 protected:
     //void changeEvent(QEvent *e);

@@ -20,7 +20,7 @@ void MainWindow::init() {
     this->scs = new SalorCustomerScreen(this);
     SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-    webView->setPage((QWebPage*)page);
+    //webView->setPage((QWebPage*)page);
 /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -41,9 +41,9 @@ QWebView* MainWindow::getWebView() {
 }
 
 void MainWindow::connectSlots() {
-//    QTimer *timer = new QTimer(this);
-//    connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
-//    timer->start(500);
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(repaintViews()));
+    timer->start(500);
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
     this->installEventFilter(this);
@@ -58,13 +58,14 @@ void MainWindow::linkClicked(QUrl url) {
 
 
 }
-/* void MainWindow::repaintViews() {
+ void MainWindow::repaintViews() {
 
     webView->update();
-}*/
+}
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this);
+    repaintViews();
 }
 
 
@@ -105,6 +106,31 @@ void MainWindow::windowCloseRequested() {
     return false;
 }
 */
+
+// Cash Drawer functions
+
+void MainWindow::openCashDrawer(QString addy) {
+  int fd;
+  fd = open_serial_port(addy.toLatin1().data());
+  write(fd, "\x1D\x61\xFF", 3);
+  usleep(20000); //i.e. 20ms
+  write(fd, "\x1B\x70\x00\xFF\xFF", 5);
+  close_fd(fd);
+
+}
+bool MainWindow::cashDrawerClosed(QString addy) {
+  /*
+  int fd;
+  char buf[20];
+  fd = open_serial_port(addy.toLatin1().data());
+  read(fd, &buf, 19);
+  strcpy(buf,"");
+  while( strcmp(cash_drawer_closed,buf) != 0 ) {
+    usleep(20000); //i.e. 20ms
+  }
+  close_fd(fd);
+  */
+}
 
 // Scale functions, static functions are defined in scales.h
 
