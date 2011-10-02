@@ -14,8 +14,11 @@ void CashDrawer::run() {
     fd = open_serial_port(this->addy.toLatin1().data());
     read(fd, &buf, 19);
     strcpy(buf,"");
+    close_fd(fd);
     while( strcmp(cash_drawer_closed,buf) != 0 ) {
+        fd = open_serial_port(this->addy.toLatin1().data());
         read(fd, &buf[0], 19);
+        close_fd(fd);
         usleep(500 * 1000);
         if (x == cap) {
             printf("\nTHREAD: CashDrawer Thread cap reached, exiting.\n");
@@ -25,7 +28,6 @@ void CashDrawer::run() {
             x++;
         }
     }
-    close_fd(fd);
     printf("THREAD: Emitting cashDrawerClosed().\n");
     emit cashDrawerClosed();
     return;
