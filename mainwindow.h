@@ -30,7 +30,7 @@ public slots:
       qDebug() << "Reading from Test: " << "2.754";
       return QString("2.754");
     }
-    void openCashDrawer(QString addy);
+    void newOpenCashDrawer(QString addy);
     void cashDrawerClosed(QString addy);
     void _cashDrawerClosed();
     void shutdown();

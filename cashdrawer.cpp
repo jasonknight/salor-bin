@@ -1,34 +1,47 @@
 #include "cashdrawer.h"
 #include "scales.h"
+
 CashDrawer::CashDrawer(QObject *parent) :
     QThread(parent)
 {
 }
 void CashDrawer::run() {
-    printf("THREAD: Starting CashDrawer Thread.\n");
-    char buf[20];
-    char cash_drawer_closed[20] = "\x10\x00\x00\x0f";
-    int cap = 1000;
-    int x = 0;
     int fd;
-    fd = open_serial_port(this->addy.toLatin1().data());
+    int count;
+    int i;
+    char buf[20];
+    char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
+    int cap = 600;
+    int x = 0;
+    printf("XXX Writing open drawer \n");
+    sleep(2);
+    fd = open_serial_port(addy.toLatin1().data());
+    write(fd, "\x1D\x61\xFF", 3);
+    usleep(2000); //i.e. 20ms
+    write(fd, "\x1B\x70\x00\x20\x00", 5);
+    read(fd, &buf, 19);
+    sleep(1); //i.e. 20ms
     read(fd, &buf, 19);
     strcpy(buf,"");
-    close_fd(fd);
-    while( strcmp(cash_drawer_closed,buf) != 0 ) {
-        fd = open_serial_port(this->addy.toLatin1().data());
-        read(fd, &buf[0], 19);
+    sleep(1);
+    read(fd, &buf, 19);
+    strcpy(buf,"");
+    read(fd, &buf, 19);
+    for (i=0;i < count; i++) { printf("%X ", *(buf+i));}
+    while (strcmp(cash_drawer_closed,buf) != 0) {
+      usleep(20000); //i.e. 20m
+      count = read(fd,&buf,19);
+      printf("-- %i \n", count);
+      for (i=0;i < count; i++) { printf("%X ", *(buf+i));}
+      if (x == cap) {
+        printf("XXX cap reached \n");
         close_fd(fd);
-        usleep(500 * 1000);
-        if (x == cap) {
-            printf("\nTHREAD: CashDrawer Thread cap reached, exiting.\n");
-            close_fd(fd);
-            return;
-        } else {
-            x++;
-        }
+        return;
+      } else { 
+        x++;
+      }
     }
-    printf("THREAD: Emitting cashDrawerClosed().\n");
+    close_fd(fd);
     emit cashDrawerClosed();
     return;
 }

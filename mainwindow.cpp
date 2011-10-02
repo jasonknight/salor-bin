@@ -109,14 +109,8 @@ void MainWindow::windowCloseRequested() {
 
 // Cash Drawer functions
 
-void MainWindow::openCashDrawer(QString addy) {
-  int fd;
-  fd = open_serial_port(addy.toLatin1().data());
-  write(fd, "\x1D\x61\xFF", 3);
-  usleep(20000); //i.e. 20ms
-  write(fd, "\x1B\x70\x00\xFF\xFF", 5);
-  close_fd(fd);
-
+void MainWindow::newOpenCashDrawer(QString addy) {
+  this->cashDrawerClosed(addy);
 }
 void MainWindow::cashDrawerClosed(QString addy) {
     printf("Creating CashDrawer Thread.\n");
