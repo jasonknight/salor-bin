@@ -33,6 +33,7 @@ public slots:
     void newOpenCashDrawer(QString addy);
     void cashDrawerClosed(QString addy);
     void _cashDrawerClosed();
+    void payLifeSend(QString addy, QString data);
     void shutdown();
 protected:
     //void changeEvent(QEvent *e);

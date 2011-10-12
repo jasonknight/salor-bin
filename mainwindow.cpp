@@ -6,6 +6,7 @@
 #include <QApplication>
 #include "scales.h"
 #include "cashdrawer.h"
+#include "paylife.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -121,6 +122,17 @@ void MainWindow::cashDrawerClosed(QString addy) {
     connect(cd,SIGNAL(finished()),cd,SLOT(deleteLater()));
     cd->start();
     printf("Thread Started.\n");
+}
+void MainWindow::payLifeSend(QString addy,QString data) {
+    printf("Creating Paylife Thread.\n");
+    PayLife * pl = new PayLife(0);
+    pl->addy = addy;
+    pl->data = data;
+    printf("Connecting PayLife Signals.\n");
+    connect(pl,SIGNAL(payLifeConfirmed()),this,SLOT(_cashDrawerClosed()));
+    connect(pl,SIGNAL(finished()),pl,SLOT(deleteLater()));
+    pl->start();
+    printf("PayLife Thread Started.\n");
 }
 void MainWindow::_cashDrawerClosed() {
     printf("Exiting complete_order_hide();.\n");
