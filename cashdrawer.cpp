@@ -14,7 +14,6 @@ void CashDrawer::run() {
     int cap = 600;
     int x = 0;
     printf("XXX Writing open drawer \n");
-    sleep(2);
     fd = open_serial_port(addy.toLatin1().data());
     write(fd, "\x1D\x61\xFF", 3);
     usleep(2000); //i.e. 20ms

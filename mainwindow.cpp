@@ -7,6 +7,7 @@
 #include "scales.h"
 #include "cashdrawer.h"
 #include "paylife.h"
+#include "webcam.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -133,6 +134,20 @@ void MainWindow::payLifeSend(QString addy,QString data) {
     connect(pl,SIGNAL(finished()),pl,SLOT(deleteLater()));
     pl->start();
     printf("PayLife Thread Started.\n");
+}
+void MainWindow::captureCam(int addy,QString path,int id) {
+    WebCam * wc = new WebCam(0);
+    wc->addy = addy;
+    wc->filePath = path;
+    wc->id = id;
+    printf("Connecting Webcam Signals.\n");
+    connect(wc,SIGNAL(imageSaved(int,QString)),this,SLOT(_camCaptured(int,QString)));
+    connect(wc,SIGNAL(finished()),wc,SLOT(deleteLater()));
+    wc->start();
+    printf("WebCam Thread Started.\n");
+}
+void MainWindow::_camCaptured(int id, QString filePath) {
+	emit camWasCaptured(id,filePath);
 }
 void MainWindow::_cashDrawerClosed() {
     printf("Exiting complete_order_hide();.\n");

@@ -33,8 +33,12 @@ public slots:
     void newOpenCashDrawer(QString addy);
     void cashDrawerClosed(QString addy);
     void _cashDrawerClosed();
+    void _camCaptured(int id, QString filePath);
     void payLifeSend(QString addy, QString data);
+    void captureCam(int addy, QString path, int id);
     void shutdown();
+signals:
+	void camWasCaptured(int id,QString filePath);
 protected:
     //void changeEvent(QEvent *e);
 private:
