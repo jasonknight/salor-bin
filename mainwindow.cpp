@@ -4,6 +4,9 @@
 #include <QSysInfo>
 #include "salor_page.h"
 #include <QApplication>
+#include <QShortcut>
+#include <QPrinter>
+#include <QPrintDialog>
 #include "scales.h"
 #include "cashdrawer.h"
 #include "paylife.h"
@@ -50,6 +53,8 @@ void MainWindow::connectSlots() {
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
     this->installEventFilter(this);
+    QShortcut *shortcut = new QShortcut(QKeySequence("Ctrl+p"), this);
+    connect( shortcut, SIGNAL(activated()), this, SLOT(printPage()));
 }
 void MainWindow::addJavascriptObjects() {
     if (!this->shown) {
@@ -166,5 +171,14 @@ QString MainWindow::toperScale(QString addy) {
   //qDebug() << "Reading from Toper: " << QString::number(weight);
   //return QString::number(weight);
   return weight;
+}
+
+void MainWindow::printPage() {
+	QPrinter printer;
+	QPrintDialog* dialog = new QPrintDialog(&printer, this);
+	if (dialog->exec() == QDialog::Accepted)
+	{
+	     this->webView->page()->mainFrame()->print(&printer);
+	}
 }
 

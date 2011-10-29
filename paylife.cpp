@@ -11,7 +11,15 @@ void PayLife::run() {
     int fd;
     int count;
     int i;
+	char buff[32];
      fd = open_serial_port(this->addy.toLatin1().data());
-     write(fd, this->data.toLatin1().data(),32);
+	if (fd <= 0) {
+		qDebug() << "Could not open device!";
+	}
+	count = read(fd,&buff,32);
+     write(fd,"\x06\x02",2);
+     write(fd, this->data.toLatin1().data(),15);
+     write(fd,"\x03",1);
+	count = read(fd,&buff,32);
      close(fd);
 }

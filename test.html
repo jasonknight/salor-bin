@@ -1,4 +1,4 @@
-<div onclick="Salor.payLifeSend('/dev/ttyUSB0','K11060220000500000000047110000000');"> click me</div>
+<div onclick="Salor.payLifeSend('/dev/ttyUSB0','M11400000880000');"> click me</div>
 <script type="text/javascript">
 	Salor.camWasCaptured.connect(function (id,file) {
 		var date = new Date();
@@ -8,7 +8,7 @@ function snapCam() {
 	Salor.captureCam(0,'/home/jasonknight/test.png',1);
 	setTimeout("snapCam()",1600);
 }
-setTimeout("snapCam()",1600);
+//setTimeout("snapCam()",1600);
 </script>
 <div onclick="Salor.captureCam(0,'/home/jasonknight/test.png',1);"> show me</div>
 <img src="" id="emp_pic" />

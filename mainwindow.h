@@ -37,6 +37,7 @@ public slots:
     void payLifeSend(QString addy, QString data);
     void captureCam(int addy, QString path, int id);
     void shutdown();
+    void printPage();
 signals:
 	void camWasCaptured(int id,QString filePath);
 protected:
