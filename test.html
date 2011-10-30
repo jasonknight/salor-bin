@@ -1,5 +1,28 @@
-<div onclick="Salor.payLifeSend('E11U000008507000099VZ000000');" > click me </div>
 <script type="text/javascript">
+  var forder = ['sa',  'version', 'euro',  'ind', 'betrag', 'nummer', 'personal',    
+                        'konto', 'ausnahme', 'ware', 'verzogerung', 'mmmm', 'handel'];
+  var pl = {
+    sa: 'A',
+    version: '1',
+    euro: '1',
+    ind: '4',
+    betrag: '00000800',
+    nummer: '0',
+    personal: '00',
+    konto: '01',
+    ausnahme: '0',
+    ware: '99',
+    verzogerung: '000000',
+    mmmm: '0000',
+    handel: 'Jason',
+  }
+  function struct2string(struct) {
+    var str = '';
+    for (var i in forder) {
+      str = str + struct[forder[i]];
+    }
+    return str;
+  }
   Salor.payLifeStart('/dev/ttyUSB0');
 	Salor.camWasCaptured.connect(function (id,file) {
 		var date = new Date();
@@ -10,6 +33,10 @@ function snapCam() {
 	setTimeout("snapCam()",1600);
 }
 //setTimeout("snapCam()",1600);
+function send() {
+  Salor.payLifeSend(struct2string(pl) );
+}
 </script>
+<div onclick="send();" > click me </div>
 <div onclick="Salor.captureCam(0,'/home/jasonknight/test.png',1);"> show me</div>
 <img src="" id="emp_pic" />
