@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtWebKit>
 #include <QSplashScreen>
+#include "paylife.h"
 #include "salor_customer_screen.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -16,6 +17,7 @@ public:
     bool shown;
     SalorCustomerScreen * scs;
     QString to_url;
+    PayLife * payLife;
 private slots:
 
 public slots:
@@ -34,12 +36,14 @@ public slots:
     void cashDrawerClosed(QString addy);
     void _cashDrawerClosed();
     void _camCaptured(int id, QString filePath);
-    void payLifeSend(QString addy, QString data);
+    void payLifeStart(QString addy);
+    void payLifeSend(QString data);
     void captureCam(int addy, QString path, int id);
     void shutdown();
     void printPage();
 signals:
 	void camWasCaptured(int id,QString filePath);
+  void sendPayLifeData(QString data);
 protected:
     //void changeEvent(QEvent *e);
 private:

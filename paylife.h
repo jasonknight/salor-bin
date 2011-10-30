@@ -11,13 +11,15 @@ public:
     QString addy;
     QString data;
     QString error;
+    int descriptor;
     int errorNumber;
     void run();
+    
 signals:
     void payLifeConfirmed();
     void payLifeError();
 public slots:
-
+  void sendPayLifeData(QString data);
 };
 
 #endif // PAYLIFE_H

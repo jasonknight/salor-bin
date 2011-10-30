@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
+  this->payLife->quit();
 }
 
 void MainWindow::init() {
@@ -129,16 +129,21 @@ void MainWindow::cashDrawerClosed(QString addy) {
     cd->start();
     printf("Thread Started.\n");
 }
-void MainWindow::payLifeSend(QString addy,QString data) {
-    printf("Creating Paylife Thread.\n");
-    PayLife * pl = new PayLife(0);
-    pl->addy = addy;
-    pl->data = data;
-    printf("Connecting PayLife Signals.\n");
-    connect(pl,SIGNAL(payLifeConfirmed()),this,SLOT(_cashDrawerClosed()));
-    connect(pl,SIGNAL(finished()),pl,SLOT(deleteLater()));
-    pl->start();
-    printf("PayLife Thread Started.\n");
+void MainWindow::payLifeSend(QString data) {
+    this->payLife->data = data;
+    emit sendPayLifeData(data);
+}
+void MainWindow::payLifeStart(QString addy) {
+    // payLife thread    
+    printf("Creating payLife Thread.\n");
+    this->payLife = new PayLife(this);
+    this->payLife->addy = addy;
+    printf("Connecting payLife Signals.\n");
+    connect(this->payLife,SIGNAL(payLifeConfirmed()),this,SLOT(_cashDrawerClosed()));
+    connect(this,SIGNAL(sendPayLifeData(QString)),this->payLife,SLOT(sendPayLifeData(QString)));
+    connect(this->payLife,SIGNAL(finished()),this->payLife,SLOT(deleteLater()));
+    this->payLife->start();
+    printf("payLife Thread Started.\n");
 }
 void MainWindow::captureCam(int addy,QString path,int id) {
     WebCam * wc = new WebCam(0);

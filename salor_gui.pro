@@ -26,7 +26,8 @@ HEADERS  += mainwindow.h \
     cashdrawer.h \
     scales.h \
     paylife.h \
-    webcam.h
+    webcam.h \
+    paylife_structs.h
 
 FORMS    += mainwindow.ui
 

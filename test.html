@@ -1,5 +1,6 @@
-<div onclick="Salor.payLifeSend('/dev/ttyUSB0','M11400000880000');"> click me</div>
+<div onclick="Salor.payLifeSend('E11U000008507000099VZ000000');" > click me </div>
 <script type="text/javascript">
+  Salor.payLifeStart('/dev/ttyUSB0');
 	Salor.camWasCaptured.connect(function (id,file) {
 		var date = new Date();
 		document.getElementById("emp_pic").src = file + '?v=' + date.getTime();;
