@@ -1,13 +1,22 @@
-<script type="text/javascript">
-  var forder = ['sa',  'version', 'euro',  'ind', 'betrag', 'nummer', 'personal',    
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+  <title>Tester</title>
+    <link rel="stylesheet" type="text/css" href="css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  </head>
+  <body>
+    <script type="text/javascript">
+ var forder = ['sa',  'version', 'euro',  'ind', 'betrag', 'nummer', 'personal',    
                         'konto', 'ausnahme', 'ware', 'verzogerung', 'mmmm', 'handel'];
   var pl = {
     sa: 'A',
     version: '1',
     euro: '1',
-    ind: '4',
-    betrag: '00000800',
-    nummer: '0',
+    ind: 'U',
+    betrag: '00000900',
+    nummer: '2',
     personal: '00',
     konto: '01',
     ausnahme: '0',
@@ -16,6 +25,7 @@
     mmmm: '0000',
     handel: 'Jason',
   }
+  var message_queue = [];
   function struct2string(struct) {
     var str = '';
     for (var i in forder) {
@@ -23,10 +33,59 @@
     }
     return str;
   }
-  Salor.payLifeStart('/dev/ttyUSB0');
+  Salor.dataRead.connect(function (src,data) {
+       if (data == 'ENQ') {
+         if (message_queue.length > 0) {
+           struct = message_queue.pop();
+           Salor.payLifeSend(struct2string( struct ));
+           $('.output').prepend("Sending struct <br />");
+         } else {
+           Salor.payLifeSend("ACK");
+           $('.output').prepend("Sending ACK <br /> ");
+         }
+       }
+       $('.output').prepend("[[" + data + "]] <br />");
+   });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	Salor.camWasCaptured.connect(function (id,file) {
 		var date = new Date();
-		document.getElementById("emp_pic").src = file + '?v=' + date.getTime();;
+		document.getElementById("emp_pic").src = file + '?v=' + date.getTime();
 	});
 function snapCam() {
 	Salor.captureCam(0,'/home/jasonknight/test.png',1);
@@ -34,9 +93,20 @@ function snapCam() {
 }
 //setTimeout("snapCam()",1600);
 function send() {
-  Salor.payLifeSend(struct2string(pl) );
+  message_queue.push(pl);
 }
+$(function () {
+  if (!$('body').hasClass("paylife-done")) {
+    Salor.payLifeStart('/dev/ttyUSB0');
+  }
+});
 </script>
-<div onclick="send();" > click me </div>
+<div onclick="send();" style="cursor: pointer; padding: 10px; border: 1px solid black;" > click me </div>
 <div onclick="Salor.captureCam(0,'/home/jasonknight/test.png',1);"> show me</div>
 <img src="" id="emp_pic" />
+
+<div class="output" style="border: 1px solid black; padding: 10px; width: 98%;">
+  
+</div>
+  </body>
+</html>

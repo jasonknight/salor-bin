@@ -72,6 +72,13 @@ void MainWindow::linkClicked(QUrl url) {
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this);
+    QFile file(":/paylife.js");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "Failed to open paylife.js";
+    } else {
+        QString jstext = file.readAll();
+        this->webView->page()->mainFrame()->evaluateJavaScript(jstext);
+    }
     repaintViews();
 }
 
@@ -140,10 +147,14 @@ void MainWindow::payLifeStart(QString addy) {
     this->payLife->addy = addy;
     printf("Connecting payLife Signals.\n");
     connect(this->payLife,SIGNAL(payLifeConfirmed()),this,SLOT(_cashDrawerClosed()));
+    connect(this->payLife,SIGNAL(dataRead(QString,QString)),this,SLOT(_dataRead(QString,QString)));
     connect(this,SIGNAL(sendPayLifeData(QString)),this->payLife,SLOT(sendPayLifeData(QString)));
     connect(this->payLife,SIGNAL(finished()),this->payLife,SLOT(deleteLater()));
     this->payLife->start();
     printf("payLife Thread Started.\n");
+}
+void MainWindow::_dataRead(QString source, QString data) {
+    emit dataRead(source, data);
 }
 void MainWindow::captureCam(int addy,QString path,int id) {
     WebCam * wc = new WebCam(0);

@@ -36,14 +36,16 @@ public slots:
     void cashDrawerClosed(QString addy);
     void _cashDrawerClosed();
     void _camCaptured(int id, QString filePath);
+    void _dataRead(QString source, QString data);
     void payLifeStart(QString addy);
     void payLifeSend(QString data);
     void captureCam(int addy, QString path, int id);
     void shutdown();
     void printPage();
 signals:
-	void camWasCaptured(int id,QString filePath);
-  void sendPayLifeData(QString data);
+    void camWasCaptured(int id,QString filePath);
+    void sendPayLifeData(QString data);
+    void dataRead(QString source, QString data);
 protected:
     //void changeEvent(QEvent *e);
 private:

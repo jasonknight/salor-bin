@@ -8,6 +8,7 @@
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
+#include <QWebView>
 class PayLife : public QThread
 {
     Q_OBJECT
@@ -19,14 +20,17 @@ public:
     int sendingData;
     int descriptor;
     int errorNumber;
+    QWebView * webView;
     void run();
     
 signals:
     void payLifeConfirmed();
     void payLifeError();
+    void dataRead(QString source, QString data);
 public slots:
   void sendPayLifeData(QString data);
 };
+
 static int open_paylife(char *port) {
 
   int fd;
