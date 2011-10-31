@@ -29,6 +29,8 @@ signals:
     void dataRead(QString source, QString data);
 public slots:
   void sendPayLifeData(QString data);
+  void log(QString txt);
+  QString parse_data(char * data,int len);
 };
 
 static int open_paylife(char *port) {
@@ -45,8 +47,8 @@ static int open_paylife(char *port) {
   } else {
 
     tcgetattr(fd, &options); // Get the current options for the port...
-    cfsetispeed(&options, B1200); // Set the baud rates
-    cfsetospeed(&options, B1200);
+    cfsetispeed(&options, B19200); // Set the baud rates
+    cfsetospeed(&options, B19200);
     //printf("c_cflag = %X \n", options.c_cflag);
     options.c_cflag &= ~CSIZE;
     //printf("c_cflag = %X \n", options.c_cflag);

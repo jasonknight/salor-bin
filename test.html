@@ -7,104 +7,133 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   </head>
   <body>
-    <script type="text/javascript">
- var forder = ['sa',  'version', 'euro',  'ind', 'betrag', 'nummer', 'personal',    
-                        'konto', 'ausnahme', 'ware', 'verzogerung', 'mmmm', 'handel'];
-  var pl = {
-    sa: 'A',
-    version: '1',
-    euro: '1',
-    ind: 'U',
-    betrag: '00000900',
-    nummer: '2',
-    personal: '00',
-    konto: '01',
-    ausnahme: '0',
-    ware: '99',
-    verzogerung: '000000',
-    mmmm: '0000',
-    handel: 'Jason',
+<script type="text/javascript">
+var forder = ['sa',  'version', 'euro',  'ind', 'betrag', 'nummer', 'personal',    
+                      'konto', 'ausnahme', 'ware', 'verzogerung', 'mmmm', 'handel'];
+var patterns = [
+  { 
+    regex: new RegExp(/^(P)[\d\w\-\:]+(EUR[\d\,\.]+)PAN\:([\d\*]{18})(\d)(\d{2}.\d{2})[\w\d]+EA([\w\d]+)/),
+    names: ['sa','total','pan','digit','expire','ref']
+  }, // Successful debit card
+  {
+    regex: new RegExp(/^(N)(\d{3})([\w\\\!]+)(\d)/), // Failed debit
+    names: ['sa','code','msg','ref']
   }
-  var message_queue = [];
-  function struct2string(struct) {
-    var str = '';
-    for (var i in forder) {
-      str = str + struct[forder[i]];
-    }
-    return str;
+]
+var pl = {
+  sa: 'A',
+  version: '1',
+  euro: '1',
+  ind: 'U',
+  betrag: '00000900',
+  nummer: '2',
+  personal: '00',
+  konto: '01',
+  ausnahme: '0',
+  ware: '99',
+  verzogerung: '000000',
+  mmmm: '0000',
+  handel: 'Jason',
+}
+var message_queue = [];
+function struct2string(struct) {
+  var str = '';
+  for (var i in forder) {
+    str = str + struct[forder[i]];
   }
-  Salor.dataRead.connect(function (src,data) {
-       if (data == 'ENQ') {
-         if (message_queue.length > 0) {
-           struct = message_queue.pop();
-           Salor.payLifeSend(struct2string( struct ));
-           $('.output').prepend("Sending struct <br />");
-         } else {
-           Salor.payLifeSend("ACK");
-           $('.output').prepend("Sending ACK <br /> ");
-         }
+  return str;
+}
+ /*Salor.dataRead.connect(function (src,data) {
+     if (data == 'ENQ') {
+       if (message_queue.length > 0) {
+         struct = message_queue.pop();
+         Salor.payLifeSend(struct2string( struct ));
+         $('.output').prepend("Sending struct <br />");
+       } else {
+         Salor.payLifeSend("ACK");
+         $('.output').prepend("Sending ACK <br /> ");
        }
-       $('.output').prepend("[[" + data + "]] <br />");
-   });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	Salor.camWasCaptured.connect(function (id,file) {
-		var date = new Date();
-		document.getElementById("emp_pic").src = file + '?v=' + date.getTime();
-	});
+     }
+     $('.output').prepend("[[" + data + "]] <br />");
+ });*/
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+/*Salor.camWasCaptured.connect(function (id,file) {
+  var date = new Date();
+  document.getElementById("emp_pic").src = file + '?v=' + date.getTime();
+}); */
 function snapCam() {
-	Salor.captureCam(0,'/home/jasonknight/test.png',1);
-	setTimeout("snapCam()",1600);
+Salor.captureCam(0,'/home/jasonknight/test.png',1);
+setTimeout("snapCam()",1600);
 }
 //setTimeout("snapCam()",1600);
 function send() {
-  message_queue.push(pl);
+ message_queue.push(pl);
 }
 $(function () {
-  if (!$('body').hasClass("paylife-done")) {
-    Salor.payLifeStart('/dev/ttyUSB0');
-  }
+if (!$('body').hasClass("paylife-done")) {
+  //Salor.payLifeStart('/dev/ttyUSB0');
+}
 });
+function testPatterns(txt) {
+  var obj = {};
+  for (var i in patterns) {
+    matches = patterns[i]['regex'].exec(txt);
+    if (matches) {
+      x = 1;
+      for (var j in patterns[i]['names']) {
+        obj[patterns[i]['names'][j]] = matches[x];
+        x++;
+      }
+      console.log(obj);
+      return;
+    }
+  }
+  return false;
+}
 </script>
 <div onclick="send();" style="cursor: pointer; padding: 10px; border: 1px solid black;" > click me </div>
-<div onclick="Salor.captureCam(0,'/home/jasonknight/test.png',1);"> show me</div>
-<img src="" id="emp_pic" />
-
+<!-- <div onclick="Salor.captureCam(0,'/home/jasonknight/test.png',1);"> show me</div> -->
+<!-- <img src="" id="emp_pic" /> -->
+<div onclick="testPatterns('N002LEITUNxsdadfadfdaGSST\RUNG!2');" style="cursor: pointer; padding: 10px; border: 1px solid black;width: 200px;">
+  Test
+</div>
 <div class="output" style="border: 1px solid black; padding: 10px; width: 98%;">
   
 </div>

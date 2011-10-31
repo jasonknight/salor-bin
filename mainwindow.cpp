@@ -142,6 +142,9 @@ void MainWindow::payLifeSend(QString data) {
 }
 void MainWindow::payLifeStart(QString addy) {
     // payLife thread    
+    if (this->payLife->descriptor > 0) {
+        return;
+    }
     printf("Creating payLife Thread.\n");
     this->payLife = new PayLife(this);
     this->payLife->addy = addy;
