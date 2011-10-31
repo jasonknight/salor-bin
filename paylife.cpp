@@ -8,7 +8,7 @@ static char calclrc(char * data,int len) {
    char lrc;
    char * bytes;
    int i;
-   bytes = (char *) malloc(sizeof(char) * len + 8);
+   bytes = (char *) malloc(sizeof(char) * len + 132);
     sprintf(bytes,"%s%c",data,etx);
     while (i < len + 1) {
       lrc ^= bytes[i];
@@ -20,7 +20,7 @@ static QString parse_data(char * data,int len) {
     QString ret;
     int i;
     char c;
-    char msg[132];
+    char msg[256];
     int inmsg = 0;
     int index;
     for (i = 0; i < len; i++) {
@@ -136,7 +136,7 @@ void PayLife::sendPayLifeData(QString data) {
   char buffer[132];
   char inbuffer[132];
 
-  bytes = (char *) malloc(sizeof(char) * len + 8);
+  bytes = (char *) malloc(sizeof(char) * len + 132);
   strcpy(bytes,data.toLatin1().data());
   qDebug() << "PayLife Sending data: " << data << " of len " << QString::number(len) <<
           " " << " Bytes is: " << bytes ;
