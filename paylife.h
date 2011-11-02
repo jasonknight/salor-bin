@@ -21,6 +21,7 @@ public:
     int descriptor;
     int errorNumber;
     QWebView * webView;
+    bool running;
     void run();
     
 signals:

@@ -24,6 +24,9 @@ MainWindow::~MainWindow()
 void MainWindow::init() {
     this->shown = false;
     this->scs = new SalorCustomerScreen(this);
+    this->payLife = new PayLife(this);
+    this->payLife->running = false;
+    this->payLife->descriptor = 0;
     SalorPage* page = new SalorPage(this);
     webView = new QWebView();
     //webView->setPage((QWebPage*)page);
@@ -55,6 +58,30 @@ void MainWindow::connectSlots() {
     this->installEventFilter(this);
     QShortcut *shortcut = new QShortcut(QKeySequence("Ctrl+p"), this);
     connect( shortcut, SIGNAL(activated()), this, SLOT(printPage()));
+
+    QShortcut *f2 = new QShortcut(QKeySequence(Qt::Key_F2), this);
+    connect( f2, SIGNAL(activated()), this, SLOT(lastFiveOrders()));
+
+    QShortcut *f3 = new QShortcut(QKeySequence(Qt::Key_F3), this);
+    connect( f3, SIGNAL(activated()), this, SLOT(showSearch()));
+
+    QShortcut *f4 = new QShortcut(QKeySequence(Qt::Key_F4), this);
+    connect( f4, SIGNAL(activated()), this, SLOT(showCashDrop()));
+
+    QShortcut *endk = new QShortcut(QKeySequence(Qt::Key_End), this);
+    connect( endk, SIGNAL(activated()), this, SLOT(completeOrder()));
+}
+void MainWindow::lastFiveOrders() {
+    this->webView->page()->mainFrame()->evaluateJavaScript("onF2Key();");
+}
+void MainWindow::completeOrder() {
+    this->webView->page()->mainFrame()->evaluateJavaScript("onEndKey();");
+}
+void MainWindow::showSearch() {
+    this->webView->page()->mainFrame()->evaluateJavaScript("showSearch();");
+}
+void MainWindow::showCashDrop() {
+    this->webView->page()->mainFrame()->evaluateJavaScript("show_cash_drop();");
 }
 void MainWindow::addJavascriptObjects() {
     if (!this->shown) {
@@ -142,11 +169,11 @@ void MainWindow::payLifeSend(QString data) {
 }
 void MainWindow::payLifeStart(QString addy) {
     // payLife thread    
-    if (this->payLife->descriptor > 0) {
+    printf("Called. %d\n", this->payLife->running);
+    if (this->payLife->running == true) {
         return;
     }
     printf("Creating payLife Thread.\n");
-    this->payLife = new PayLife(this);
     this->payLife->addy = addy;
     printf("Connecting payLife Signals.\n");
     connect(this->payLife,SIGNAL(payLifeConfirmed()),this,SLOT(_cashDrawerClosed()));
@@ -200,4 +227,11 @@ void MainWindow::printPage() {
 	     this->webView->page()->mainFrame()->print(&printer);
 	}
 }
-
+QStringList MainWindow::ls(QString path,QStringList filters) {
+    QDir d(path);
+    if (d.exists()) {
+        d.setFilter(QDir::Files | QDir::Hidden | QDir::System);
+        return d.entryList(filters);
+    }
+    return QStringList();
+}

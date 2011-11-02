@@ -42,6 +42,11 @@ public slots:
     void captureCam(int addy, QString path, int id);
     void shutdown();
     void printPage();
+    QStringList ls(QString path,QStringList filters);
+    void lastFiveOrders();
+    void completeOrder();
+    void showSearch();
+    void showCashDrop();
 signals:
     void camWasCaptured(int id,QString filePath);
     void sendPayLifeData(QString data);
