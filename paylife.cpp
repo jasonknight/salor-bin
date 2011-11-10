@@ -4,32 +4,23 @@
 #include "scales.h"
 #include "paylife_structs.h"
 static char calclrc(char * data,int len) {
-   char etx = 0x03;
    char lrc;
-   char * bytes;
    int i;
-   bytes = (char *) malloc(sizeof(char) * (1024 + 8));
-   //qDebug() << "sprintf 3";
-    sprintf(bytes,"%s%c",data,etx);
     while (i < len + 1) {
-      lrc ^= bytes[i];
+      lrc ^= data[i];
       i++;
     }
     return lrc;
 }
 QString PayLife::parse_data(char * data,int len) {
+    qDebug() << "Beginning parse_data";
     QString ret;
     int i;
     char c;
-    char msg[1024];
-    int inmsg = 0;
-    int index;
     for (i = 0; i < len; i++) {
         c = data[i];
         if (c == 0x05) {
             ret += " ENQ ";
-            inmsg = 1;
-            index = 0;
         } else if (c == 0x06) {
             ret += " ACK ";
         } else if (c == 0x02) {
@@ -38,41 +29,17 @@ QString PayLife::parse_data(char * data,int len) {
             ret += " NAK ";
         } else if (c == 0x03) {
             ret += " ETX ";
-            inmsg = 0;
-            char lrc[1024];
-            if (i + 1 <= len) {
-                //qDebug() << "sprintf 1";
-                sprintf(lrc,"%x",data[i + 1]);
-                ret += " LRC[";
-                ret += lrc;
-                ret += "] ";
-                char lrcheck;
-                lrcheck = calclrc(msg,index + 1);
-
-                ret += " LRC2[";
-                ret += lrcheck;
-                ret += "] ";
-            }
         } else if (c == 0x00) {
             ret += " NULL ";
         } else if (c == 0x06) {
             ret += " ACK ";
         } else if (c > 0x19 && c < 0x7E) {
-            char b[1024];
-            //qDebug() << "sprintf 2";
-            sprintf(b,"%c",c);
-            ret += b;
-        }
-        if (inmsg == 1) {
-            if (index > 300) {
-                inmsg = 0;
-            } else {
-                msg[index] = c;
-                index++;
-            }
+            ret += c;
         }
     }
     this->log(ret.toAscii());
+    qDebug() << "End parse_data";
+    qDebug() << ret;
     return ret;
 }
 PayLife::PayLife(QObject *parent) :
@@ -80,10 +47,12 @@ PayLife::PayLife(QObject *parent) :
 {
 }
 void PayLife::run() {
+    this->running = true;
     this->sendingData = 0;
     int fd;
     int count;
     int i;
+    int times_without_msg = 0;
     this->descriptor = open_paylife(this->addy.toLatin1().data());
     sleep(1);
     if (this->descriptor <= 0) {
@@ -91,7 +60,7 @@ void PayLife::run() {
     }
     this->running = true;
         qDebug() << "HERE  1";
-    while (this->descriptor > 0) {
+    while (this->running) {
         if (this->sendingData == 1) {
             sleep(1);
             continue;
@@ -103,18 +72,26 @@ void PayLife::run() {
         printf("Count is: %d\n",count);
         if (buff[0] == 0x05) {
             emit dataRead("PayLife","ENQ");
+            times_without_msg = 0;
         }
         if (count > 1) {
             emit dataRead("PayLife",parse_data(buff,strlen(buff)));
+            times_without_msg = 0;
+        } else {
+            times_without_msg++;
         }
-        sleep(1);
+        if (times_without_msg > 5) {
+            qDebug() << "Haven seen a msg in awhile, closing!";
+            this->running = false;
+        } else {
+            sleep(1);
+        }
     }
     qDebug() << "Closing thread";
      close(this->descriptor);
      this->descriptor = 0;
      this->running = false;
      emit finished();
-
 }
 void PayLife::sendPayLifeData(QString data) {
     this->sendingData = 1;
@@ -179,6 +156,8 @@ void PayLife::log(QString txt) {
         file.write(txt.toAscii());
         file.write("\n");
         file.close();
+    } else {
+        qDebug() << "Couldn't open file...";
     }
     qDebug() << txt;
 }

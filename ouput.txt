@@ -1,0 +1,386 @@
+Creating payLife Thread.
+Connecting payLife Signals.
+payLife Thread Started.
+
+STX
+[fffffff4][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[ô][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[fffffff4][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[ô][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][][c][A][	][][c][A][	]
+ETX
+
+STX
+[5][ffffffcf][ffffff82][ffffffb5][10][63][41][9][58][40][ffffff83][ffffffbf][48][71][ffffff80][ffffffaf][6f][ffffffba][6e][ffffffb5][ffffffb8][53][2e][9][ffffff80][63][41][9][ffffffdb][ffffffe0][70][ffffffb5][26][24][71][ffffffb5][ffffff88][5e][41][9][fffffff4][ffffffcf][ffffff82][ffffffb5][48][71][ffffff80][ffffffaf][66][ffffffbb][6e][ffffffb5][10][63][41][9][10][63][41][9]
+Chars:
+[][Ï][‚][µ][][c][A][	][X][@][ƒ][¿][H][q][€][¯][o][º][n][µ][¸][S][.][	][€][c][A][	][Û][à][p][µ][&][$][q][µ][ˆ][^][A][	][ô][Ï][‚][µ][H][q][€][¯][f][»][n][µ][

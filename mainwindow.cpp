@@ -18,15 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-  this->payLife->quit();
+  this->payLife->running = false;
+  sleep(1);
 }
 
 void MainWindow::init() {
     this->shown = false;
     this->scs = new SalorCustomerScreen(this);
-    this->payLife = new PayLife(this);
     this->payLife->running = false;
-    this->payLife->descriptor = 0;
     SalorPage* page = new SalorPage(this);
     webView = new QWebView();
     //webView->setPage((QWebPage*)page);
@@ -164,15 +163,20 @@ void MainWindow::cashDrawerClosed(QString addy) {
     printf("Thread Started.\n");
 }
 void MainWindow::payLifeSend(QString data) {
+    qDebug() << "Sending: " + data;
     this->payLife->data = data;
     emit sendPayLifeData(data);
 }
 void MainWindow::payLifeStart(QString addy) {
     // payLife thread    
-    printf("Called. %d\n", this->payLife->running);
+    qDebug() << "Received: " << addy;
     if (this->payLife->running == true) {
-        return;
+        this->payLife->running = false;
+        sleep(1);
     }
+    this->payLife = new PayLife(this);
+    this->payLife->running = false;
+    this->payLife->descriptor = 0;
     printf("Creating payLife Thread.\n");
     this->payLife->addy = addy;
     printf("Connecting payLife Signals.\n");
