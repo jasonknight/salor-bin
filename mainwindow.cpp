@@ -150,7 +150,8 @@ void MainWindow::windowCloseRequested() {
 // Cash Drawer functions
 
 void MainWindow::newOpenCashDrawer(QString addy) {
-  this->cashDrawerClosed(addy);
+    qDebug() << "nocd called with " << addy;
+    this->cashDrawerClosed(addy);
 }
 void MainWindow::cashDrawerClosed(QString addy) {
     printf("Creating CashDrawer Thread.\n");

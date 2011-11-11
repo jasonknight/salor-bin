@@ -13,7 +13,8 @@ void CashDrawer::run() {
     char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
     int cap = 600;
     int x = 0;
-    printf("XXX Writing open drawer %s \n",addy.toLatin1().data());
+    qDebug() << "XXX: Writing open cash drawer too: " << addy;
+    //printf("XXX Writing open drawer %s \n",addy.toLatin1().data());
     fd = open_serial_port(addy.toLatin1().data());
     if (fd <= 0) {
         qDebug() << "CashDrawer failed to open!";
