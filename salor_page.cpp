@@ -128,7 +128,7 @@ void SalorCapture::JavaScriptWindowObjectCleared() {
 }
 
 void SalorCapture::TryDelayedRender() {
-
+    qDebug() << "TryDelayRender called";
   if (!mPage->getAlertString().isEmpty())
     return;
 
@@ -169,5 +169,20 @@ void SalorCapture::saveSnapshot() {
     display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint(bool ok) {
+    qDebug() << "DocumentPrint was called";
+    QWebFrame *mainFrame = mPage->mainFrame();
 
+    QSize size(800,480);
+    //mainFrame->contentsSize(size);
+
+    mPage->setViewportSize(size); //mainFrame->contentsSize()
+    QPrinter printer;
+    printer.setPageSize(QPrinter::A4);
+    printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+    printer.setColorMode(QPrinter::Color);
+    QPrintDialog* dialog = new QPrintDialog(&printer, 0);
+    if (dialog->exec() == QDialog::Accepted)
+    {
+         mainFrame->print(&printer);
+    }
 }

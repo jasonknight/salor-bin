@@ -39,7 +39,7 @@ void SalorCustomerScreen::refresh(QString url,int w, int h) {
 }
 
 void SalorCustomerScreen::print(QString url) {
-    // The screenshot taking is done in salor_page.cpp, scroll down and look at SalorCapture class
+    // The screenshot taking is done in salor_page.cp, scroll down and look at SalorCapture class
     qDebug() << "CustomerScreen.refresh called with " << url;
     QWebView * webView = new QWebView();
     qDebug() << "Setting up SalorPage";

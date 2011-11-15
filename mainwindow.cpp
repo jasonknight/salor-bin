@@ -26,7 +26,11 @@ void MainWindow::init() {
     this->shown = false;
     this->scs = new SalorCustomerScreen(this);
     this->payLife->running = false;
-    SalorPage* page = new SalorPage(this);
+    QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
+    QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
+
+    //SalorPage* page = new SalorPage(this);
     webView = new QWebView();
     //webView->setPage((QWebPage*)page);
 /*
@@ -226,10 +230,13 @@ QString MainWindow::toperScale(QString addy) {
 
 void MainWindow::printPage() {
 	QPrinter printer;
+    printer.setPageSize(QPrinter::A4);
+    printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+    printer.setColorMode(QPrinter::Color);
 	QPrintDialog* dialog = new QPrintDialog(&printer, this);
 	if (dialog->exec() == QDialog::Accepted)
 	{
-	     this->webView->page()->mainFrame()->print(&printer);
+         this->webView->page()->mainFrame()->print(&printer);
 	}
 }
 QStringList MainWindow::ls(QString path,QStringList filters) {
