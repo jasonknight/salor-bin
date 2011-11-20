@@ -37,9 +37,7 @@ bool SalorPage::javaScriptPrompt(QWebFrame* /*frame*/,
 
 
 void SalorPage::javaScriptAlert(QWebFrame* /*frame*/, const QString& msg) {
-
-  if (mPrintAlerts)
-    qDebug() << "[alert]" << msg;
+   qDebug() << "[alert]" << msg;
 
   if (mAlertString == msg) {
     QTimer::singleShot(10, mSalorCapture, SLOT(Delayed()));
