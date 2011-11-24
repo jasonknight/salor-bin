@@ -23,6 +23,8 @@ public:
     QWebView * webView;
     bool running;
     void run();
+    bool checkParity(char b);
+    char encodeParity(char b);
     
 signals:
     void payLifeConfirmed();

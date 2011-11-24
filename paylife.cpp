@@ -82,7 +82,8 @@ void PayLife::run() {
         }
         if (times_without_msg > 5) {
             qDebug() << "Haven seen a msg in awhile, closing!";
-            this->running = false;
+            //this->running = false;
+            sleep(1);
         } else {
             sleep(1);
         }
@@ -145,7 +146,7 @@ void PayLife::sendPayLifeData(QString data) {
     printf("Writing: [%s]\n", buffer);
     this->log(buffer);
     qDebug() << "HERE  9";
-  write(this->descriptor,buffer,len + 4);
+  write(this->descriptor,buffer,len + 3);
   qDebug() << "Done";
   free(bytes);
   this->sendingData = 0;
@@ -160,4 +161,23 @@ void PayLife::log(QString txt) {
         qDebug() << "Couldn't open file...";
     }
     qDebug() << txt;
+}
+bool PayLife::checkParity(char b) {
+    int i;
+    char maskedb;
+    int j = 0;
+    for (i = 0; i < 6; i++ ) {
+        maskedb = b;
+        maskedb &= 2 ^ i;
+        if (maskedb == 2 ^ i) {
+            j++;
+         }
+    }
+    return (j % 2 == 0);
+}
+char PayLife::encodeParity(char b) {
+    if (!checkParity(b)) {
+        b |= 128;
+    }
+    return b;
 }

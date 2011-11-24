@@ -14,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+
 }
 
 MainWindow::~MainWindow()
@@ -21,19 +22,33 @@ MainWindow::~MainWindow()
   this->payLife->running = false;
   sleep(1);
 }
-
+void MainWindow::incZoom() {
+  qDebug() << "Incrementing Zoom";
+  QSettings settings("JolieRouge", "Salor");
+  qreal z = this->webView->page()->mainFrame()->zoomFactor();
+  z = z + 0.05;
+  this->webView->page()->mainFrame()->setZoomFactor(z);
+  settings.setValue("zoomFactor",z);
+}
+void MainWindow::decZoom() {
+  QSettings settings("JolieRouge", "Salor");
+  qreal z = this->webView->page()->mainFrame()->zoomFactor();
+  z = z - 0.05;
+  this->webView->page()->mainFrame()->setZoomFactor(z);
+  settings.setValue("zoomFactor",z);
+}
 void MainWindow::init() {
-    this->shown = false;
+        this->shown = false;
     this->scs = new SalorCustomerScreen(this);
     this->payLife->running = false;
     QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
 
-    SalorPage* page = new SalorPage(this);
+    //SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-    webView->setPage((QWebPage*)page);
-/*
+    //webView->setPage((QWebPage*)page);
+    /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
     }
@@ -73,6 +88,21 @@ void MainWindow::connectSlots() {
 
     QShortcut *endk = new QShortcut(QKeySequence(Qt::Key_End), this);
     connect( endk, SIGNAL(activated()), this, SLOT(completeOrder()));
+
+    QShortcut *zoomin = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Plus), this);
+    connect( zoomin, SIGNAL(activated()), this, SLOT(incZoom()));
+
+    QShortcut *zoomout = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus), this);
+    connect( zoomout, SIGNAL(activated()), this, SLOT(decZoom()));
+
+    QSettings settings("JolieRouge", "Salor");
+    qreal z = settings.value("zoomFactor").toReal();
+    if (z) {
+        qDebug() << "Setting Zoom";
+      this->webView->page()->mainFrame()->setZoomFactor(z);
+    } else {
+         qDebug() << "z was null";
+    }
 }
 void MainWindow::lastFiveOrders() {
     this->webView->page()->mainFrame()->evaluateJavaScript("onF2Key();");

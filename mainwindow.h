@@ -47,6 +47,8 @@ public slots:
     void completeOrder();
     void showSearch();
     void showCashDrop();
+    void incZoom();
+    void decZoom();
 signals:
     void camWasCaptured(int id,QString filePath);
     void sendPayLifeData(QString data);
