@@ -45,9 +45,9 @@ void MainWindow::init() {
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
 
-    //SalorPage* page = new SalorPage(this);
+    SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-    //webView->setPage((QWebPage*)page);
+    webView->setPage((QWebPage*)page);
     /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
