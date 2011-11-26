@@ -11,6 +11,9 @@
 #include "cashdrawer.h"
 #include "paylife.h"
 #include "webcam.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -267,6 +270,9 @@ void MainWindow::printPage() {
 	if (dialog->exec() == QDialog::Accepted)
 	{
          this->webView->page()->mainFrame()->print(&printer);
+         if (printer.outputFileName().indexOf(".pdf") != -1) {
+            chmod(printer.outputFileName().toLatin1().data(),0666);
+         }
 	}
 }
 QStringList MainWindow::ls(QString path,QStringList filters) {
