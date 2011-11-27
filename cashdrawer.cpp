@@ -11,7 +11,7 @@ void CashDrawer::run() {
     int i;
     char buf[20];
     char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
-    int cap = 600;
+    int cap = 500;
     int x = 0;
     qDebug() << "XXX: Writing open cash drawer too: " << addy;
     //printf("XXX Writing open drawer %s \n",addy.toLatin1().data());
@@ -23,10 +23,10 @@ void CashDrawer::run() {
     usleep(2000); //i.e. 20ms
     write(fd, "\x1B\x70\x00\x20\x00", 5);
     read(fd, &buf, 19);
-    sleep(1); //i.e. 20ms
+    usleep(2000); //i.e. 20ms
     read(fd, &buf, 19);
     strcpy(buf,"");
-    sleep(1);
+    usleep(2000);
     read(fd, &buf, 19);
     strcpy(buf,"");
     read(fd, &buf, 19);
