@@ -6,6 +6,7 @@
 #include <QSplashScreen>
 #include "paylife.h"
 #include "salor_customer_screen.h"
+#include "cashdrawer.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -18,6 +19,7 @@ public:
     SalorCustomerScreen * scs;
     QString to_url;
     PayLife * payLife;
+    CashDrawer * cd;
 private slots:
 
 public slots:
@@ -49,6 +51,9 @@ public slots:
     void showCashDrop();
     void incZoom();
     void decZoom();
+    void customersIndex();
+    void editLastAddedItem();
+    void endDayReport();
 signals:
     void camWasCaptured(int id,QString filePath);
     void sendPayLifeData(QString data);

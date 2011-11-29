@@ -6,6 +6,7 @@ CashDrawer::CashDrawer(QObject *parent) :
 {
 }
 void CashDrawer::run() {
+    this->running = true;
     int fd;
     int count;
     int i;
@@ -32,6 +33,10 @@ void CashDrawer::run() {
     read(fd, &buf, 19);
     for (i=0;i < count; i++) { printf("%X ", *(buf+i));}
     while (strcmp(cash_drawer_closed,buf) != 0) {
+        if (this->running == false) {
+            close_fd(fd);
+            return;
+        }
       usleep(20000); //i.e. 20m
       count = read(fd,&buf,19);
       printf("-- %i \n", count);

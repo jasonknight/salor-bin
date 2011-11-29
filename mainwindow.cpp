@@ -83,11 +83,20 @@ void MainWindow::connectSlots() {
     QShortcut *f2 = new QShortcut(QKeySequence(Qt::Key_F2), this);
     connect( f2, SIGNAL(activated()), this, SLOT(lastFiveOrders()));
 
+    QShortcut *ctrlf2 = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_F2), this);
+    connect( ctrlf2, SIGNAL(activated()), this, SLOT(customersIndex()));
+
     QShortcut *f3 = new QShortcut(QKeySequence(Qt::Key_F3), this);
     connect( f3, SIGNAL(activated()), this, SLOT(showSearch()));
 
     QShortcut *f4 = new QShortcut(QKeySequence(Qt::Key_F4), this);
     connect( f4, SIGNAL(activated()), this, SLOT(showCashDrop()));
+
+    QShortcut *f5 = new QShortcut(QKeySequence(Qt::Key_F5), this);
+    connect( f5, SIGNAL(activated()), this, SLOT(endDayReport()));
+
+    QShortcut *ctrlins = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Insert), this);
+    connect( ctrlins, SIGNAL(activated()), this, SLOT(editLastAddedItem()));
 
     QShortcut *endk = new QShortcut(QKeySequence(Qt::Key_End), this);
     connect( endk, SIGNAL(activated()), this, SLOT(completeOrder()));
@@ -106,6 +115,17 @@ void MainWindow::connectSlots() {
     } else {
          qDebug() << "z was null";
     }
+}
+void MainWindow::customersIndex() {
+    this->webView->page()->mainFrame()->evaluateJavaScript("window.location = '/customers';");
+}
+void MainWindow::endDayReport() {
+    qDebug() << "endDayReport";
+    this->webView->page()->mainFrame()->evaluateJavaScript("window.location = '/orders/report_day';");
+}
+void MainWindow::editLastAddedItem() {
+    qDebug() << "editLastItem";
+    this->webView->page()->mainFrame()->evaluateJavaScript("editLastAddedItem();");
 }
 void MainWindow::lastFiveOrders() {
     this->webView->page()->mainFrame()->evaluateJavaScript("onF2Key();");
@@ -192,7 +212,7 @@ void MainWindow::newOpenCashDrawer(QString addy) {
 }
 void MainWindow::cashDrawerClosed(QString addy) {
     printf("Creating CashDrawer Thread.\n");
-    CashDrawer * cd = new CashDrawer(this);
+    this->cd = new CashDrawer(this);
     cd->addy = addy;
     printf("Connecting Signals.\n");
     connect(cd,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));

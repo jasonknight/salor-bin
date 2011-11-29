@@ -10,6 +10,7 @@ public:
     explicit CashDrawer(QObject *parent = 0);
     QString addy;
     void run();
+    bool running;
 signals:
     void cashDrawerClosed();
 public slots:
