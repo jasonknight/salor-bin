@@ -22,7 +22,7 @@ void CashDrawer::run() {
     }
     write(fd, "\x1D\x61\xFF", 3);
     usleep(2000); //i.e. 20ms
-    write(fd, "\x1B\x70\x00\x20\x00", 5);
+    write(fd, "\x1B\x70\x00\xFF\x01", 5);
     read(fd, &buf, 19);
     usleep(2000); //i.e. 20ms
     read(fd, &buf, 19);
