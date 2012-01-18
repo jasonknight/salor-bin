@@ -16,8 +16,7 @@ SOURCES += main.cpp\
     salor_customer_screen.cpp \
     display_link.cpp \
     cashdrawer.cpp \
-    paylife.cpp \
-    webcam.cpp
+    paylife.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -26,7 +25,6 @@ HEADERS  += mainwindow.h \
     cashdrawer.h \
     scales.h \
     paylife.h \
-    webcam.h \
     paylife_structs.h
 
 FORMS    += mainwindow.ui
@@ -35,4 +33,3 @@ RESOURCES += \
     resources.qrc
 INCLUDEPATH += /usr/include/opencv
 LIBS += /usr/lib/libdlo.a -ldlo
-LIBS += -lcxcore -lhighgui

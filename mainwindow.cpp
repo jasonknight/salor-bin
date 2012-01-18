@@ -10,7 +10,6 @@
 #include "scales.h"
 #include "cashdrawer.h"
 #include "paylife.h"
-#include "webcam.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -249,6 +248,7 @@ void MainWindow::_dataRead(QString source, QString data) {
     emit dataRead(source, data);
 }
 void MainWindow::captureCam(int addy,QString path,int id) {
+    /*
     WebCam * wc = new WebCam(0);
     wc->addy = addy;
     wc->filePath = path;
@@ -258,6 +258,7 @@ void MainWindow::captureCam(int addy,QString path,int id) {
     connect(wc,SIGNAL(finished()),wc,SLOT(deleteLater()));
     wc->start();
     printf("WebCam Thread Started.\n");
+    */
 }
 void MainWindow::_camCaptured(int id, QString filePath) {
 	emit camWasCaptured(id,filePath);
