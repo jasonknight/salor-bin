@@ -1,0 +1,27 @@
+#ifndef SALORPRINTER_H
+#define SALORPRINTER_H
+
+#include <QObject>
+#include <QFile>
+#include <QTextStream>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+
+class SalorPrinter : public QObject
+{
+    Q_OBJECT
+public:
+    explicit SalorPrinter(QObject *parent = 0);
+    QNetworkAccessManager * m_manager;
+    QString m_printer_path;
+
+signals:
+    void printed();
+    void printerDoesNotExist();
+public slots:
+    void printURL(QString path, QString url);
+    void pageFetched(QNetworkReply * reply);
+
+};
+
+#endif // SALORPRINTER_H

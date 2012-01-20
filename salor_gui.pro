@@ -16,7 +16,8 @@ SOURCES += main.cpp\
     salor_customer_screen.cpp \
     display_link.cpp \
     cashdrawer.cpp \
-    paylife.cpp
+    paylife.cpp \
+    salorprinter.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -25,7 +26,8 @@ HEADERS  += mainwindow.h \
     cashdrawer.h \
     scales.h \
     paylife.h \
-    paylife_structs.h
+    paylife_structs.h \
+    salorprinter.h
 
 FORMS    += mainwindow.ui
 

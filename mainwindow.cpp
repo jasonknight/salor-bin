@@ -12,6 +12,7 @@
 #include "paylife.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "salorprinter.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -47,9 +48,9 @@ void MainWindow::init() {
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
 
-    //SalorPage* page = new SalorPage(this);
+    SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-   // webView->setPage((QWebPage*)page);
+    webView->setPage((QWebPage*)page);
     /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -153,6 +154,8 @@ void MainWindow::linkClicked(QUrl url) {
 }
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("CustomerScreen", this->scs);
+    SalorPrinter * sp = new SalorPrinter(this);
+    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", sp);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this);
     QFile file(":/paylife.js");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
