@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "salorprinter.h"
+#include "salorcookiejar.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -51,6 +52,8 @@ void MainWindow::init() {
     SalorPage* page = new SalorPage(this);
     webView = new QWebView();
     webView->setPage((QWebPage*)page);
+    SalorCookieJar * jar = new SalorCookieJar(this);
+    webView->page()->networkAccessManager()->setCookieJar(jar);
     /*
     if (s->getValue("PluginsEnabled").toBool() == true) {
         defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);

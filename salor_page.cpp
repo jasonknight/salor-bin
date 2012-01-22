@@ -8,7 +8,6 @@
 #include <QTimer>
 #include <QByteArray>
 #include <QNetworkRequest>
-#include "display_link.h"
 
 SalorPage::SalorPage(QObject* parent):QWebPage(parent)
 {
@@ -96,10 +95,10 @@ SalorCapture::SalorCapture(SalorPage* page, const QString& output, int delay,
   mScriptCode = scriptCode;
   mScriptObj = new QObject();
 
-  qDebug() << "In SalorCapture";
+ // qDebug() << "In SalorCapture";
   mPage->setSalorCapture(this);
 
-  qDebug() << "setSalorCapture done";
+  //qDebug() << "setSalorCapture done";
 }
 
 void SalorCapture::InitialLayoutCompleted() {
@@ -111,7 +110,7 @@ void SalorCapture::InitialLayoutCompleted() {
 }
 
 void SalorCapture::DocumentComplete(bool /*ok*/) {
-  qDebug() << "In DocumentComplete";
+  //qDebug() << "In DocumentComplete";
 
   saveSnapshot();
   return;
@@ -126,7 +125,7 @@ void SalorCapture::JavaScriptWindowObjectCleared() {
 }
 
 void SalorCapture::TryDelayedRender() {
-    qDebug() << "TryDelayRender called";
+   // qDebug() << "TryDelayRender called";
   if (!mPage->getAlertString().isEmpty())
     return;
 
@@ -146,7 +145,7 @@ void SalorCapture::Delayed() {
   saveSnapshot();
 }
 void SalorCapture::saveSnapshot() {
-    qDebug() << "saveSnapshot was called";
+    //qDebug() << "saveSnapshot was called";
     QWebFrame *mainFrame = mPage->mainFrame();
 
     QSize size(800,480);
@@ -161,10 +160,10 @@ void SalorCapture::saveSnapshot() {
     painter.end();
 
     // Here is where we hook in.
-    qDebug() << "Saving to: " << mOutput;
+    //qDebug() << "Saving to: " << mOutput;
     image.save(mOutput, "bmp");
-    qDebug() << "calling display_link_write_image";
-    display_link_write_image(mOutput.toAscii());
+    qDebug() << "calling pole-dancer";
+    //display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint(bool ok) {
     qDebug() << "DocumentPrint was called";
