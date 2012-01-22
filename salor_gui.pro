@@ -34,4 +34,4 @@ FORMS    += mainwindow.ui
 RESOURCES += \
     resources.qrc
 INCLUDEPATH += /usr/include/opencv
-LIBS += /usr/lib/libdlo.a -ldlo
+LIBS += /usr/lib/libdlo.a -ldlo -L/usr/lib/ -lusb
