@@ -49,9 +49,9 @@ void MainWindow::init() {
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
 
-    SalorPage* page = new SalorPage(this);
+    //SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-    webView->setPage((QWebPage*)page);
+   // webView->setPage((QWebPage*)page);
     SalorCookieJar * jar = new SalorCookieJar(this);
     webView->page()->networkAccessManager()->setCookieJar(jar);
     /*
@@ -148,6 +148,17 @@ void MainWindow::addJavascriptObjects() {
     }
     attach();
 }
+QMap<QString,QVariant> MainWindow::positionOf(QString id) {
+    qDebug("Called");
+    QRect r = this->webView->page()->mainFrame()->findFirstElement(id).geometry();
+    QMap<QString,QVariant> m;
+    qDebug() << "left: " << QString::number(r.left());
+    m["x"] = r.left();
+    m["y"] = r.top();
+    m["width"] = r.width();
+    return m;
+}
+
 void MainWindow::linkClicked(QUrl url) {
 
 

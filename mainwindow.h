@@ -7,6 +7,7 @@
 #include "paylife.h"
 #include "salor_customer_screen.h"
 #include "cashdrawer.h"
+#include <QVariant>
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -54,6 +55,7 @@ public slots:
     void customersIndex();
     void editLastAddedItem();
     void endDayReport();
+    QMap<QString,QVariant> positionOf(QString id);
 signals:
     void camWasCaptured(int id,QString filePath);
     void sendPayLifeData(QString data);

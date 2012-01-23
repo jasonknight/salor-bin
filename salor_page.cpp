@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QByteArray>
 #include <QNetworkRequest>
+#include <QProcess>
 
 SalorPage::SalorPage(QObject* parent):QWebPage(parent)
 {
@@ -162,7 +163,11 @@ void SalorCapture::saveSnapshot() {
     // Here is where we hook in.
     //qDebug() << "Saving to: " << mOutput;
     image.save(mOutput, "bmp");
-    qDebug() << "calling pole-dancer";
+
+    QString cmd = "pole-dancer -dlo " + mOutput;
+    qDebug() << cmd;
+    QProcess p;
+    p.execute(cmd);
     //display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint(bool ok) {
