@@ -54,6 +54,7 @@ SalorCookieJar::SalorCookieJar(QObject* parent)
 #else
     QString path = QDir::homePath() + "/.SalorBrowser";
 #endif
+    path = "/tmp";
     qDebug() << path;
 
     QDir().mkpath(path);
