@@ -21,7 +21,7 @@ void SalorPrinter::printURL(QString path, QString url) {
 void SalorPrinter::pageFetched(QNetworkReply *reply) {
     QByteArray ba = reply->readAll();
     qDebug() << "Buffer is: " << ba;
-    if (this->m_printer_path.indexOf("ttyUSB") != -1) {
+    if (this->m_printer_path.indexOf("tty") != -1) {
         int fd;
         struct termios options;
         char * port = this->m_printer_path.toAscii().data();
