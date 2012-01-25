@@ -321,3 +321,10 @@ QStringList MainWindow::ls(QString path,QStringList filters) {
     }
     return QStringList();
 }
+
+void MainWindow::poleDancer(QString path, QString message) {
+    QString cmd = "pole-dancer -p " + path + " \"" + message + "\"";
+    qDebug() << cmd;
+    QProcess p;
+    p.execute(cmd);
+}

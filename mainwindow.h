@@ -24,6 +24,7 @@ public:
 private slots:
 
 public slots:
+    void poleDancer(QString path, QString message);
     void linkClicked(QUrl);
     void repaintViews();
     QWebView* getWebView();
