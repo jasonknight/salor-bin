@@ -20,6 +20,8 @@ void SalorPrinter::printURL(QString path, QString url) {
 
 void SalorPrinter::pageFetched(QNetworkReply *reply) {
     QByteArray ba = reply->readAll();
+    QString s = QString::fromUtf8(ba.constData());
+    ba = s.toLatin1();
     qDebug() << "Buffer is: " << ba;
     if (this->m_printer_path.indexOf("tty") != -1) {
         int fd;

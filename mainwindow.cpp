@@ -51,7 +51,7 @@ void MainWindow::init() {
 
     //SalorPage* page = new SalorPage(this);
     webView = new QWebView();
-   // webView->setPage((QWebPage*)page);
+    //webView->setPage((QWebPage*)page);
     SalorCookieJar * jar = new SalorCookieJar(this);
     webView->page()->networkAccessManager()->setCookieJar(jar);
     /*
