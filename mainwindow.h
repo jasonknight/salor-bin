@@ -57,6 +57,7 @@ public slots:
     void editLastAddedItem();
     void endDayReport();
     QMap<QString,QVariant> positionOf(QString id);
+    void completeOrderSnap(QString order_id);
 signals:
     void camWasCaptured(int id,QString filePath);
     void sendPayLifeData(QString data);

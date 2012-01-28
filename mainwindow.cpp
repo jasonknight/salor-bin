@@ -328,3 +328,17 @@ void MainWindow::poleDancer(QString path, QString message) {
     QProcess p;
     p.execute(cmd);
 }
+void MainWindow::completeOrderSnap(QString order_id) {
+    QSize size(800,480);
+    QImage image(size, QImage::Format_Mono); // mPage->viewportSize()
+
+    QPainter painter;
+    painter.begin(&image);
+    this->webView->page()->mainFrame()->render(&painter);
+    painter.end();
+    QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss") + "_" + order_id + ".png";
+    // Here is where we hook in.
+    //qDebug() << "Saving to: " << mOutput;
+    image.save("/opt/salor_pos/logs/images/" + name, "png",1);
+}
+
