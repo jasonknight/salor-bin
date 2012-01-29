@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include <iostream>
+#include <signal.h>
+
 void help() {
     std::cout << "Usage:\n";
     std::cout << "\tsalor -[uh] [value]\n";
@@ -51,6 +53,7 @@ int main(int argc, char *argv[])
       w.show();
     }
     sp.finish(&w);
+    signal(SIGCHLD, SIG_IGN);
     return a.exec();
 }
 
