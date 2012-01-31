@@ -166,7 +166,6 @@ void SalorCapture::saveSnapshot() {
     image.save(mOutput, "bmp");
     SalorProcess *sp = new SalorProcess(this);
     sp->run("pole-dancer","-dlo " + mOutput);
-    emit deleteLater();
     //display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint(bool ok) {
@@ -186,5 +185,4 @@ void SalorCapture::DocumentPrint(bool ok) {
     {
          mainFrame->print(&printer);
     }
-    emit deleteLater();
 }

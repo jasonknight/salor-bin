@@ -36,7 +36,6 @@ void SalorCustomerScreen::refresh(QString url,int w, int h) {
             );
     webView->load(QUrl(url));
     qDebug() << "CustomerScreen.refresh end of method.";
-    emit deleteLater();
 }
 
 void SalorCustomerScreen::print(QString url) {
