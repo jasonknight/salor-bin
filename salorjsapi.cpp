@@ -5,7 +5,7 @@ SalorJSApi::SalorJSApi(QObject *parent) :
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("aplay", "/home/berserker/work/sounds/" + name + ".wav");
+    sp->run("aplay", QStringList() << "/home/berserker/work/sounds/" + name + ".wav");
 }
 void SalorJSApi::printPage() {
     QPrinter printer;
@@ -32,7 +32,8 @@ QStringList SalorJSApi::ls(QString path,QStringList filters) {
 
 void SalorJSApi::poleDancer(QString path, QString message) {
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("pole-dancer","-p "+ path + " \"" + message + "\"");
+    qDebug() << path << " " << message;
+    sp->run("pole-dancer",QStringList() << "-p" << path << message);
 }
 void SalorJSApi::mimoRefresh(QString path,int h, int w) {
     SalorCustomerScreen *scs = new SalorCustomerScreen(this);

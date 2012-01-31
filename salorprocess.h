@@ -8,8 +8,8 @@ class SalorProcess : public QObject
     Q_OBJECT
 public:
     explicit SalorProcess(QObject *parent = 0);
-    void run(QString app, QString args);
-    //void run(QString app, QStringList args);
+    //void run(QString app, QString args);
+    void run(QString app, QStringList args);
 signals:
 
 public slots:

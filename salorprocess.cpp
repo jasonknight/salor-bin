@@ -4,14 +4,14 @@ SalorProcess::SalorProcess(QObject *parent) :
     QObject(parent)
 {
 }
-void SalorProcess::run(QString app, QString args) {
+void SalorProcess::run(QString app, QStringList args) {
     this->proc = new QProcess(this);
     this->connect(this->proc,SIGNAL(started()),SLOT(started()));
     this->connect(this->proc,SIGNAL(finished(int,QProcess::ExitStatus)),SLOT(finished(int,QProcess::ExitStatus)));
     this->connect(this->proc,SIGNAL(readyReadStandardError()),SLOT(readyReadStandardError()));
     this->connect(this->proc,SIGNAL(readyReadStandardOutput()),SLOT(readyReadStandardOutput()));
     this->connect(this->proc,SIGNAL(error(QProcess::ProcessError)),SLOT(error(QProcess::ProcessError)));
-    this->proc->start(app +  " " + args,QStringList()<<args);
+    this->proc->start(app,QStringList()<<args);
 }
 void SalorProcess::started() {
     qDebug() << "\n\nProcess has started\n\n";
