@@ -8,6 +8,9 @@
 #include "salor_customer_screen.h"
 #include "cashdrawer.h"
 #include <QVariant>
+#include "salorprocess.h"
+#include "salorjsapi.h"
+#include "salorprinter.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -24,29 +27,12 @@ public:
 private slots:
 
 public slots:
-    void poleDancer(QString path, QString message);
     void linkClicked(QUrl);
     void repaintViews();
     QWebView* getWebView();
     void addJavascriptObjects();
    // bool eventFilter(QObject *, QEvent *);
     void windowCloseRequested();
-    QString toperScale(QString addy);
-    QString testScale() {
-      qDebug() << "Reading from Test: " << "2.754";
-      return QString("2.754");
-    }
-    void newOpenCashDrawer(QString addy);
-    void cashDrawerClosed(QString addy);
-    void _cashDrawerClosed();
-    void _camCaptured(int id, QString filePath);
-    void _dataRead(QString source, QString data);
-    void payLifeStart(QString addy);
-    void payLifeSend(QString data);
-    void captureCam(int addy, QString path, int id);
-    void shutdown();
-    void printPage();
-    QStringList ls(QString path,QStringList filters);
     void lastFiveOrders();
     void completeOrder();
     void showSearch();
@@ -56,8 +42,6 @@ public slots:
     void customersIndex();
     void editLastAddedItem();
     void endDayReport();
-    QMap<QString,QVariant> positionOf(QString id);
-    void completeOrderSnap(QString order_id);
 signals:
     void camWasCaptured(int id,QString filePath);
     void sendPayLifeData(QString data);
@@ -66,6 +50,8 @@ protected:
     //void changeEvent(QEvent *e);
 private:
     QWebView *webView;
+    SalorPrinter *sp;
+    SalorJSApi *js;
     void attach();
 };
 

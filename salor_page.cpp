@@ -9,6 +9,7 @@
 #include <QByteArray>
 #include <QNetworkRequest>
 #include <QProcess>
+#include "salorprocess.h"
 
 SalorPage::SalorPage(QObject* parent):QWebPage(parent)
 {
@@ -163,11 +164,9 @@ void SalorCapture::saveSnapshot() {
     // Here is where we hook in.
     //qDebug() << "Saving to: " << mOutput;
     image.save(mOutput, "bmp");
-
-    QString cmd = "pole-dancer -dlo " + mOutput;
-    qDebug() << cmd;
-    QProcess p;
-    p.execute(cmd);
+    SalorProcess *sp = new SalorProcess(this);
+    sp->run("pole-dancer","-dlo " + mOutput);
+    emit deleteLater();
     //display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint(bool ok) {
@@ -187,4 +186,5 @@ void SalorCapture::DocumentPrint(bool ok) {
     {
          mainFrame->print(&printer);
     }
+    emit deleteLater();
 }

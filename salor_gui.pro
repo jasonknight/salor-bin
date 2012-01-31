@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     cashdrawer.cpp \
     paylife.cpp \
     salorprinter.cpp \
-    salorcookiejar.cpp
+    salorcookiejar.cpp \
+    salorprocess.cpp \
+    salorjsapi.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -27,7 +29,9 @@ HEADERS  += mainwindow.h \
     paylife.h \
     paylife_structs.h \
     salorprinter.h \
-    salorcookiejar.h
+    salorcookiejar.h \
+    salorprocess.h \
+    salorjsapi.h
 
 FORMS    += mainwindow.ui
 
