@@ -294,7 +294,7 @@ QString MainWindow::toperScale(QString addy) {
   usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
   weight = read_weight_toperczer_f200_samsung_spain(fd);
   close_fd(fd);
-  //qDebug() << "Reading from Toper: " << QString::number(weight);
+  qDebug() << "Reading from Toper";
   //return QString::number(weight);
   return weight;
 }
@@ -328,6 +328,11 @@ void MainWindow::poleDancer(QString path, QString message) {
     QProcess p;
     p.execute(cmd);
 }
+
+void MainWindow::playSound(QString soundfile) {
+    QString cmd = "aplay " + soundfile;
+}
+
 void MainWindow::completeOrderSnap(QString order_id) {
     QSize size(800,480);
     QImage image(size, QImage::Format_Mono); // mPage->viewportSize()
