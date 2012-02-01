@@ -65,14 +65,25 @@ QString SalorJSApi::toperScale(QString addy) {
   return weight;
 }
 void SalorJSApi::newOpenCashDrawer(QString addy) {
-    printf("Creating CashDrawer Thread.\n");
-    CashDrawer *cd = new CashDrawer(this);
-    cd->addy = addy;
-    printf("Connecting Signals.\n");
-    //connect(cd,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
-    connect(cd,SIGNAL(finished()),cd,SLOT(deleteLater()));
-    cd->start();
-    printf("Thread Started.\n");
+    int fd;
+    int count;
+    int i;
+    char buf[20];
+    char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
+    int cap = 500;
+    int x = 0;
+    //qDebug() << "XXX: Writing open cash drawer too: " << addy;
+    //printf("XXX Writing open drawer %s \n",addy.toLatin1().data());
+    fd = open_serial_port(addy.toLatin1().data());
+    if (fd <= 0) {
+        qDebug() << "CashDrawer failed to open!";
+        return;
+    }
+
+    write(fd, "\x1D\x61\xFF", 3);
+    usleep(2000); //i.e. 20ms
+    write(fd, "\x1B\x70\x00\xFF\x01", 5);
+    close_fd(fd);
 }
 void SalorJSApi::shutdown() {
   QApplication::closeAllWindows();

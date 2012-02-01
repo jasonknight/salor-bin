@@ -18,11 +18,15 @@ void SalorProcess::started() {
 }
 void SalorProcess::finished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "\n\nProcess has finished\n\n";
+    this->proc->readAllStandardError();
+    this->proc->readAllStandardOutput();
     this->proc->close();
     emit deleteLater();
 }
 void 	SalorProcess::error ( QProcess::ProcessError error ) {
     qDebug() << "\n\nProcess has error\n\n";
+    this->proc->readAllStandardError();
+    this->proc->readAllStandardOutput();
     this->proc->close();
     emit deleteLater();
 }
@@ -34,4 +38,6 @@ void 	SalorProcess::readyReadStandardOutput () {
 }
 void 	SalorProcess::stateChanged ( QProcess::ProcessState newState ) {
     qDebug() << "\n\nProcess has new state\n\n";
+    this->proc->readAllStandardError();
+    this->proc->readAllStandardOutput();
 }
