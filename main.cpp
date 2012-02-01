@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.to_url = QString("http://localhost:3000/orders/new");
+    w.to_url = QString("http://salor/orders/new");
     QSettings settings("JolieRouge", "Salor");
     int pid = settings.value("pid").toInt();
     int m_pid = getppid();
