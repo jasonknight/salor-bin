@@ -9,7 +9,6 @@
 #include <QPrintDialog>
 #include "scales.h"
 #include "cashdrawer.h"
-#include "paylife.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "salorprinter.h"
@@ -106,7 +105,7 @@ void MainWindow::connectSlots() {
         qDebug() << "Setting Zoom";
       this->webView->page()->mainFrame()->setZoomFactor(z);
     } else {
-         qDebug() << "z was null";
+         qDebug() << "Zoom was null";
     }
 }
 void MainWindow::customersIndex() {
@@ -149,13 +148,6 @@ void MainWindow::linkClicked(QUrl url) {
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", this->sp);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this->js);
-    QFile file(":/paylife.js");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "Failed to open paylife.js";
-    } else {
-        QString jstext = file.readAll();
-        this->webView->page()->mainFrame()->evaluateJavaScript(jstext);
-    }
 }
 
 void MainWindow::windowCloseRequested() {
