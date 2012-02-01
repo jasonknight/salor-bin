@@ -5,7 +5,7 @@ SalorJSApi::SalorJSApi(QObject *parent) :
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("aplay", QStringList() << "/home/berserker/work/sounds/" + name + ".wav");
+    sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
 }
 void SalorJSApi::printPage() {
     QPrinter printer;

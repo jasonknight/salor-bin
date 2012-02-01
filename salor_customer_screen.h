@@ -19,9 +19,6 @@ signals:
     void painted();
 public slots:
     void refresh(QString url,int h, int w);
-    void print(QString url);
-    void flush();
-
 };
 
 #endif // SALOR_CUSTOMER_SCREEN_H
