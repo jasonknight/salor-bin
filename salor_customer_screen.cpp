@@ -35,5 +35,4 @@ void SalorCustomerScreen::refresh(QString url,int w, int h) {
             SLOT(DocumentComplete(bool))
             );
     webView->load(QUrl(url));
-    qDebug() << "CustomerScreen.refresh end of method.";
 }

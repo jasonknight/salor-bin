@@ -18,19 +18,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.to_url = QString("http://salor/orders/new");
-    QSettings settings("JolieRouge", "Salor");
-    int pid = settings.value("pid").toInt();
-    int m_pid = getppid();
-    qDebug() << "PID is: " << QString::number(pid);
-    qDebug() << "PID is: " << QString::number(m_pid);
-    if (pid != 0 && pid != m_pid) {
-        qDebug() << "PIDS don't match" << QString::number(m_pid) << " != " << QString::number(pid);
-        #ifdef LINUX
-            kill(pid,9);
-        #endif
-
-    }
-    settings.setValue("pid",m_pid);
     QString arg;
     bool fs = true;
     for (int i = 1; i < argc; i++) {

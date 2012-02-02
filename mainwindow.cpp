@@ -27,7 +27,6 @@ MainWindow::~MainWindow()
 
 }
 void MainWindow::incZoom() {
-  qDebug() << "Incrementing Zoom";
   QSettings settings("JolieRouge", "Salor");
   qreal z = this->webView->page()->mainFrame()->zoomFactor();
   z = z + 0.05;
@@ -102,21 +101,16 @@ void MainWindow::connectSlots() {
     QSettings settings("JolieRouge", "Salor");
     qreal z = settings.value("zoomFactor").toReal();
     if (z) {
-        qDebug() << "Setting Zoom";
       this->webView->page()->mainFrame()->setZoomFactor(z);
-    } else {
-         qDebug() << "Zoom was null";
     }
 }
 void MainWindow::customersIndex() {
     this->webView->page()->mainFrame()->evaluateJavaScript("window.location = '/customers';");
 }
 void MainWindow::endDayReport() {
-    qDebug() << "endDayReport";
     this->webView->page()->mainFrame()->evaluateJavaScript("window.location = '/orders/report_day';");
 }
 void MainWindow::editLastAddedItem() {
-    qDebug() << "editLastItem";
     this->webView->page()->mainFrame()->evaluateJavaScript("editLastAddedItem();");
 }
 void MainWindow::lastFiveOrders() {
@@ -151,6 +145,5 @@ void MainWindow::attach(){
 }
 
 void MainWindow::windowCloseRequested() {
-  qDebug() << "Called";
   QApplication::closeAllWindows();
 }
