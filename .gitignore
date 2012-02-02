@@ -3,6 +3,7 @@ Makefile
 salor
 qrc_resources.cpp
 SalorGui.pro.user
+salor_gui.pro.user
 *~
 *#
 *.swp
