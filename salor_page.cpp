@@ -16,10 +16,29 @@ SalorPage::SalorPage(QObject* parent):QWebPage(parent)
     //SalorPluginFactory* wpf = new SalorPluginFactory(this);
 
     //this->setPluginFactory(wpf);
+    this->js_error_count = 0;
 }
 void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  ) {
-    QMessageBox::critical(0, QObject::tr("Critical Script Error"), QString() + "A Javascript error Occurred: '" + message + "'\nat line " + QString::number(lineNumber) + "\nin " + sourceID);
-    qDebug() <<  "A Javascript error Occurred: " << message << "\nat line " << QString::number(lineNumber) << "\nin " << sourceID;
+    //QMessageBox::critical(0, QObject::tr("Critical Script Error"), QString() + "A Javascript error Occurred: '" + message + "'\nat line " + QString::number(lineNumber) + "\nin " + sourceID);
+    if (this->js_error_count >= 1000) {
+        return;
+    }
+    QString err = QString() + "A Javascript error Occurred: " + message + "'\nat line " + QString::number(lineNumber) + "\nin " + sourceID;
+
+    this->js_error_count++;
+    if (this->js_error_count > 30) {
+        this->js_error_count = 1000;
+        //this->setAttribute(QWebSettings::JavascriptEnabled,"off");
+        QMessageBox::critical(0, QObject::tr("Critical Script Error"), "Scripting is being stopped, there were more than 100 errors. please call tech support NOW to get this resolved. The errors have been logged.");
+        return;
+    }
+    if (this->js_error_count == 10) {
+        QMessageBox::critical(0, QObject::tr("Critical Script Error"), "There have been too many errors, please call tech support now to get this resolved. The errors have been logged.");
+    } else {
+        emit generalSnap(err);
+    }
+
+    qDebug() <<  "xxxA Javascript error Occurred: " << err;
 }
 QString SalorPage::chooseFile(QWebFrame* /*frame*/, const QString& /*suggestedFile*/) {
   return QString::null;

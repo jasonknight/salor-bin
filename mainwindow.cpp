@@ -7,6 +7,7 @@
 #include <QShortcut>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QNetworkDiskCache>
 #include "scales.h"
 #include "cashdrawer.h"
 #include <sys/types.h>
@@ -45,14 +46,20 @@ void MainWindow::init() {
     QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
-    //SalorPage* page = new SalorPage(this);
+
     webView = new QWebView();
-    //webView->setPage((QWebPage*)page);
+    this->page = new SalorPage(this);
+    webView->setPage(this->page);
     SalorCookieJar * jar = new SalorCookieJar(this);
     webView->page()->networkAccessManager()->setCookieJar(jar);
     this->sp = new SalorPrinter(this);
     this->js = new SalorJSApi(this);
     this->js->webView = this->webView;
+    connect(page,SIGNAL(generalSnap(QString)),this->js,SLOT(generalSnap(QString)));
+    //QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+    //QString location = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+    //diskCache->setCacheDirectory(location);
+    //webView->page()->networkAccessManager()->setCache(diskCache);
     setCentralWidget(webView);
     webView->show();
     webView->load(this->to_url);
@@ -68,6 +75,7 @@ void MainWindow::connectSlots() {
     //timer->start(899);
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
+    connect(this->page->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this->page,SLOT(resetJsErrors()));
     QShortcut *shortcut = new QShortcut(QKeySequence("Ctrl+p"), this);
     connect( shortcut, SIGNAL(activated()), this->js, SLOT(printPage()));
 
@@ -142,6 +150,7 @@ void MainWindow::linkClicked(QUrl url) {
 void MainWindow::attach(){
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", this->sp);
     this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this->js);
+    this->page->resetJsErrors();
 }
 
 void MainWindow::windowCloseRequested() {

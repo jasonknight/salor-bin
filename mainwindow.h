@@ -10,6 +10,7 @@
 #include "salorprocess.h"
 #include "salorjsapi.h"
 #include "salorprinter.h"
+#include "salor_page.h"
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -21,6 +22,7 @@ public:
     bool shown;
     QString to_url;
     CashDrawer * cd;
+    SalorPage * page;
 private slots:
 
 public slots:

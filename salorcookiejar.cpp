@@ -45,6 +45,7 @@ SalorCookieJar::SalorCookieJar(QObject* parent)
     m_timer.setSingleShot(true);
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(saveToDisk()));
 
+
 #ifndef QT_NO_DESKTOPSERVICES
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -112,11 +113,7 @@ void SalorCookieJar::extractRawCookies()
     m_rawCookies.clear();
 
     foreach (const QNetworkCookie &cookie, cookies) {
-        //if (!cookie.isSessionCookie()) {
-            m_rawCookies.append(cookie.toRawForm());
-        //} else {
-          //  qDebug() << "Not a session cookie";
-        //}
+      m_rawCookies.append(cookie.toRawForm());
     }
 }
 

@@ -43,6 +43,7 @@ public slots:
  void printPage();
  QStringList ls(QString path,QStringList filters);
  void completeOrderSnap(QString order_id);
+ void generalSnap(QString msg);
  void playSound(QString name);
  void mimoRefresh(QString path,int h, int w);
 };

@@ -2,6 +2,7 @@
 #define SALOR_PAGE_H
 #include <QWebPage>
 #include <QObject>
+#include <QDebug>
 class SalorCapture;
 class SalorPage:public QWebPage
 {
@@ -13,7 +14,16 @@ public:
     void setAlertString(const QString& alertString);
     void setPrintAlerts(bool printAlerts);
     void setSalorCapture(SalorCapture* SalorCapture);
+    int js_error_count;
     QString getAlertString();
+public slots:
+    void resetJsErrors() {
+        qDebug() << "resetting js errors";
+        this->js_error_count = 0;
+    }
+
+signals:
+    void generalSnap(QString);
 protected:
     virtual void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  );
     void javaScriptAlert(QWebFrame* frame, const QString& msg);

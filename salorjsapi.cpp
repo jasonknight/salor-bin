@@ -52,6 +52,28 @@ void SalorJSApi::completeOrderSnap(QString order_id) {
     //qDebug() << "Saving to: " << mOutput;
     image.save("/opt/salor_pos/logs/images/" + name, "png",1);
 }
+void SalorJSApi::generalSnap(QString msg) {
+    qDebug() << "GeneralSnap called";
+    QSize size(800,480);
+    QImage image(size, QImage::Format_RGB16); // mPage->viewportSize()
+
+    QPainter painter;
+    painter.begin(&image);
+    this->webView->page()->mainFrame()->render(&painter);
+    painter.end();
+    QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss") + QString::number(qrand());
+    QDir().mkpath("/opt/salor_pos/logs/images/");
+    QFile m("/opt/salor_pos/logs/images/" + name + ".txt");
+    if (m.open(QIODevice::ReadWrite)) {
+        m.write(msg.toAscii());
+        m.write(this->webView->page()->mainFrame()->toHtml().toAscii());
+        m.close();
+    } else {
+        qDebug() << "Could not create file";
+    }
+    qDebug() << "writing: " << "/opt/salor_pos/logs/images/" + name << "png";
+    image.save("/opt/salor_pos/logs/images/" + name + ".png", "png",1);
+}
 QString SalorJSApi::toperScale(QString addy) {
   int fd, j, count;
   char * weight;
