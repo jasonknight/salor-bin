@@ -35,7 +35,7 @@ void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumb
     if (this->js_error_count == 10) {
         //QMessageBox::critical(0, QObject::tr("Critical Script Error"), "There have been too many errors, please call tech support now to get this resolved. The errors have been logged.");
     } else {
-        emit generalSnap(err);
+       // emit generalSnap(err);
     }
 
     qDebug() <<  "xxxA Javascript error Occurred: " << err;
