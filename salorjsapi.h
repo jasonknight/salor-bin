@@ -23,13 +23,18 @@
 #include "salor_customer_screen.h"
 #include "scales.h"
 #include "cashdrawer.h"
+#include "cutecredit.h"
 class SalorJSApi : public QObject
 {
     Q_OBJECT
 public:
     explicit SalorJSApi(QObject *parent = 0);
     QWebView *webView;
+    CuteCredit * credit_thread;
+
 signals:
+    void cuteDataRead(QString);
+    void _cuteWriteData(QString);
 
 public slots:
  void poleDancer(QString path, QString message);
@@ -46,6 +51,8 @@ public slots:
  void generalSnap(QString msg);
  void playSound(QString name);
  void mimoRefresh(QString path,int h, int w);
+ void cuteWriteData(QString);
+ void _cuteBubbleDataRead(QString data);
 };
 
 #endif // SALORJSAPI_H

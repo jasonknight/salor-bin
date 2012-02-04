@@ -29,11 +29,11 @@ void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumb
     if (this->js_error_count > 30) {
         this->js_error_count = 1000;
         //this->setAttribute(QWebSettings::JavascriptEnabled,"off");
-        QMessageBox::critical(0, QObject::tr("Critical Script Error"), "Scripting is being stopped, there were more than 100 errors. please call tech support NOW to get this resolved. The errors have been logged.");
+        //QMessageBox::critical(0, QObject::tr("Critical Script Error"), "Scripting is being stopped, there were more than 100 errors. please call tech support NOW to get this resolved. The errors have been logged.");
         return;
     }
     if (this->js_error_count == 10) {
-        QMessageBox::critical(0, QObject::tr("Critical Script Error"), "There have been too many errors, please call tech support now to get this resolved. The errors have been logged.");
+        //QMessageBox::critical(0, QObject::tr("Critical Script Error"), "There have been too many errors, please call tech support now to get this resolved. The errors have been logged.");
     } else {
         emit generalSnap(err);
     }

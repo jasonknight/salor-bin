@@ -2,6 +2,10 @@
 SalorJSApi::SalorJSApi(QObject *parent) :
     QObject(parent)
 {
+   // this->credit_thread = new CuteCredit(this);
+    //this->connect(this->credit_thread,SIGNAL(dataRead(QString)),SLOT(_cuteBubbleDataRead(QString)));
+    //connect(this,SIGNAL(_cuteWriteData(QString)),this->credit_thread,SLOT(writeData(QString)));
+    //this->credit_thread->run();
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
@@ -109,4 +113,10 @@ void SalorJSApi::newOpenCashDrawer(QString addy) {
 }
 void SalorJSApi::shutdown() {
   QApplication::closeAllWindows();
+}
+void SalorJSApi::cuteWriteData(QString data) {
+    emit _cuteWriteData(data);
+}
+void SalorJSApi::_cuteBubbleDataRead(QString data) {
+    emit cuteDataRead(data);
 }

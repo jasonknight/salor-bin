@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     salorprinter.cpp \
     salorcookiejar.cpp \
     salorprocess.cpp \
-    salorjsapi.cpp
+    salorjsapi.cpp \
+    cutecredit.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -28,7 +29,8 @@ HEADERS  += mainwindow.h \
     salorprinter.h \
     salorcookiejar.h \
     salorprocess.h \
-    salorjsapi.h
+    salorjsapi.h \
+    cutecredit.h
 
 FORMS    += mainwindow.ui
 
