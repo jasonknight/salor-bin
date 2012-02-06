@@ -2,14 +2,15 @@
 SalorJSApi::SalorJSApi(QObject *parent) :
     QObject(parent)
 {
-   // this->credit_thread = new CuteCredit(this);
-    //this->connect(this->credit_thread,SIGNAL(dataRead(QString)),SLOT(_cuteBubbleDataRead(QString)));
-    //connect(this,SIGNAL(_cuteWriteData(QString)),this->credit_thread,SLOT(writeData(QString)));
-    //this->credit_thread->run();
+    //this->credit_thread = new CuteCredit(0);
+    //connect(this->credit_thread,SIGNAL(dataRead(QString)),this,SLOT(_cuteBubbleDataRead(QString)));
+   // connect(this,SIGNAL(_cuteWriteData(QString)),this->credit_thread,SLOT(writeData(QString)));
+    //this->credit_thread->start();
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
     sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
+
 }
 void SalorJSApi::printPage() {
     QPrinter printer;
@@ -115,6 +116,7 @@ void SalorJSApi::shutdown() {
   QApplication::closeAllWindows();
 }
 void SalorJSApi::cuteWriteData(QString data) {
+    qDebug() << "Writing Data";
     emit _cuteWriteData(data);
 }
 void SalorJSApi::_cuteBubbleDataRead(QString data) {
