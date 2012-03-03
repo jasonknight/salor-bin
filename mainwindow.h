@@ -21,7 +21,6 @@ public:
     bool mousePressed;
     bool shown;
     QString to_url;
-    CashDrawer * cd;
     SalorPage * page;
 private slots:
 

@@ -9,31 +9,31 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/time.h>
-CashDrawer::CashDrawer(QObject *parent) :
-    QThread(parent)
+DrawerObserverThread::DrawerObserverThread(QObject *parent) : QThread(parent)
 {
 }
-void CashDrawer::run() {
+void DrawerObserverThread::run() {
     this->running = true;
     int fd;
-    int count;
-    int i;
+    int count = 0;
+    int i = 0;
+    int j = 0;
     char buf[20];
     char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
-    int cap = 500;
-    int x = 0;
-    //qDebug() << "XXX: Writing open cash drawer too: " << addy;
-    //printf("XXX Writing open drawer %s \n",addy.toLatin1().data());
-    fd = open_serial_port(addy.toLatin1().data());
-    if (fd <= 0) {
-        qDebug() << "CashDrawer failed to open!";
-        return;
-    }
+    qDebug() << "CashDrawerClosingThread called" << addy;
+    stop_drawer_thread = false;
+    while (i < 5 && count <= 0 && !stop_drawer_thread) {
+      i += 1;
+      fd = open_serial_port_for_scale(addy.toLatin1().data());
+      qDebug() << QString("Opened file descriptor 0x%1. Reading...").arg(uchar(fd),0,16);
+      count = read(fd, buf, 7);
+      qDebug() << "Read numer of bytes: " << count;
+      for (j=0;j<count;j++) { printf("%X|",*(buf+j)); } // debug
 
-    write(fd, "\x1D\x61\xFF", 3);
-    usleep(2000); //i.e. 20ms
-    write(fd, "\x1B\x70\x00\xFF\x01", 5);
-    close_fd(fd);
-    emit finished();
+      qDebug() << "i = " << i;
+      close(fd);
+      sleep(1);
+    }
+    cashDrawerClosed();
     return;
 }

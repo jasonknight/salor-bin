@@ -31,6 +31,7 @@ public:
     explicit SalorJSApi(QObject *parent = 0);
     QWebView *webView;
     CuteCredit * credit_thread;
+    DrawerObserverThread * drawer_thread;
 
 signals:
     void cuteDataRead(QString);
@@ -44,6 +45,9 @@ public slots:
    return QString("2.754");
  }
  void newOpenCashDrawer(QString addy);
+ void startDrawerObserver(QString addy);
+ void stopDrawerObserver();
+ void _cashDrawerClosed();
  void shutdown();
  void printPage();
  QStringList ls(QString path,QStringList filters);

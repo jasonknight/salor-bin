@@ -1,3 +1,0 @@
-A Javascript error Occurred: ReferenceError: Can't find variable: make_dt_button'
-at line 1110
-in http://localhost:3000/

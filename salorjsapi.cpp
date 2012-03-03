@@ -82,36 +82,51 @@ void SalorJSApi::generalSnap(QString msg) {
 QString SalorJSApi::toperScale(QString addy) {
   int fd, j, count;
   char * weight;
-  fd = open_serial_port(addy.toLatin1().data());
+  fd = open_serial_port_for_scale(addy.toLatin1().data());
   request_weight_toperczer_f200_samsung_spain(fd);
   usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
   weight = read_weight_toperczer_f200_samsung_spain(fd);
-  close_fd(fd);
+  close(fd);
   //qDebug() << "Reading from Toper: " << QString::number(weight);
   //return QString::number(weight);
   return weight;
 }
+
 void SalorJSApi::newOpenCashDrawer(QString addy) {
     int fd;
     int count;
-    int i;
-    char buf[20];
-    char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
-    int cap = 500;
-    int x = 0;
-    //qDebug() << "XXX: Writing open cash drawer too: " << addy;
-    //printf("XXX Writing open drawer %s \n",addy.toLatin1().data());
-    fd = open_serial_port(addy.toLatin1().data());
+    qDebug() << "Attempting to open CashDrawer at " << addy;
+    fd = open_serial_port_for_cash_drawer(addy.toLatin1().data());
     if (fd <= 0) {
         qDebug() << "CashDrawer failed to open!";
-        return;
+       // return;
     }
-
-    write(fd, "\x1D\x61\xFF", 3);
-    usleep(2000); //i.e. 20ms
-    write(fd, "\x1B\x70\x00\xFF\x01", 5);
-    close_fd(fd);
+    count = write(fd, "\x1D\x61\xFF", 3);
+    qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
+    usleep(5000); //50ms
+    count = write(fd, "\x1B\x70\x00\xFF\x01", 5);
+    qDebug() << "Wrote "  << count << " bytes to open cash drawer.";
+    close(fd);
 }
+
+void SalorJSApi::startDrawerObserver(QString addy) {
+  DrawerObserverThread * drawerobserver = new DrawerObserverThread(this);
+  SalorJSApi::drawer_thread = drawerobserver;
+  drawerobserver->addy = addy;
+  connect(drawerobserver,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
+  connect(drawerobserver,SIGNAL(finished()),drawerobserver,SLOT(deleteLater()));
+  drawerobserver->start();
+}
+
+void SalorJSApi::stopDrawerObserver() {
+  SalorJSApi::drawer_thread->stop_drawer_thread = true;
+}
+
+void SalorJSApi::_cashDrawerClosed() {
+    qDebug() << "Drawer is closed. Calling JS complete_order_hide();.\n";
+    this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();");
+}
+
 void SalorJSApi::shutdown() {
   QApplication::closeAllWindows();
 }

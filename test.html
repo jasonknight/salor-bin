@@ -1,16 +1,22 @@
 <html>
 <head>
 <script type="text/javascript">
-function call_poledancer {
-  alert("Called");
+function call_poledancer() {
+  alert("PoleDancer called");
+}
+function complete_order_hide() {
+  alert("Complete Order PopUp hidden");
 }
 </script>
 </head>
 <body>
 <div onclick="Salor.poleDancer('/dev/ttyUSB0','Test');">Test Pole Dancer</div>
-<div onclick="Salor.newOpenCashDrawer('/home/berserker/work/salor_gui/test.txt');">Test Open Cash Drawer</div>
+<div onclick="Salor.newOpenCashDrawer('/dev/null');">Test Open Cash Drawer</div>
+<div onclick="Salor.startDrawerObserver('/dev/null');">Start Drawer Observer</div>
+<div onclick="Salor.stopDrawerObserver();">Stop Drawer Observer</div>
 <div onclick="Salor.printPage();">Test Print Page</div>
-<div onclick="Salor.mimoRefresh('http://google.com0',800,400);">Test mimo Refresh</div>
+<div onclick="Salor.mimoRefresh('http://google.com',800,400);">Test mimo Refresh</div>
 <div onclick="Salor.playSound('notice');">Test sound playing</div>
+<div onclick="Salor.toperScale('/dev/null');">Test toperScale</div>
 </body>
 </html>
