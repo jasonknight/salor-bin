@@ -1,7 +1,7 @@
 #include "salorjsapi.h"
-SalorJSApi::SalorJSApi(QObject *parent) :
-    QObject(parent)
+SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 {
+    SalorJSApi::drawer_thread = NULL;
     //this->credit_thread = new CuteCredit(0);
     //connect(this->credit_thread,SIGNAL(dataRead(QString)),this,SLOT(_cuteBubbleDataRead(QString)));
    // connect(this,SIGNAL(_cuteWriteData(QString)),this->credit_thread,SLOT(writeData(QString)));
@@ -118,11 +118,14 @@ void SalorJSApi::startDrawerObserver(QString addy) {
 }
 
 void SalorJSApi::stopDrawerObserver() {
-  SalorJSApi::drawer_thread->stop_drawer_thread = true;
+  if (SalorJSApi::drawer_thread) {
+      SalorJSApi::drawer_thread->stop_drawer_thread = true;
+  }
 }
 
 void SalorJSApi::_cashDrawerClosed() {
     qDebug() << "Drawer is closed. Calling JS complete_order_hide();.\n";
+    delete SalorJSApi::drawer_thread;
     this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();");
 }
 
