@@ -12,18 +12,18 @@
 DrawerObserverThread::DrawerObserverThread(QObject *parent) : QThread(parent)
 {
 }
+
 void DrawerObserverThread::run() {
     this->running = true;
     int fd;
     int count;
     int i = 0;
-    int j = 0;
     int close_after_seconds = 30;
     char buf[20];
-    char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
+    //char cash_drawer_closed[5] = "\x14\x00\x00\x0f";
 
     stop_drawer_thread = false;
-    fd = open_serial_port_for_scale(addy.toLatin1().data());
+    fd = open_serial_port_for_drawer(addy.toLatin1().data());
     if (fd == -1) {
       qDebug() << "Could not open" << addy << ". Prolly another DrawerObserver running or File not existing. Not starting another DrawerObserver.";
       return;
@@ -40,6 +40,7 @@ void DrawerObserverThread::run() {
       i += 1;
       count = read(fd, buf, 7);
       qDebug() << (5*close_after_seconds-i) <<"Read numer of bytes from drawer: " << count;
+      //int j = 0;
       //for (j=0;j<count;j++) { printf("%X|",*(buf+j)); } // debug
       usleep(200000);
     }

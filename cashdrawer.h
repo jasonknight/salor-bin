@@ -24,7 +24,7 @@ public slots:
 
 };
 
-static int open_serial_port_for_cash_drawer(char *port) {
+static int open_serial_port_for_drawer(char *port) {
   int fd;
   struct termios options;
 

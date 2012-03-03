@@ -139,11 +139,6 @@ void MainWindow::addJavascriptObjects() {
     }
     attach();
 }
-
-void MainWindow::linkClicked(QUrl url) {
-
-
-}
  void MainWindow::repaintViews() {
     webView->update();
 }

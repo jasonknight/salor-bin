@@ -187,7 +187,7 @@ void SalorCapture::saveSnapshot() {
     sp->run("pole-dancer",QStringList() << "-dlo" <<  mOutput);
     //display_link_write_image(mOutput.toAscii());
 }
-void SalorCapture::DocumentPrint(bool ok) {
+void SalorCapture::DocumentPrint() {
     qDebug() << "DocumentPrint was called";
     QWebFrame *mainFrame = mPage->mainFrame();
 

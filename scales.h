@@ -7,6 +7,7 @@
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
 #include <QDebug>
+
 static int open_serial_port_for_scale(char *port) {
   int fd;
   struct termios options;
@@ -32,14 +33,13 @@ static int request_weight_toperczer_f200_samsung_spain(int fd) {
 }
 
 static char * read_weight_toperczer_f200_samsung_spain(int fd) {
-  int count, i;
-  char * weight;
+  int count;
   char buffer[10];
 
   qDebug() << "Starting read from scale...";
   count = read(fd, buffer, 7);
-
   qDebug() << "Read from scale:" << QString(*buffer);
+  //int i;
   //for (i=0;i<count;i++) { printf("%X|",*(buffer+i)); } // debug
   return buffer;
 }

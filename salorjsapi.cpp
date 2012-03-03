@@ -80,7 +80,7 @@ void SalorJSApi::generalSnap(QString msg) {
     image.save("/opt/salor_pos/logs/images/" + name + ".png", "png",1);
 }
 QString SalorJSApi::toperScale(QString addy) {
-  int fd, j, count;
+  int fd;
   char * weight;
   fd = open_serial_port_for_scale(addy.toLatin1().data());
   request_weight_toperczer_f200_samsung_spain(fd);
@@ -96,12 +96,12 @@ void SalorJSApi::newOpenCashDrawer(QString addy) {
     int fd;
     int count;
     qDebug() << "Attempting to open CashDrawer at " << addy;
-    fd = open_serial_port_for_cash_drawer(addy.toLatin1().data());
+    fd = open_serial_port_for_drawer(addy.toLatin1().data());
     if (fd <= 0) {
         qDebug() << "CashDrawer failed to open!";
-       // return;
+        return;
     }
-    count = write(fd, "\x1D\x61\xFF", 3);
+    count = write(fd, "\x1D\x61\x01", 3);
     qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
     usleep(5000); //50ms
     count = write(fd, "\x1B\x70\x00\xFF\x01", 5);
@@ -114,7 +114,6 @@ void SalorJSApi::startDrawerObserver(QString addy) {
   SalorJSApi::drawer_thread = drawerobserver;
   drawerobserver->addy = addy;
   connect(drawerobserver,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
-  connect(drawerobserver,SIGNAL(finished()),drawerobserver,SLOT(deleteLater()));
   drawerobserver->start();
 }
 

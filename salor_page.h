@@ -54,7 +54,7 @@ public:
 
 public slots:
   void DocumentComplete(bool ok);
-  void DocumentPrint(bool ok);
+  void DocumentPrint();
   void InitialLayoutCompleted();
   void JavaScriptWindowObjectCleared();
   void Timeout();
