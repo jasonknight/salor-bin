@@ -125,7 +125,7 @@ void SalorJSApi::stopDrawerObserver() {
 
 void SalorJSApi::_cashDrawerClosed() {
     qDebug() << "Drawer is closed. Calling JS complete_order_hide();.\n";
-    delete SalorJSApi::drawer_thread;
+    //delete SalorJSApi::drawer_thread;
     this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();");
 }
 
