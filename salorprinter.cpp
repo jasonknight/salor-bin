@@ -55,6 +55,7 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
     QFile f(this->m_printer_path);
     if (f.exists() && f.open(QIODevice::WriteOnly)) {
         QTextStream out(&f);
+        out.setCodec("ISO 8859-1");
         out << ba;
         f.close();
         qDebug() << "print completed.";
