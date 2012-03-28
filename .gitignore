@@ -1,6 +1,7 @@
 ui_main*
 Makefile
 salor
+salor1004
 qrc_resources.cpp
 SalorGui.pro.user
 salor_gui.pro.user
