@@ -101,6 +101,9 @@ void SalorJSApi::newOpenCashDrawer(QString addy) {
         qDebug() << "CashDrawer failed to open!";
         return;
     }
+    count = write(fd, "\x1B\x40", 2);
+    qDebug() << "Wrote "  << count << " bytes to initialize printer.";
+    usleep(5000); //50ms
     count = write(fd, "\x1D\x61\x01", 3);
     qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
     usleep(5000); //50ms
