@@ -10,7 +10,10 @@ SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
     sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
-
+}
+QString SalorJSApi::version() {
+    QString v = "2.2.0 Garibaldi";
+    return(v);
 }
 void SalorJSApi::printPage() {
     QPrinter printer;

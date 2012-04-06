@@ -54,6 +54,7 @@ public slots:
  void completeOrderSnap(QString order_id);
  void generalSnap(QString msg);
  void playSound(QString name);
+ QString version();
  void mimoRefresh(QString path,int h, int w);
  void cuteWriteData(QString);
  void _cuteBubbleDataRead(QString data);

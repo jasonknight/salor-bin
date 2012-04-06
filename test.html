@@ -1,23 +1,27 @@
 <html>
 <head>
-<script type="text/javascript">
-function call_poledancer() {
-  alert("PoleDancer called");
-}
-function complete_order_hide() {
-  alert("Complete Order PopUp hidden");
-}
-</script>
 </head>
 <body>
-<div onclick="Salor.poleDancer('/dev/ttyUSB0','Test');">Test Pole Dancer</div>
-<div onclick="Salor.newOpenCashDrawer('/dev/usb/lp0');">Test Open Cash Drawer</div>
-<div onclick="Salor.startDrawerObserver('/dev/usb/lp0');">Start Drawer Observer</div>
-<div onclick="Salor.stopDrawerObserver();">Stop Drawer Observer</div>
-<div onclick="Salor.printPage();">Test Print Page</div>
-<div onclick="Salor.mimoRefresh('http://google.com',800,400);">Test mimo Refresh</div>
-<div onclick="Salor.playSound('notice');">Test sound playing</div>
-<div onclick="Salor.toperScale('/dev/null');">Test toperScale</div>
-<div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/home/zotac/salor_gui/test.escpos');">Test SalorPrinter</div>
+  <h1>salor_bin <span id='version'></span></h1>
+  <div onclick="Salor.poleDancer('/dev/ttyUSB0','Test');">Test Pole Dancer</div>
+  <div onclick="Salor.newOpenCashDrawer('/dev/usb/lp0');">Test Open Cash Drawer</div>
+  <div onclick="Salor.startDrawerObserver('/dev/usb/lp0');">Start Drawer Observer</div>
+  <div onclick="Salor.stopDrawerObserver();">Stop Drawer Observer</div>
+  <div onclick="Salor.printPage();">Test Print Page</div>
+  <div onclick="Salor.mimoRefresh('http://google.com',800,400);">Test mimo Refresh</div>
+  <div onclick="Salor.playSound('notice');">Test sound playing</div>
+  <div onclick="Salor.toperScale('/dev/null');">Test toperScale</div>
+  <div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/home/zotac/salor_gui/test.escpos');">Test SalorPrinter</div>
+
+  <script type="text/javascript">
+    function call_poledancer() {
+      alert("PoleDancer called");
+    }
+    function complete_order_hide() {
+      alert("Complete Order PopUp hidden");
+    }
+    document.getElementById('version').innerHTML = Salor.version();
+  </script>
+
 </body>
-</html>.
+</html>
