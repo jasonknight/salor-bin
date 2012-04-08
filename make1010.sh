@@ -2,4 +2,5 @@
 make clean
 qmake
 make
-ncftpput -u salordemo-www -p hkKOiNlr demo.salorpos.com salor/public salor
+mv salor salor1010
+ncftpput -u salordemo-www -p hkKOiNlr demo.salorpos.com salor/public salor1010
