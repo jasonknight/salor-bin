@@ -25,6 +25,8 @@ void DrawerObserverThread::run() {
     char opened_code[5] = "\x10\x00\x00\x0f";
     bool drawer_was_open = false;
 
+    qDebug() << "Called DrawerObserverThread::run()";
+
     stop_drawer_thread = false;
     fd = open_serial_port_for_drawer(addy.toLatin1().data());
     if (fd == -1) {

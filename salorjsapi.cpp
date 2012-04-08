@@ -12,7 +12,7 @@ void SalorJSApi::playSound(QString name) {
     sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
 }
 QString SalorJSApi::version() {
-    QString v = "2.2.0 Garibaldi";
+    QString v = "2.2.1 Garibaldi";
     return(v);
 }
 void SalorJSApi::printPage() {
@@ -41,7 +41,7 @@ QStringList SalorJSApi::ls(QString path,QStringList filters) {
 void SalorJSApi::poleDancer(QString path, QString message) {
     SalorProcess *sp = new SalorProcess(this);
     qDebug() << path << " " << message;
-    sp->run("pole-dancer",QStringList() << "-p" << path << message);
+    sp->run("poledancer",QStringList() << "-p" << path << message);
 }
 void SalorJSApi::mimoRefresh(QString path,int h, int w) {
     SalorCustomerScreen *scs = new SalorCustomerScreen(this);
@@ -116,16 +116,25 @@ void SalorJSApi::newOpenCashDrawer(QString addy) {
 }
 
 void SalorJSApi::startDrawerObserver(QString addy) {
-  DrawerObserverThread * drawerobserver = new DrawerObserverThread(this);
-  SalorJSApi::drawer_thread = drawerobserver;
-  drawerobserver->addy = addy;
-  connect(drawerobserver,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
-  drawerobserver->start();
+  if (SalorJSApi::drawer_thread == NULL) {
+    qDebug() << "Called SalorJSApi::startDrawerObserver. Creating, remembering and starting new thread.";
+    DrawerObserverThread * drawerobserver = new DrawerObserverThread(this);
+    SalorJSApi::drawer_thread = drawerobserver;
+    drawerobserver->addy = addy;
+    connect(drawerobserver,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
+    drawerobserver->start();
+  } else {
+    qDebug() << "Called SalorJSApi::startDrawerObserver. Apparently a thread is already running, so doing nothing.";
+  }
 }
 
 void SalorJSApi::stopDrawerObserver() {
   if (SalorJSApi::drawer_thread) {
+      qDebug() << "Called SalorJSApi::stopDrawerObserver(). Stopping thread and setting remembered thread address to NULL.";
       SalorJSApi::drawer_thread->stop_drawer_thread = true;
+      SalorJSApi::drawer_thread = NULL;
+  } else {
+      qDebug() << "Called SalorJSApi::stopDrawerObserver(). Apparently no thread active, so doing nothing.";
   }
 }
 
