@@ -56,6 +56,7 @@ public slots:
  void playSound(QString name);
  QString version();
  void mimoRefresh(QString path,int h, int w);
+ void mimoImage(QString imagepath);
  void cuteWriteData(QString);
  void _cuteBubbleDataRead(QString data);
 };

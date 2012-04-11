@@ -29,6 +29,7 @@ void SalorJSApi::printPage() {
          }
         }
 }
+
 QStringList SalorJSApi::ls(QString path,QStringList filters) {
     QDir d(path);
     if (d.exists()) {
@@ -43,10 +44,17 @@ void SalorJSApi::poleDancer(QString path, QString message) {
     qDebug() << path << " " << message;
     sp->run("poledancer",QStringList() << "-p" << path << message);
 }
+
 void SalorJSApi::mimoRefresh(QString path,int h, int w) {
     SalorCustomerScreen *scs = new SalorCustomerScreen(this);
     scs->refresh(path,h,w);
 }
+
+void SalorJSApi::mimoImage(QString imagepath) {
+    SalorProcess *sp = new SalorProcess(this);
+    sp->run("poledancer",QStringList() << "-dlo" <<  imagepath);
+}
+
 void SalorJSApi::completeOrderSnap(QString order_id) {
     QSize size(800,480);
     QImage image(size, QImage::Format_Mono); // mPage->viewportSize()
