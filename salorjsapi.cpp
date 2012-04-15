@@ -12,7 +12,7 @@ void SalorJSApi::playSound(QString name) {
     sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
 }
 QString SalorJSApi::version() {
-    QString v = "2.2.1 Garibaldi";
+    QString v = "2.2.2 Garibaldi";
     return(v);
 }
 void SalorJSApi::printPage() {
