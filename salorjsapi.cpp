@@ -164,10 +164,11 @@ void SalorJSApi::_cuteBubbleDataRead(QString data) {
 }
 void SalorJSApi::x11VNC(QString url, QString username, QString password, QString type) {
     pid_t cpid;
+    QString cmd;
     if (type == "vpn") {
-        QString cmd = "expect /usr/share/red-e_vpn_reverse_connect.expect ";
+        cmd = "expect /usr/share/red-e_vpn_reverse_connect.expect ";
     } else {
-        QString cmd = "expect /usr/share/red-e_ssh_reverse_connect.expect ";
+        cmd = "expect /usr/share/red-e_ssh_reverse_connect.expect ";
     }
     cmd += url + " " + username + " " + password;
     qDebug() << "Executing command: " << cmd;
