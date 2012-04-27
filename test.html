@@ -16,6 +16,8 @@
   <div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/home/zotac/salor_gui/test.escpos');">Test SalorPrinter</div>
   <div onclick="Salor.x11VNC('91.115.158.166','michael','xxx','ssh');">Test X11VNC SSH</div>
     <div onclick="Salor.x11VNC('91.115.158.166','michael','xxx','vpn');">Test X11VNC VPN</div>
+    <div onclick="alert(Salor.x11VNCConnectionOpen('vpn'));">Test X11VNC VPN Open</div>
+    <div onclick="alert(Salor.x11VNCConnectionOpen('ssh'));">Test X11VNC SSH Open</div>
 
   <script type="text/javascript">
     function call_poledancer() {

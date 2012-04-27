@@ -24,6 +24,10 @@
 #include "scales.h"
 #include "cashdrawer.h"
 #include "cutecredit.h"
+#include <string>
+#include <iostream>
+#include <stdio.h>
+
 class SalorJSApi : public QObject
 {
     Q_OBJECT
@@ -60,6 +64,7 @@ public slots:
  void cuteWriteData(QString);
  void _cuteBubbleDataRead(QString data);
  void x11VNC(QString url, QString username, QString password, QString type);
+ bool x11VNCConnectionOpen(QString type);
 };
 
 #endif // SALORJSAPI_H

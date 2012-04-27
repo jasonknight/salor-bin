@@ -178,3 +178,30 @@ void SalorJSApi::x11VNC(QString url, QString username, QString password, QString
         exit(0);
     }
 }
+bool SalorJSApi::x11VNCConnectionOpen(QString type) {
+    QString cmd;
+    if (type == "ssh") {
+        cmd = "netstat -pna | grep :26";
+    } else {
+        cmd = "netstat -pna | grep :28";
+    }
+    FILE* pipe = popen(cmd.toAscii().data(), "r");
+    if (!pipe) {
+        qDebug() << "Couldn't open pipe";
+        return false;
+    }
+    char buffer[128];
+    QString result = "";
+    while(!feof(pipe)) {
+        if(fgets(buffer, 128, pipe) != NULL)
+                result += buffer;
+    }
+    pclose(pipe);
+    qDebug() << "Result is: " << result;
+    if (result.length() > 3) {
+        return true;
+    } else {
+        qDebug() << "Nopers...";
+    }
+    return false;
+}
