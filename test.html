@@ -14,8 +14,8 @@
   <div onclick="Salor.playSound('notice');">Test sound playing</div>
   <div onclick="Salor.toperScale('/dev/null');">Test toperScale</div>
   <div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/home/zotac/salor_gui/test.escpos');">Test SalorPrinter</div>
-  <div onclick="Salor.x11VNC('ip','user','pass','ssh');">Test remoteService SSH</div>
-    <div onclick="Salor.x11VNC('ip','user','pass','vnc');">Test remoteService VNC</div>
+  <div onclick="Salor.remoteService('ip','user','pass','ssh');">Test remoteService SSH</div>
+    <div onclick="Salor.remoteService('ip','user','pass','vnc');">Test remoteService VNC</div>
     <div onclick="alert(Salor.remoteServiceConnectionOpen('vnc'));">Test remoteService VNC Open</div>
     <div onclick="alert(Salor.remoteServiceConnectionOpen('ssh'));">Test remoteService SSH Open</div>
 
