@@ -12,7 +12,7 @@ void SalorJSApi::playSound(QString name) {
     sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
 }
 QString SalorJSApi::version() {
-    QString v = "2.2.2 Garibaldi";
+    QString v = "2.2.3 Ivanova";
     return(v);
 }
 void SalorJSApi::printPage() {
@@ -162,11 +162,11 @@ void SalorJSApi::cuteWriteData(QString data) {
 void SalorJSApi::_cuteBubbleDataRead(QString data) {
     emit cuteDataRead(data);
 }
-void SalorJSApi::x11VNC(QString url, QString username, QString password, QString type) {
+void SalorJSApi::remoteService(QString url, QString username, QString password, QString type) {
     pid_t cpid;
     QString cmd;
-    if (type == "vpn") {
-        cmd = "expect /usr/share/red-e_vpn_reverse_connect.expect ";
+    if (type == "vnc") {
+        cmd = "expect /usr/share/red-e_vnc_reverse_connect.expect ";
     } else {
         cmd = "expect /usr/share/red-e_ssh_reverse_connect.expect ";
     }
@@ -178,12 +178,12 @@ void SalorJSApi::x11VNC(QString url, QString username, QString password, QString
         exit(0);
     }
 }
-bool SalorJSApi::x11VNCConnectionOpen(QString type) {
+bool SalorJSApi::remoteServiceConnectionOpen(QString type) {
     QString cmd;
-    if (type == "ssh") {
-        cmd = "netstat -pna | grep :26";
-    } else {
+    if (type == "vnc") {
         cmd = "netstat -pna | grep :28";
+    } else {
+        cmd = "netstat -pna | grep :26";
     }
     FILE* pipe = popen(cmd.toAscii().data(), "r");
     if (!pipe) {
