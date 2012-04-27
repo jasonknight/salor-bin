@@ -59,7 +59,7 @@ public slots:
  void mimoImage(QString imagepath);
  void cuteWriteData(QString);
  void _cuteBubbleDataRead(QString data);
- void x11VNC(QString url, QString username, QString password);
+ void x11VNC(QString url, QString username, QString password, QString type);
 };
 
 #endif // SALORJSAPI_H
