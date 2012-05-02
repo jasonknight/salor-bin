@@ -62,9 +62,11 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
         f.close();
         qDebug() << "print completed.";
         emit printed();
-        QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
-        qDebug() << "Sending print confirmation to " << this->confirmation_url;
-        confirmator->get(QNetworkRequest(QUrl(this->confirmation_url)));
+        if(this->confirmation_url.length() > 0) {
+          QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
+          qDebug() << "Sending print confirmation to " << this->confirmation_url;
+          confirmator->get(QNetworkRequest(QUrl(this->confirmation_url)));
+        }
 
     } else {
         qDebug() << "Failed to open file";
