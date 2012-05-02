@@ -12,10 +12,12 @@ SalorPrinter::SalorPrinter(QObject *parent) :
     this->m_manager = new QNetworkAccessManager(this);
     this->connect(this->m_manager,SIGNAL(finished(QNetworkReply*)),SLOT(pageFetched(QNetworkReply*)));
 }
-void SalorPrinter::printURL(QString path, QString url) {
+
+void SalorPrinter::printURL(QString path, QString url, QString confirm_url) {
     qDebug() << "Fetching: " << url << " and sending it to path " << path;
     this->m_printer_path = path;
     this->m_manager->get(QNetworkRequest(QUrl(url)));
+    this->confirmation_url = confirm_url;
 }
 
 void SalorPrinter::pageFetched(QNetworkReply *reply) {
@@ -60,6 +62,9 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
         f.close();
         qDebug() << "print completed.";
         emit printed();
+        QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
+        qDebug() << "Sending print confirmation to " << this->confirmation_url;
+        confirmator->get(QNetworkRequest(QUrl(this->confirmation_url)));
 
     } else {
         qDebug() << "Failed to open file";

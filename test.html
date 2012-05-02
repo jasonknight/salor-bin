@@ -13,11 +13,11 @@
   <div onclick="Salor.mimoImage('salor-customerscreen-advertising.bmp',800,400);">Test Mimo Image copy</div>
   <div onclick="Salor.playSound('notice');">Test sound playing</div>
   <div onclick="Salor.toperScale('/dev/null');">Test toperScale</div>
-  <div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/home/zotac/salor_gui/test.escpos');">Test SalorPrinter</div>
+  <div onclick="SalorPrinter.printURL('/tmp/print.txt', 'test.escpos', 'http://localhost:3000/print_confirmed');">Test SalorPrinter</div>
   <div onclick="Salor.remoteService('ip','user','pass','ssh');">Test remoteService SSH</div>
-    <div onclick="Salor.remoteService('ip','user','pass','vnc');">Test remoteService VNC</div>
-    <div onclick="alert(Salor.remoteServiceConnectionOpen('vnc'));">Test remoteService VNC Open</div>
-    <div onclick="alert(Salor.remoteServiceConnectionOpen('ssh'));">Test remoteService SSH Open</div>
+  <div onclick="Salor.remoteService('ip','user','pass','vnc');">Test remoteService VNC</div>
+  <div onclick="alert(Salor.remoteServiceConnectionOpen('vnc'));">Test remoteService VNC Open</div>
+  <div onclick="alert(Salor.remoteServiceConnectionOpen('ssh'));">Test remoteService SSH Open</div>
 
   <script type="text/javascript">
     function call_poledancer() {
