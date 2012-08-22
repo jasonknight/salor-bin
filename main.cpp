@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.to_url = QString("http://salor/orders/new");
+    w.to_url = QString("http://salor-retail");
     QString arg;
     bool fs = true;
     for (int i = 1; i < argc; i++) {
