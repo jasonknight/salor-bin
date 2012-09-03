@@ -1,11 +1,7 @@
 #ifndef CASHDRAWER_H
 #define CASHDRAWER_H
 #include <stdio.h>   /* Standard input/output definitions */
-#include <string.h>  /* String function definitions */
-#include <unistd.h>  /* UNIX standard function definitions */
-#include <fcntl.h>   /* File control definitions */
-#include <errno.h>   /* Error number definitions */
-#include <termios.h> /* POSIX terminal control definitions */
+#include "common_includes.h"
 #include <QDebug>
 #include <QThread>
 
@@ -25,7 +21,9 @@ public slots:
 };
 
 static int open_serial_port_for_drawer(char *port) {
+
   int fd;
+#ifdef Q_OS_LINUX
   struct termios options;
 
   fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
@@ -39,6 +37,7 @@ static int open_serial_port_for_drawer(char *port) {
     options.c_cflag |= (CLOCAL | CREAD); // Enable the receiver and set local mode...
     tcsetattr(fd, TCSANOW, &options); // Set the new options for the port...
   }
+#endif
   return(fd);
 }
 

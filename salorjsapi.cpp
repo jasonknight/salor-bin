@@ -163,6 +163,7 @@ void SalorJSApi::_cuteBubbleDataRead(QString data) {
     emit cuteDataRead(data);
 }
 void SalorJSApi::remoteService(QString url, QString username, QString password, QString type) {
+#ifdef Q_OS_LINUX
     pid_t cpid;
     QString cmd;
     if (type == "vnc") {
@@ -177,6 +178,7 @@ void SalorJSApi::remoteService(QString url, QString username, QString password, 
         system(cmd.toAscii().data());
         exit(0);
     }
+#endif
 }
 bool SalorJSApi::remoteServiceConnectionOpen(QString type) {
     QString cmd;

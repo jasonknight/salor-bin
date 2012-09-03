@@ -30,7 +30,8 @@ HEADERS  += mainwindow.h \
     salorcookiejar.h \
     salorprocess.h \
     salorjsapi.h \
-    cutecredit.h
+    cutecredit.h \
+    common_includes.h
 
 FORMS    += mainwindow.ui
 
