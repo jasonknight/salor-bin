@@ -2,11 +2,7 @@
 #include "scales.h"
 #include <QDebug>
 #include <sys/stat.h>
-#include <unistd.h>
-#include <linux/stat.h>
-#include <fcntl.h>
-#include <termios.h>
-#include <errno.h>
+#include "common_includes.h"
 #include <sys/types.h>
 #include <sys/time.h>
 DrawerObserverThread::DrawerObserverThread(QObject *parent) : QThread(parent)

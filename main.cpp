@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.to_url = QString("http://salor-retail/orders/new");
+    //w.to_url = QString("http://salor-retail/orders/new");
+    w.to_url = QString("http://sr.red-e.eu");
     QString arg;
     bool fs = true;
     for (int i = 1; i < argc; i++) {
@@ -53,8 +54,9 @@ int main(int argc, char *argv[])
       w.show();
     }
     sp.finish(&w);
+#ifdef Q_OS_LINUX
     signal(SIGCHLD, SIG_IGN);
-
+#endif
     return a.exec();
 }
 
