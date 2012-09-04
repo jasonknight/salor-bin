@@ -1,7 +1,7 @@
 #ifndef CASHDRAWER_H
 #define CASHDRAWER_H
-#include <stdio.h>   /* Standard input/output definitions */
 #include "common_includes.h"
+#include <stdio.h>   /* Standard input/output definitions */
 #include <QDebug>
 #include <QThread>
 
@@ -23,7 +23,7 @@ public slots:
 static int open_serial_port_for_drawer(char *port) {
 
   int fd;
-#ifdef Q_OS_LINUX
+#ifdef LINUX
   struct termios options;
 
   fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);

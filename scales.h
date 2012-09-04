@@ -5,7 +5,7 @@
 
 static int open_serial_port_for_scale(char *port) {
   int fd;
-#ifdef Q_OS_LINUX
+#ifdef LINUX
   struct termios options;
 
   fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);

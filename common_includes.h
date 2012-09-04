@@ -1,9 +1,14 @@
+// Uncomment one of these before you compile
+#define LINUX
+//#define ANDROID
+//#define WINDOWS
+//#define MAC
 #ifndef COMMON_INCLUDES_H
 #define COMMON_INCLUDES_H
 
 // Linux based includes
 
-#ifdef Q_OS_LINUX
+#ifdef LINUX
 #include <termios.h> /* POSIX terminal control definitions */
 #include <linux/stat.h>
 #endif

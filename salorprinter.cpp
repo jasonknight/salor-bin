@@ -1,13 +1,6 @@
 #include "salorprinter.h"
 #include <QDebug>
-#include <stdio.h>   /* Standard input/output definitions */
-#include <string.h>  /* String function definitions */
-#include <unistd.h>  /* UNIX standard function definitions */
-#include <fcntl.h>   /* File control definitions */
-#include <errno.h>   /* Error number definitions */
-#ifdef Q_OS_LINUX
-    #include <termios.h> /* POSIX terminal control definitions */
-#endif
+#include "common_includes.h"
 SalorPrinter::SalorPrinter(QObject *parent) :
     QObject(parent)
 {
@@ -25,7 +18,7 @@ void SalorPrinter::printURL(QString path, QString url, QString confirm_url) {
 void SalorPrinter::pageFetched(QNetworkReply *reply) {
     QByteArray ba = reply->readAll();
     qDebug() << "Buffer is: " << ba;
-#ifdef Q_OS_LINUX
+#ifdef LINUX
     if (this->m_printer_path.indexOf("tty") != -1) {
         int fd;
         struct termios options;

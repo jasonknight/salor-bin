@@ -1,4 +1,5 @@
 #include "salorjsapi.h"
+#include "common_includes.h"
 SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 {
     SalorJSApi::drawer_thread = NULL;
@@ -163,7 +164,7 @@ void SalorJSApi::_cuteBubbleDataRead(QString data) {
     emit cuteDataRead(data);
 }
 void SalorJSApi::remoteService(QString url, QString username, QString password, QString type) {
-#ifdef Q_OS_LINUX
+#ifdef LINUX
     pid_t cpid;
     QString cmd;
     if (type == "vnc") {
