@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     salorcookiejar.cpp \
     salorprocess.cpp \
     salorjsapi.cpp \
-    cutecredit.cpp
+    cutecredit.cpp \
+    optionsdialog.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -31,9 +32,14 @@ HEADERS  += mainwindow.h \
     salorprocess.h \
     salorjsapi.h \
     cutecredit.h \
-    common_includes.h
+    common_includes.h \
+    optionsdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    optionsdialog.ui
 
 RESOURCES += \
     resources.qrc
+macx {
+    LIBS += -lcups
+}

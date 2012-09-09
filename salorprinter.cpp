@@ -1,5 +1,10 @@
 #include "salorprinter.h"
 #include <QDebug>
+#include <QList>
+#include <QPrinter>
+#include <QPrinterInfo>
+#include <QTextDocument>
+#include "salorprocess.h"
 #include "common_includes.h"
 SalorPrinter::SalorPrinter(QObject *parent) :
     QObject(parent)
@@ -67,6 +72,23 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
     } else {
         qDebug() << "Failed to open file";
         emit printerDoesNotExist();
+    }
+#endif
+#ifdef MAC
+    QString printer_name = this->m_printer_path;
+    QString file_path = QDir::tempPath() + "/" + printer_name;
+    qDebug() << "Path is: " << file_path;
+    QFile f(file_path);
+    if (f.open(QIODevice::WriteOnly)) {
+        QTextStream out(&f);
+        out.setCodec("ISO 8859-1");
+        out << ba;
+        f.close();
+        SalorProcess * p = new SalorProcess(this);
+        p->run("lp", QStringList() << "-d" << printer_name << file_path);
+        emit printed();
+    } else {
+        qDebug() << "file could not be written" << printer_name;
     }
 #endif
 }

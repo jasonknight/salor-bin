@@ -15,8 +15,8 @@
 #include <QApplication>
 #include <QWebFrame>
 #include <QWebPage>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <QSettings>
+
 #include "salorjsapi.h"
 #include "salorprocess.h"
 #include "salorprinter.h"
@@ -24,9 +24,8 @@
 #include "scales.h"
 #include "cashdrawer.h"
 #include "cutecredit.h"
-#include <string>
-#include <iostream>
-#include <stdio.h>
+
+#include "common_includes.h"
 
 class SalorJSApi : public QObject
 {

@@ -18,7 +18,11 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     //w.to_url = QString("http://salor-retail/orders/new");
-    w.to_url = QString("http://sr.red-e.eu");
+    if (_get("salor.url").isNull() != true && _get("salor.url").toString() != "") {
+        w.to_url = _get("salor.url").toString();
+    } else {
+        w.to_url = QString("http://sr.red-e.eu");
+    }
     QString arg;
     bool fs = true;
     for (int i = 1; i < argc; i++) {
@@ -37,23 +41,27 @@ int main(int argc, char *argv[])
          }
       }
     }
-    QPixmap pixmap(":/salor-splash.png");
-    QSplashScreen sp(pixmap);
-    sp.show();
-    sp.showMessage("Loading salor");
+    //QPixmap pixmap(":/salor-splash.png");
+    //QSplashScreen sp(pixmap);
+   // sp.show();
+   // sp.showMessage("Loading salor");
 
-    sp.showMessage("initializing");
+   // sp.showMessage("initializing");
     w.init();
-    sp.showMessage("initialization completed, waiting for load");
-    while (w.shown == false) {
-        a.processEvents();
-    }
+    //sp.showMessage("initialization completed, waiting for load");
+    //while (w.shown == false) {
+    //    a.processEvents();
+    //}
     if (fs) {
-      w.showFullScreen();
+      #ifdef LINUX
+        w.showFullScreen();
+      #else
+        w.showMaximized();
+      #endif
     } else {
       w.show();
     }
-    sp.finish(&w);
+    //sp.finish(&w);
 #ifdef Q_OS_LINUX
     signal(SIGCHLD, SIG_IGN);
 #endif

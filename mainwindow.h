@@ -11,6 +11,12 @@
 #include "salorjsapi.h"
 #include "salorprinter.h"
 #include "salor_page.h"
+#include "common_includes.h"
+#include "optionsdialog.h"
+#include <QStatusBar>
+#include <QBoxLayout>
+#include <QProgressBar>
+#include <QLabel>
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -25,6 +31,9 @@ public:
 private slots:
 
 public slots:
+    void setProgress(int);
+    void finishLoading(bool);
+    void adjustTitle();
     void repaintViews();
     QWebView* getWebView();
     void addJavascriptObjects();
@@ -39,6 +48,8 @@ public slots:
     void customersIndex();
     void editLastAddedItem();
     void endDayReport();
+    void showOptionsDialog();
+    void navigateToUrl(QString url);
 signals:
     void camWasCaptured(int id,QString filePath);
     void dataRead(QString source, QString data);
@@ -49,6 +60,11 @@ private:
     SalorPrinter *sp;
     SalorJSApi *js;
     void attach();
+    int progress;
+    QStatusBar * statusBar;
+    QBoxLayout * layout;
+    QProgressBar * status_bar_progressBar;
+    QLabel * status_bar_urlLabel;
 };
 
 #endif // MAINWINDOW_H
