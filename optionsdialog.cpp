@@ -19,12 +19,22 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
         QString name = dest->name;
         ui->printerComboBox->addItem(name,QVariant(name));
      }
+
+#endif
+#ifdef LINUX
+    QDir dev("/dev");
+    dev.setFilter(QDir::AllEntries);
+    QFileInfoList list = dev.entryInfoList();
+    for (int i = 0; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);
+        ui->printerComboBox->addItem(fileInfo.fileName(),QVariant(fileInfo.fileName()));
+    }
+#endif
     int index = ui->printerComboBox->findText(_get("salor.thermal_printer").toString());
     //qDebug() << "index is: " << index << "get is:" << _get("salor.thermal_printer");
     if (index != -1) {
       ui->printerComboBox->setCurrentIndex(index);
     }
-#endif
     connect(ui->printerComboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_printerComboBox_currentIndexChanged(QString)));
     _ready = true;
 }

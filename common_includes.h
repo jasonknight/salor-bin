@@ -1,8 +1,8 @@
 // Uncomment one of these before you compile
-//#define LINUX
+#define LINUX
 //#define ANDROID
 //#define WINDOWS
-#define MAC
+//#define MAC
 #ifndef COMMON_INCLUDES_H
 #define COMMON_INCLUDES_H
 

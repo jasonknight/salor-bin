@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     //}
     if (fs) {
       #ifdef LINUX
-        w.showFullScreen();
+        w.showMaximized();
       #else
         w.showMaximized();
       #endif
