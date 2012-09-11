@@ -47,11 +47,11 @@ SalorCookieJar::SalorCookieJar(QObject* parent)
 
 
 #ifndef QT_NO_DESKTOPSERVICES
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-#else
-    QString path = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-#endif
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    #else
+        QString path = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+    #endif
 #else
     QString path = QDir::homePath() + "/.SalorBrowser";
 #endif

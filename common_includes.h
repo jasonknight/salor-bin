@@ -1,8 +1,8 @@
 // Uncomment one of these before you compile
 //#define LINUX
 //#define ANDROID
-//#define WINDOWS
-#define MAC
+#define WINDOWS
+//#define MAC
 #ifndef COMMON_INCLUDES_H
 #define COMMON_INCLUDES_H
 
@@ -14,11 +14,11 @@
 #endif
 
 #ifdef WINDOWS
-
+    #include <windows.h>
 #endif
 
 #ifdef MAC
-    #include    <cups/cups.h>
+    #include <cups/cups.h>
 #endif
 
 #include <string.h>  /* String function definitions */
@@ -35,6 +35,9 @@
 #include <QVariant>
 #include <QDir>
 #include <QDebug>
+#include <QDesktopServices>
+#include <QDirIterator>
+#include <QScopedPointer>
 
 static QVariant _get(QString key) {
     QSettings settings("JolieRouge", "Salor");
@@ -59,4 +62,19 @@ static void _set(QString key, qreal value) {
     settings.setValue(key,value);
 }
 
+// Global Variables
+
+
+// Macro Definitions
+
+#define PROP(type,name) \
+   public: \
+    type Get##name() { return prop_##name;} \
+    void Set##name(type value) { prop_##name = value; }; \
+   private: \
+    type prop_##name;
+#define GET(name) Get##name()
+#define SET(name,value) Set##name(value)
+#define bug(string) \
+    qDebug() << "##string"
 #endif // COMMON_INCLUDES_H

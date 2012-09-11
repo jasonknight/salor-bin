@@ -5,6 +5,7 @@
 
 static int open_serial_port_for_scale(char *port) {
   int fd;
+  fd = 0;
 #ifdef LINUX
   struct termios options;
 

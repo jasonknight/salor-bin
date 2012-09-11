@@ -16,7 +16,17 @@
 #include "salorcookiejar.h"
 #include "salorprocess.h"
 #include "salorjsapi.h"
-
+#ifndef CACHELOCATION
+    #ifndef QT_NO_DESKTOPSERVICES
+        #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+            QString CACHELOCATION = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        #else
+            QString CACHELOCATION = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+        #endif
+    #else
+        QString CACHELOCATION = QDir::homePath() + "/.SalorBrowser";
+    #endif
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -59,11 +69,10 @@ void MainWindow::init() {
     this->js->webView = this->webView;
     connect(page,SIGNAL(generalSnap(QString)),this->js,SLOT(generalSnap(QString)));
     //QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-    //QString location = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-    //diskCache->setCacheDirectory(location);
+    //diskCache->setCacheDirectory(CACHELOCATION);
+    //qDebug() << CACHELOCATION << " is the cache location";
     //webView->page()->networkAccessManager()->setCache(diskCache);
     setCentralWidget(webView);
-    QWidget * widget = new QWidget();
 
     webView->show();
     statusBar = new QStatusBar(this);

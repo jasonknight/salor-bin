@@ -23,6 +23,7 @@ public slots:
 static int open_serial_port_for_drawer(char *port) {
 
   int fd;
+  fd = 0;
 #ifdef LINUX
   struct termios options;
 
