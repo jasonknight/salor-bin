@@ -11,3 +11,4 @@ salor_gui.pro.user
 *.o
 *.moc
 moc_*
+*.exe

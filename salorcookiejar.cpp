@@ -56,7 +56,7 @@ SalorCookieJar::SalorCookieJar(QObject* parent)
     QString path = QDir::homePath() + "/.SalorBrowser";
 #endif
     path = "/tmp";
-    qDebug() << path;
+    //qDebug() << path;
 
     QDir().mkpath(path);
     m_file.setFileName(path + "/salorCookieJar");
@@ -66,7 +66,7 @@ SalorCookieJar::SalorCookieJar(QObject* parent)
 SalorCookieJar::~SalorCookieJar()
 {
     if (m_storageEnabled) {
-        qDebug() << "Dumping to disk";
+        //qDebug() << "Dumping to disk";
         extractRawCookies();
         saveToDisk();
     } else {
@@ -81,7 +81,7 @@ bool SalorCookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, 
         scheduleSaveToDisk();
 
     } else {
-        qDebug() << "hello";
+        //qDebug() << "hello";
     }
     return status;
 }
@@ -108,7 +108,7 @@ void SalorCookieJar::scheduleSaveToDisk()
 
 void SalorCookieJar::extractRawCookies()
 {
-    qDebug() << "Extract raw cookies";
+    //qDebug() << "Extract raw cookies";
     QList<QNetworkCookie> cookies = allCookies();
     m_rawCookies.clear();
 
@@ -133,7 +133,7 @@ void SalorCookieJar::saveToDisk()
 void SalorCookieJar::loadFromDisk()
 {
     if (!m_file.exists()) {
-        qDebug() << "!File Exists";
+        //qDebug() << "!File Exists";
         return;
     }
 
@@ -149,7 +149,7 @@ void SalorCookieJar::loadFromDisk()
     } else {
         qWarning("IO error handling cookiejar file");
     }
-    qDebug() << "Setting cookies..." << QString::number(cookies.length());
+    //qDebug() << "Setting cookies..." << QString::number(cookies.length());
     setAllCookies(cookies);
 }
 

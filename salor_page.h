@@ -18,7 +18,7 @@ public:
     QString getAlertString();
 public slots:
     void resetJsErrors() {
-        qDebug() << "resetting js errors";
+        //qDebug() << "resetting js errors";
         this->js_error_count = 0;
     }
 

@@ -16,17 +16,8 @@
 #include "salorcookiejar.h"
 #include "salorprocess.h"
 #include "salorjsapi.h"
-#ifndef CACHELOCATION
-    #ifndef QT_NO_DESKTOPSERVICES
-        #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-            QString CACHELOCATION = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-        #else
-            QString CACHELOCATION = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-        #endif
-    #else
-        QString CACHELOCATION = QDir::homePath() + "/.SalorBrowser";
-    #endif
-#endif
+#include "network.h"
+#include "common_includes.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -62,16 +53,19 @@ void MainWindow::init() {
     webView = new QWebView();
     this->page = new SalorPage(this);
     webView->setPage(this->page);
+    Network* net = new Network(this);
+    webView->page()->setNetworkAccessManager(net);
     SalorCookieJar * jar = new SalorCookieJar(this);
+
     webView->page()->networkAccessManager()->setCookieJar(jar);
     this->sp = new SalorPrinter(this);
     this->js = new SalorJSApi(this);
     this->js->webView = this->webView;
     connect(page,SIGNAL(generalSnap(QString)),this->js,SLOT(generalSnap(QString)));
-    //QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-    //diskCache->setCacheDirectory(CACHELOCATION);
-    //qDebug() << CACHELOCATION << " is the cache location";
-    //webView->page()->networkAccessManager()->setCache(diskCache);
+    QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+    diskCache->setCacheDirectory(PathCache);
+    qDebug() << PathCache << " is the cache location";
+    webView->page()->networkAccessManager()->setCache(diskCache);
     setCentralWidget(webView);
 
     webView->show();
@@ -155,9 +149,13 @@ void MainWindow::finishLoading(bool) {
 void MainWindow::showOptionsDialog() {
     OptionsDialog* d = new OptionsDialog(this);
     connect(d,SIGNAL(navigateToUrl(QString)),this,SLOT(navigateToUrl(QString)));
+    connect(d,SIGNAL(clearCache()),webView->page()->networkAccessManager()->cache(),SLOT(clear()));
     d->show();
-
 }
+void MainWindow::executeJS(QString &js) {
+    webView->page()->mainFrame()->evaluateJavaScript(js);
+}
+
 void MainWindow::adjustTitle() {
      if (progress <= 0 || progress >= 100)
          setWindowTitle(webView->title());

@@ -22,7 +22,7 @@ void SalorPrinter::printURL(QString path, QString url, QString confirm_url) {
 
 void SalorPrinter::pageFetched(QNetworkReply *reply) {
     QByteArray ba = reply->readAll();
-    qDebug() << "Buffer is: " << ba;
+    qDebug() << "Buffer is: " << QString(ba).toAscii();
 #ifdef LINUX
     if (this->m_printer_path.indexOf("tty") != -1) {
         int fd;
@@ -89,6 +89,42 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
         emit printed();
     } else {
         qDebug() << "file could not be written" << printer_name;
+    }
+#endif
+#ifdef WINDOWS
+    BOOL     bStatus = FALSE;
+    DOC_INFO_1 DocInfo;
+    DWORD      dwJob = 0L;
+    DWORD      dwBytesWritten = 0L;
+    HANDLE     hPrinter;
+    wchar_t * name = new wchar_t[this->m_printer_path.length()+1];
+    this->m_printer_path.toWCharArray(name);
+    name[this->m_printer_path.length() + 1] = 0;
+    bStatus = OpenPrinter(name,&hPrinter, NULL);
+
+    if (bStatus) {
+        DocInfo.pDocName = L"My Document";
+        DocInfo.pOutputFile = NULL;
+        DocInfo.pDatatype = L"RAW";
+        dwJob = StartDocPrinter( hPrinter, 1, (LPBYTE)&DocInfo );
+        if (dwJob > 0) {
+            bStatus = StartPagePrinter(hPrinter);
+            if (bStatus) {
+                bStatus = WritePrinter(hPrinter,ba.data(),ba.length(),&dwBytesWritten);
+                EndPagePrinter(hPrinter);
+            } else {
+                qDebug() << "could not start printer";
+            }
+            EndDocPrinter(hPrinter);
+        } else {
+            qDebug() << "Couldn't create job";
+        }
+        ClosePrinter(hPrinter);
+    } else {
+        qDebug() << "Could not open printer";
+    }
+    if (dwBytesWritten != ba.length()) {
+        qDebug() << "Wrong number of bytes";
     }
 #endif
 }

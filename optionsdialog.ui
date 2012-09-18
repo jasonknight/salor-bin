@@ -38,13 +38,23 @@
      <x>10</x>
      <y>10</y>
      <width>461</width>
-     <height>221</height>
+     <height>254</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
     <property name="sizeConstraint">
      <enum>QLayout::SetNoConstraint</enum>
     </property>
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>URL</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="1">
      <widget class="QLineEdit" name="URLEdit">
       <property name="sizePolicy">
@@ -61,13 +71,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>URL</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
@@ -77,6 +80,32 @@
     </item>
     <item row="1" column="1">
      <widget class="QComboBox" name="printerComboBox"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Additional</string>
+      </property>
+      <widget class="QPushButton" name="ClearCacheButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Clear Cache</string>
+       </property>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -90,6 +119,12 @@
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout_2">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
     <item row="0" column="0">
      <widget class="QPushButton" name="pushButton">
       <property name="minimumSize">
@@ -172,10 +207,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ClearCacheButton</sender>
+   <signal>clicked()</signal>
+   <receiver>OptionsDialog</receiver>
+   <slot>on_ClearCacheButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>327</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>on_pushButton_clicked()</slot>
   <slot>on_URLEdit_textChanged(QString)</slot>
   <slot>on_printerComboBox_currentIndexChanged(QString)</slot>
+  <slot>on_ClearCacheButton_clicked()</slot>
  </slots>
 </ui>

@@ -50,6 +50,7 @@ public slots:
     void endDayReport();
     void showOptionsDialog();
     void navigateToUrl(QString url);
+    void executeJS(QString &js);
 signals:
     void camWasCaptured(int id,QString filePath);
     void dataRead(QString source, QString data);

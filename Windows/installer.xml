@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+
+<Product Name='Salor POS 2.2.4' Id='5bb5a2fc-bafe-4f8b-a124-66c751ab6209' 
+Language='1033' Codepage='1252' Version='1.0.0' Manufacturer='Acme Ltd.'>
+
+	<Package Id='*' 
+			 Keywords='Salor' 
+			 Description="Salor POS Installer"
+			 Comments='Salor is a registered trademark of Red E Tools Ltd.' 
+			 Manufacturer='Red E Tools Ltd.'
+			 InstallerVersion='100' 
+			 Languages='1033' 
+			 Compressed='yes' 
+			 SummaryCodepage='1252' />
+	<Media Id="1" Cabinet="Product.cab" EmbedCab="yes" CompressionLevel="high"/>
+	<Directory Id="TARGETDIR" Name="SourceDir">
+		<Directory Id="ProgramFilesFolder">
+			<Directory Id="SalorProgramFiles" Name="Salor POS">
+				<Directory Id="INSTALLDIR" Name="Salor" LongName="Salor Point of Sale">
+					<Component Id="ComponentSalor">
+						<File Id="FileSalorEXE" Name="salor.exe" DiskId="1" LongName="salor.exe" Vital="yes"
+							  Source="salor.exe" />
+						<File Id="mingwm10DLL" Name="mingw10.dll" DiskId="1" LongName="mingw10.dll" Vital="yes"
+							  Source="C:\QtSDK\mingw\bin\mingw10.dll" />
+						<File Id="libgcc_s_dw2-1DLL" Name="libgcc_s_dw2-1.dll" DiskId="1" LongName="libgcc_s_dw2-1.dll" Vital="yes"
+							  Source="C:\QtSDK\mingw\bin\libgcc_s_dw2-1.dll" />
+						<File Id="QtCore4DLL" Name="QtCore4.dll" DiskId="1" LongName="QtCore4.dll" Vital="yes"
+							  Source="C:\QtSDK\Desktop\Qt\4.8.0\mingw\bin\QtCore4.dll" />
+						<File Id="QtGui4DLL" Name="QtGui4.dll" DiskId="1" LongName="QtGui4.dll" Vital="yes"
+							  Source="C:\QtSDK\Desktop\Qt\4.8.0\mingw\bin\QtGui4.dll" />
+						<File Id="QtNetwork4DLL" Name="QtNetwork4.dll" DiskId="1" LongName="QtNetwork4.dll" Vital="yes"
+							  Source="C:\QtSDK\Desktop\Qt\4.8.0\mingw\bin\QtNetwork4.dll" />
+						<File Id="QtWebKit4DLL" Name="QtWebKit4.dll" DiskId="1" LongName="QtWebKit4.dll" Vital="yes"
+							  Source="C:\QtSDK\Desktop\Qt\4.8.0\mingw\bin\QtWebKit4.dll" />
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+	</Directory>
+</Product>

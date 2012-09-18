@@ -2,7 +2,24 @@
 #include "mainwindow.h"
 #include <iostream>
 #include <signal.h>
+#include "common_includes.h"
+char * __path;
+size_t __size;
+#ifdef LINUX
+    #include <termios.h> /* POSIX terminal control definitions */
+    const QString PathWorking = QDir::homePath() + "/.Salor";
+#endif
 
+#ifdef WINDOWS
+    const QString PathWorking = _getcwd(__path,__size);
+#endif
+
+#ifdef MAC
+    const QString PathWorking = getcwd(__path,__size);
+#endif
+const QString PathCache = PathWorking + "/SalorCache";
+const QString PathSettings = PathWorking + "/SalorSettings";
+const QString PathDownloads = PathWorking + "/SalorDownloads";
 void help() {
     std::cout << "Usage:\n";
     std::cout << "\tsalor -[uh] [value]\n";
@@ -17,6 +34,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+
+    if (!QDir(PathWorking).exists()) {
+        QDir().mkdir(PathWorking);
+    }
+
     //w.to_url = QString("http://salor-retail/orders/new");
     if (_get("salor.url").isNull() != true && _get("salor.url").toString() != "") {
         w.to_url = _get("salor.url").toString();
@@ -54,7 +76,7 @@ int main(int argc, char *argv[])
     //}
     if (fs) {
       #ifdef LINUX
-        w.showFullScreen();
+        w.showMaximized();
       #else
         w.showMaximized();
       #endif

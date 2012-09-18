@@ -17,6 +17,8 @@ public:
     bool _ready;
 signals:
     void navigateToUrl(QString);
+    void clearCache();
+    void sendJS(QString &js);
 public slots:
     void on_URLEdit_textChanged(QString value) {
         _set(QString("salor.url"),value);
@@ -26,7 +28,7 @@ public slots:
         emit navigateToUrl(url);
     }
     void on_printerComboBox_currentIndexChanged(QString);
-
+    void on_ClearCacheButton_clicked();
 private:
     Ui::OptionsDialog *ui;
 };
