@@ -7,8 +7,8 @@
 #include <QtGui>
 #include <QTimer>
 #include <QByteArray>
-#include <QNetworkRequest>
-#include <QProcess>
+#include <downloader.h>
+
 #include "salorprocess.h"
 
 SalorPage::SalorPage(QObject* parent):QWebPage(parent)
@@ -17,6 +17,38 @@ SalorPage::SalorPage(QObject* parent):QWebPage(parent)
 
     //this->setPluginFactory(wpf);
     this->js_error_count = 0;
+
+    qDebug() << "Setup SalorPage signals";
+}
+void SalorPage::downloadFile(QNetworkRequest request) {
+    qDebug() << "Other download called";
+    QString default_file_name = QFileInfo(request.url().toString()).fileName();
+    QString file_name = QFileDialog::getSaveFileName((QWidget*)this,tr("Save File"),default_file_name);
+    if (file_name.isEmpty())
+        return;
+    QNetworkRequest new_request = request;
+    new_request.setAttribute(QNetworkRequest::User,file_name);
+    QNetworkAccessManager * mng = this->networkAccessManager();
+    QNetworkReply *reply = mng->get(new_request);
+
+}
+void SalorPage::downloadFile(QNetworkReply *reply) {
+
+    qDebug() << "Download called";
+    QString default_file_name = QFileInfo(reply->url().toString()).fileName();
+    QString file_name = QFileDialog::getSaveFileName(0,tr("Save File"),default_file_name);
+    if (file_name.isEmpty())
+        return;
+    Downloader * d = new Downloader;
+    d->file_name = file_name;
+    connect(d,SIGNAL(fileProgressUpdated(int)),this->main,SLOT(setProgress(int)));
+    connect(d,SIGNAL(finished()),d,SLOT(deleteLater()));
+    connect(d,SIGNAL(addWidget(QWidget*)),this,SLOT(bubbleAddWidget(QWidget*)));
+    connect(d,SIGNAL(removeWidget(QWidget*)),this,SLOT(bubbleRemoveWidget(QWidget*)));
+    d->setReply(reply);
+    //connect(reply,SIGNAL(downloadProgress(qint64,qint64)),d,SLOT(updateFileProgress(qint64,qint64)));
+
+    d->main = this->main;
 }
 void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  ) {
     //QMessageBox::critical(0, QObject::tr("Critical Script Error"), QString() + "A Javascript error Occurred: '" + message + "'\nat line " + QString::number(lineNumber) + "\nin " + sourceID);
@@ -41,6 +73,10 @@ void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumb
     qDebug() <<  "xxxA Javascript error Occurred: " << err;
 }
 QString SalorPage::chooseFile(QWebFrame* /*frame*/, const QString& /*suggestedFile*/) {
+  QString file_name = QFileDialog::getOpenFileName();
+  if (!file_name.isEmpty()) {
+    return file_name;
+  }
   return QString::null;
 }
 

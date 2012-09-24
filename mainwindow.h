@@ -28,6 +28,7 @@ public:
     bool shown;
     QString to_url;
     SalorPage * page;
+    QStatusBar * statusBar;
 private slots:
 
 public slots:
@@ -51,6 +52,8 @@ public slots:
     void showOptionsDialog();
     void navigateToUrl(QString url);
     void executeJS(QString &js);
+    void addStatusBarWidget(QWidget * w);
+    void removeStatusBarWidget(QWidget * w);
 signals:
     void camWasCaptured(int id,QString filePath);
     void dataRead(QString source, QString data);
@@ -62,7 +65,6 @@ private:
     SalorJSApi *js;
     void attach();
     int progress;
-    QStatusBar * statusBar;
     QBoxLayout * layout;
     QProgressBar * status_bar_progressBar;
     QLabel * status_bar_urlLabel;

@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     salorjsapi.cpp \
     cutecredit.cpp \
     optionsdialog.cpp \
-    network.cpp
+    network.cpp \
+    downloader.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     common_includes.h \
     optionsdialog.h \
     network.h \
-    paths.h
+    paths.h \
+    downloader.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui

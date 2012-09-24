@@ -3,7 +3,11 @@
 #include <QWebPage>
 #include <QObject>
 #include <QDebug>
+#include <QNetworkRequest>
+#include <QProcess>
+#include <QNetworkReply>
 class SalorCapture;
+class MainWindow;
 class SalorPage:public QWebPage
 {
     Q_OBJECT
@@ -16,14 +20,25 @@ public:
     void setSalorCapture(SalorCapture* SalorCapture);
     int js_error_count;
     QString getAlertString();
+    MainWindow * main;
 public slots:
     void resetJsErrors() {
         //qDebug() << "resetting js errors";
         this->js_error_count = 0;
     }
-
+    void downloadFile(QNetworkRequest request);
+    void downloadFile(QNetworkReply * reply);
+    void updateFileProgress(qint64 read,qint64 total) {
+        int p = (int)((read / total) * 100);
+        emit fileProgressUpdated(p);
+    }
+    void bubbleAddWidget(QWidget * w) { qDebug() << "Bubbling add widget"; emit addWidget(w);}
+    void bubbleRemoveWidget(QWidget *w) { emit removeWidget(w);}
 signals:
     void generalSnap(QString);
+    void fileProgressUpdated(int);
+    void addWidget(QWidget *);
+    void removeWidget(QWidget *);
 protected:
     virtual void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  );
     void javaScriptAlert(QWebFrame* frame, const QString& msg);

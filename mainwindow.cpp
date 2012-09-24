@@ -52,7 +52,13 @@ void MainWindow::init() {
 
     webView = new QWebView();
     this->page = new SalorPage(this);
+    this->page->main = this;
+    this->page->setForwardUnsupportedContent(true);
+    connect(this->page,SIGNAL(unsupportedContent(QNetworkReply*)),this->page,SLOT(downloadFile(QNetworkReply*)));
+    connect(this->page,SIGNAL(addWidget(QWidget*)),this,SLOT(addStatusBarWidget(QWidget*)));
+    connect(this->page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
     webView->setPage(this->page);
+    connect(this->page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
     Network* net = new Network(this);
     webView->page()->setNetworkAccessManager(net);
     SalorCookieJar * jar = new SalorCookieJar(this);
@@ -138,7 +144,16 @@ void MainWindow::connectSlots() {
       this->webView->page()->mainFrame()->setZoomFactor(z);
     }
 }
+void MainWindow::addStatusBarWidget(QWidget *w) {
+    qDebug() << "Adding widget";
+    this->statusBar->addWidget(w);
+}
+void MainWindow::removeStatusBarWidget(QWidget *w) {
+    this->statusBar->removeWidget(w);
+}
+
 void MainWindow::setProgress(int p) {
+    qDebug() << "set progress called" << QString::number(p);
     progress = p;
     adjustTitle();
 }
