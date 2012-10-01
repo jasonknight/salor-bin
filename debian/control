@@ -2,14 +2,14 @@ Source: salor-bin
 Section: unknown
 Priority: extra
 Maintainer: Michael Franzl <office@michaelfranzl.com>
-Build-Depends: debhelper (>= 8.0.0)
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, qt4-dev-tools, libqtwebkit-dev, automoc, dh-autoreconf
 Standards-Version: 3.9.2
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://git.debian.org/collab-maint/salor-bin.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/salor-bin.git;a=summary
+Homepage: http://red-e.eu/apps/salor-retail
+#Vcs-Git: git://github.com/jasonknight/salor-bin.git
+#Vcs-Browser: https://github.com/jasonknight/salor-bin
 
 Package: salor-bin
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqtcore4, libqt4-network
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>
