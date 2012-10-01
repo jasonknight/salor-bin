@@ -1,17 +1,20 @@
-salor-bin for Debian
---------------------
+# salor-bin for Debian
 
-Set up your build toolchain (do this only once):
+## Set up your build toolchain (do this only once):
 
-1. Install depenencies:
+Install depenencies:
 
     apt-get install dpkg-dev debhelper git-buildpackage pbuilder cowbuilder apt-cacher-ng dupload
     
-2. Generate clean chroot environments with cowbuilder. Change the collection of distributions and/or architectures below according to your needs.
+Configure pbuilder according to documentation.
+    
+Generate clean chroot environments with cowbuilder. Change the collection of distributions and/or architectures below according to your needs.
 
     for arch in `echo i386 amd64` ; do for dist in `echo unstable testing stable maverick` ; do sudo DIST=${dist} ARCH=${arch} cowbuilder --create --architecture ${arch} --distribution ${dist} --http-proxy http://localhost:3142; done ; done
     
-3. Set up dupload according to `man dupload` and `man dupload.conf`
+If you want to upload the generated Debian packages into an apt repository, configure `dupload` according to `man dupload` and `man dupload.conf`.
+
+## Work on the code and generate a package
 
 The common workflow of coding and building a package is as follows:
 

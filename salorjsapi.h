@@ -57,7 +57,6 @@ public slots:
  void completeOrderSnap(QString order_id);
  void generalSnap(QString msg);
  void playSound(QString name);
- QString version();
  void mimoRefresh(QString path,int h, int w);
  void mimoImage(QString imagepath);
  void cuteWriteData(QString);
