@@ -18,9 +18,11 @@ If you want to upload the generated Debian packages into an apt repository, conf
 
 The common workflow of coding and building a package is as follows:
 
-
+    export DEB_HOST_ARCH={{insert architecture here}}
     DIST={{insert distribution here}}
     ARCH={{insert architecture here}}
     git-buildpackage --git-pbuilder --git-arch=$ARCH --git-dist=$DIST --git-tag
+    
+(Note: DIST and ARCH must be present both as environment variables as well as command line parameters.)
 
  -- Michael Franzl <office@michaelfranzl.com>  Mon, 01 Oct 2012 08:19:12 +0200
