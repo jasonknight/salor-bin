@@ -1,6 +1,23 @@
 salor-bin for Debian
 --------------------
 
-<possible notes regarding this package - if none, delete this file>
+Set up your build toolchain (do this only once):
+
+1. Install depenencies:
+
+    apt-get install dpkg-dev debhelper git-buildpackage pbuilder cowbuilder apt-cacher-ng dupload
+    
+2. Generate clean chroot environments with cowbuilder. Change the collection of distributions and/or architectures below according to your needs.
+
+    for arch in `echo i386 amd64` ; do for dist in `echo unstable testing stable maverick` ; do sudo DIST=${dist} ARCH=${arch} cowbuilder --create --architecture ${arch} --distribution ${dist} --http-proxy http://localhost:3142; done ; done
+    
+3. Set up dupload according to `man dupload` and `man dupload.conf`
+
+The common workflow of coding and building a package is as follows:
+
+
+    DIST={{insert distribution here}}
+    ARCH={{insert architecture here}}
+    git-buildpackage --git-pbuilder --git-arch=$ARCH --git-dist=$DIST --git-tag
 
  -- Michael Franzl <office@michaelfranzl.com>  Mon, 01 Oct 2012 08:19:12 +0200
