@@ -10,12 +10,10 @@ SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("aplay", QStringList() << "/usr/share/sounds/salor/" + name + ".wav");
+    sp->run("aplay", QStringList() << name + ".wav");
 }
-QString SalorJSApi::version() {
-    QString v = "2.2.4";
-    return(v);
-}
+
+
 void SalorJSApi::printPage() {
     QPrinter printer;
     printer.setPageSize(QPrinter::A4);
@@ -65,9 +63,7 @@ void SalorJSApi::completeOrderSnap(QString order_id) {
     this->webView->page()->mainFrame()->render(&painter);
     painter.end();
     QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss") + "_" + order_id + ".png";
-    // Here is where we hook in.
-    //qDebug() << "Saving to: " << mOutput;
-    image.save("/opt/salor_pos/logs/images/" + name, "png",1);
+    image.save("/tmp/" + name, "png",1);
 }
 void SalorJSApi::generalSnap(QString msg) {
     qDebug() << "GeneralSnap called";
@@ -79,8 +75,8 @@ void SalorJSApi::generalSnap(QString msg) {
     this->webView->page()->mainFrame()->render(&painter);
     painter.end();
     QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss") + QString::number(qrand());
-    QDir().mkpath("/opt/salor_pos/logs/images/");
-    QFile m("/opt/salor_pos/logs/images/" + name + ".txt");
+    QDir().mkpath("/tmp/salor-images/");
+    QFile m("/tmp/salor-images/" + name + ".txt");
     if (m.open(QIODevice::ReadWrite)) {
         m.write(msg.toAscii());
         m.write(this->webView->page()->mainFrame()->toHtml().toAscii());
@@ -88,8 +84,8 @@ void SalorJSApi::generalSnap(QString msg) {
     } else {
         qDebug() << "Could not create file";
     }
-    qDebug() << "writing: " << "/opt/salor_pos/logs/images/" + name << "png";
-    image.save("/opt/salor_pos/logs/images/" + name + ".png", "png",1);
+    qDebug() << "writing: " << "/tmp/salor-images/" + name << "png";
+    image.save("/tmp/salor-images/" + name + ".png", "png",1);
 }
 QString SalorJSApi::toperScale(QString addy) {
   int fd;
