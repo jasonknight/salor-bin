@@ -9,8 +9,10 @@ bin_PROGRAMS = salor-bin
 salor_bin_SOURCES = \
 	cashdrawer.cpp \
 	cutecredit.cpp \
+	downloader.cpp \
 	main.cpp\
 	mainwindow.cpp \
+	network.cpp \
 	optionsdialog.cpp \
 	salor_customer_screen.cpp \
 	salor_page.cpp \
@@ -22,14 +24,15 @@ salor_bin_SOURCES = \
 	salorprocess.cpp
 
 
-
 # You have one .h file, it's called myapp.h. Therefore, here I list
 # its mocced name, moc_myapp.cpp.
 nodist_salor_bin_SOURCES = \
 	moc_cashdrawer.cpp \
 	moc_common_includes.cpp \
 	moc_cutecredit.cpp \
+	moc_downloader.cpp \
 	moc_mainwindow.cpp \
+	moc_network.cpp \
 	moc_optionsdialog.cpp \
 	moc_salor_customer_screen.cpp \
 	moc_salor_page.cpp \
@@ -39,7 +42,8 @@ nodist_salor_bin_SOURCES = \
 	moc_salorjsapi.cpp \
 	moc_salorprinter.cpp \
 	moc_salorprocess.cpp \
-	moc_scales.cpp
+	moc_scales.cpp \
+	moc_d
 
 
 
@@ -54,7 +58,7 @@ EXTRA_DIST = \
 
 # This rule lets GNU make create any moc_*.cpp from the equivalent *.h
 moc_%.cpp: %.h
-	moc $< -o $@
+	moc-qt4 $< -o $@
 
 optionsdialog.o: ui_optionsdialog.h
 
