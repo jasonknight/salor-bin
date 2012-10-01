@@ -38,8 +38,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     optionsdialog.ui
 
-RESOURCES += \
-    resources.qrc
 macx {
     LIBS += -lcups
 }
