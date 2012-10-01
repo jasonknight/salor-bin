@@ -1,28 +1,6 @@
-# salor-bin for Debian
+salor-bin for Debian
+--------------------
 
-## Set up your build toolchain (do this only once):
-
-Install depenencies:
-
-    apt-get install dpkg-dev debhelper git-buildpackage pbuilder cowbuilder apt-cacher-ng dupload
-    
-Configure pbuilder according to documentation.
-    
-Generate clean chroot environments with cowbuilder. Change the collection of distributions and/or architectures below according to your needs.
-
-    for arch in `echo i386 amd64` ; do for dist in `echo unstable testing stable maverick` ; do sudo DIST=${dist} ARCH=${arch} cowbuilder --create --architecture ${arch} --distribution ${dist} --http-proxy http://localhost:3142; done ; done
-    
-If you want to upload the generated Debian packages into an apt repository, configure `dupload` according to `man dupload` and `man dupload.conf`.
-
-## Work on the code and generate a package
-
-The common workflow of coding and building a package is as follows:
-
-    export DEB_HOST_ARCH={{insert architecture here}}
-    export DIST={{insert distribution here}}
-    export ARCH={{insert architecture here}}
-    git-buildpackage --git-pbuilder --git-arch=$ARCH --git-dist=$DIST --git-tag
-    
-(Note: DIST and ARCH must be present both as environment variables as well as command line parameters.)
+See instructions at http://documentation.red-e.eu/maintainers
 
  -- Michael Franzl <office@michaelfranzl.com>  Mon, 01 Oct 2012 08:19:12 +0200
