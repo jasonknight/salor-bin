@@ -1,3 +1,9 @@
+salor-bin (2.2.6) precise; urgency=low
+
+  * readme
+
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 01 Oct 2012 10:52:38 +0200
+
 salor-bin (2.2.5) unstable; urgency=low
 
   * Initial Release.
