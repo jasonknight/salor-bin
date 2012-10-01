@@ -20,9 +20,7 @@ SOURCES += main.cpp\
     salorprocess.cpp \
     salorjsapi.cpp \
     cutecredit.cpp \
-    optionsdialog.cpp \
-    network.cpp \
-    downloader.cpp
+    optionsdialog.cpp
 
 HEADERS  += mainwindow.h \
     salor_page.h \
@@ -35,10 +33,7 @@ HEADERS  += mainwindow.h \
     salorjsapi.h \
     cutecredit.h \
     common_includes.h \
-    optionsdialog.h \
-    network.h \
-    paths.h \
-    downloader.h
+    optionsdialog.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui
@@ -47,7 +42,4 @@ RESOURCES += \
     resources.qrc
 macx {
     LIBS += -lcups
-}
-win32 {
-    LIBS += -lwinspool -lgdi32 -luser32 -lcomdlg32 -lkernel32
 }
