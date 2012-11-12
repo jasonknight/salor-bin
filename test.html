@@ -5,15 +5,23 @@
 
   <h1>salor_bin <span id='version'></span></h1>
   <div onclick="Salor.poleDancer('/dev/ttyUSB0','Test');">Test Pole Dancer on /dev/ttyUSB0</div>
-  <div onclick="Salor.newOpenCashDrawer('/dev/usb/lp0');">Test Open Cash Drawer on /dev/usb/lp0</div>
-  <div onclick="Salor.startDrawerObserver('/dev/usb/lp0');">Start Drawer Observer on /dev/usb/lp0</div>
-  <div onclick="Salor.stopDrawerObserver();">Stop Drawer Observer</div>
+  <div onclick="open_drawer();">Test Open Cash Drawer on /dev/usb/lp0</div>
+  <div onclick="start_drawer_observer();">Start Drawer Observer on /dev/usb/lp0</div>
+  <div id='drawerstatus'></div>
+  <div onclick="stop_drawer_observer();">Stop Drawer Observer</div>
   <div onclick="Salor.printPage();">Test Print Dialog</div>
   <div onclick="Salor.mimoRefresh('http://red-e.eu',800,400);">Test Mimo Screenshot of http://red-e.eu</div>
   <div onclick="Salor.mimoImage('/usr/share/poledancer/startup.bmp',800,400);">Test Mimo BMP Image copy from /usr/share/poledancer/startup.bmp</div>
-  <div onclick="Salor.playSound('notice');">Test sound playing</div>
+  <div onclick="Salor.playSound('beep1');">Test sound playing beep1</div>
+  <div onclick="Salor.playSound('big_warning');">Test sound playing big_warning</div>
+  <div onclick="Salor.playSound('complete');">Test sound playing complete</div>
+  <div onclick="Salor.playSound('drop1');">Test sound playing drop1</div>
+  <div onclick="Salor.playSound('drop2');">Test sound playing drop2</div>
+  <div onclick="Salor.playSound('drop3');">Test sound playing drop3</div>
+  <div onclick="Salor.playSound('medium_warning');">Test sound playing medium_warning</div>
+  <div onclick="Salor.playSound('notice');">Test sound playing notice</div>
   <div onclick="Salor.toperScale('/dev/ttyUSB0');">Test toperScale on /dev/ttyUSB0</div>
-  <div onclick="SalorPrinter.printURL('/tmp/salor-bin-print.txt', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test SalorPrinter</div>
+  <div onclick="SalorPrinter.printURL('file:///tmp/salor-bin-printoutput.txt', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test SalorPrinter</div>
   <!-- <div onclick="Salor.remoteService('ip','user','pass','ssh');">Test remoteService SSH</div> -->
   <!-- <div onclick="Salor.remoteService('ip','user','pass','vnc');">Test remoteService VNC</div> -->
   <!-- <div onclick="alert(Salor.remoteServiceConnectionOpen('vnc'));">Test remoteService VNC Open</div> -->
@@ -24,9 +32,23 @@
       alert("PoleDancer called");
     }
     function complete_order_hide() {
+      document.getElementById('drawerstatus').innerHTML = 'DRAWER CLOSING TRIGGERED';
       alert("Complete Order PopUp hidden");
     }
-    document.getElementById('version').innerHTML = Salor.version();
+    function start_drawer_observer() {
+      Salor.startDrawerObserver('/dev/usb/lp0');
+      document.getElementById('drawerstatus').innerHTML = '';
+    }
+    function stop_drawer_observer() {
+      Salor.stopDrawerObserver();
+      document.getElementById('drawerstatus').innerHTML = '';
+    }
+    function open_drawer() {
+      Salor.stopDrawerObserver();
+      Salor.newOpenCashDrawer('/dev/usb/lp0');
+      Salor.startDrawerObserver('/dev/usb/lp0');
+      document.getElementById('drawerstatus').innerHTML = '';
+    }
   </script>
 
 </body>
