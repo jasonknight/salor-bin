@@ -11,7 +11,7 @@
   <div onclick="stop_drawer_observer();">Stop Drawer Observer</div>
   <div onclick="Salor.printPage();">Test Print Dialog</div>
   <div onclick="Salor.mimoRefresh('http://red-e.eu',800,400);">Test Mimo Screenshot of http://red-e.eu</div>
-  <div onclick="Salor.mimoImage('/usr/share/poledancer/startup.bmp',800,400);">Test Mimo BMP Image copy from /usr/share/poledancer/startup.bmp</div>
+  <div onclick="Salor.mimoImage('/usr/share/poledancer/startup.bmp',800,400);">Test Mimo BMP Image copy from poledancer</div>
   <div onclick="Salor.playSound('beep1');">Test sound playing beep1</div>
   <div onclick="Salor.playSound('big_warning');">Test sound playing big_warning</div>
   <div onclick="Salor.playSound('complete');">Test sound playing complete</div>
@@ -21,7 +21,7 @@
   <div onclick="Salor.playSound('medium_warning');">Test sound playing medium_warning</div>
   <div onclick="Salor.playSound('notice');">Test sound playing notice</div>
   <div onclick="Salor.toperScale('/dev/ttyUSB0');">Test toperScale on /dev/ttyUSB0</div>
-  <div onclick="SalorPrinter.printURL('file:///tmp/salor-bin-printoutput.txt', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test SalorPrinter</div>
+  <div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test Printing on /dev/usb/lp0 (Escper logo)</div>
   <!-- <div onclick="Salor.remoteService('ip','user','pass','ssh');">Test remoteService SSH</div> -->
   <!-- <div onclick="Salor.remoteService('ip','user','pass','vnc');">Test remoteService VNC</div> -->
   <!-- <div onclick="alert(Salor.remoteServiceConnectionOpen('vnc'));">Test remoteService VNC Open</div> -->
