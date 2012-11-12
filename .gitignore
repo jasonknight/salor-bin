@@ -19,3 +19,4 @@ Makefile.in
 *.after
 *.before
 *.autosave
+*.substvars
