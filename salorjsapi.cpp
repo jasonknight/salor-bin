@@ -10,7 +10,7 @@ SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("aplay", QStringList() << name + ".wav");
+    sp->run("aplay", QStringList() << "/usr/share/salor-bin/sounds/" + name + ".wav");
 }
 
 
@@ -75,8 +75,8 @@ void SalorJSApi::generalSnap(QString msg) {
     this->webView->page()->mainFrame()->render(&painter);
     painter.end();
     QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh:mm:ss") + QString::number(qrand());
-    QDir().mkpath("/tmp/salor-images/");
-    QFile m("/tmp/salor-images/" + name + ".txt");
+    QDir().mkpath("/tmp/salor-bin-images/");
+    QFile m("/tmp/salor-bin-images/" + name + ".txt");
     if (m.open(QIODevice::ReadWrite)) {
         m.write(msg.toAscii());
         m.write(this->webView->page()->mainFrame()->toHtml().toAscii());
@@ -84,8 +84,8 @@ void SalorJSApi::generalSnap(QString msg) {
     } else {
         qDebug() << "Could not create file";
     }
-    qDebug() << "writing: " << "/tmp/salor-images/" + name << "png";
-    image.save("/tmp/salor-images/" + name + ".png", "png",1);
+    qDebug() << "writing: " << "/tmp/salor-bin-images/" + name << "png";
+    image.save("/tmp/salor-bin-images/" + name + ".png", "png",1);
 }
 QString SalorJSApi::toperScale(QString addy) {
   int fd;
