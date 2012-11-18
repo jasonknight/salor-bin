@@ -20,4 +20,3 @@ Makefile.in
 *.before
 *.autosave
 *.substvars
-INSTALL
