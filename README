@@ -1,0 +1,7 @@
+How to compile:
+
+git clean -dfx
+autoreconf
+./configure
+make
+make install
