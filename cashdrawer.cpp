@@ -58,6 +58,7 @@ void DrawerObserverThread::run() {
       //count = 0;
       //int j = 0;
       //for (j=0;j<count;j++) { printf("%X|",*(buf+j)); } // debug
+      qDebug() << "CashDrawer usleeping...";
       usleep(500000);
     }
     close(fd);

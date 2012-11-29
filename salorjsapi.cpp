@@ -15,18 +15,19 @@ void SalorJSApi::playSound(QString name) {
 
 
 void SalorJSApi::printPage() {
+    qDebug() << "SalorJSApi::printPage";
     QPrinter printer;
     printer.setPageSize(QPrinter::A4);
     printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
     printer.setColorMode(QPrinter::Color);
-        QPrintDialog* dialog = new QPrintDialog(&printer, 0);
-        if (dialog->exec() == QDialog::Accepted)
-        {
-         this->webView->page()->mainFrame()->print(&printer);
-         if (printer.outputFileName().indexOf(".pdf") != -1) {
+    QPrintDialog* dialog = new QPrintDialog(&printer, 0);
+    if (dialog->exec() == QDialog::Accepted) {
+        this->webView->page()->mainFrame()->print(&printer);
+        if (printer.outputFileName().indexOf(".pdf") != -1) {
             chmod(printer.outputFileName().toLatin1().data(),0666);
-         }
         }
+    }
+    qDebug() << "SalorJSApi::printPage complete";
 }
 
 QStringList SalorJSApi::ls(QString path,QStringList filters) {
@@ -40,21 +41,24 @@ QStringList SalorJSApi::ls(QString path,QStringList filters) {
 
 void SalorJSApi::poleDancer(QString path, QString message) {
     SalorProcess *sp = new SalorProcess(this);
-    qDebug() << path << " " << message;
+    qDebug() << "calling poledancer " << path << " " << message;
     sp->run("poledancer",QStringList() << "-p" << path << message);
 }
 
 void SalorJSApi::mimoRefresh(QString path,int h, int w) {
+    qDebug() << "calling mimoRefresh";
     SalorCustomerScreen *scs = new SalorCustomerScreen(this);
     scs->refresh(path,h,w);
 }
 
 void SalorJSApi::mimoImage(QString imagepath) {
+    qDebug() << "Calling mimoImage";
     SalorProcess *sp = new SalorProcess(this);
     sp->run("poledancer",QStringList() << "-dlo" <<  imagepath);
 }
 
 void SalorJSApi::completeOrderSnap(QString order_id) {
+    qDebug() << "calling complete order snap";
     QSize size(800,480);
     QImage image(size, QImage::Format_Mono); // mPage->viewportSize()
 
@@ -86,6 +90,7 @@ void SalorJSApi::generalSnap(QString msg) {
     }
     qDebug() << "writing: " << "/tmp/salor-bin-images/" + name << "png";
     image.save("/tmp/salor-bin-images/" + name + ".png", "png",1);
+    qDebug() << "generalSnap complete";
 }
 QString SalorJSApi::toperScale(QString addy) {
   int fd;

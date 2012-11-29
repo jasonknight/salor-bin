@@ -14,11 +14,11 @@ void SalorCustomerScreen::refresh(QString url,int w, int h) {
     QWebView * webView = new QWebView();
    // qDebug() << "Setting up SalorPage";
     SalorPage * page = new SalorPage();
-    //qDebug() << "Setting viewport size";
+    qDebug() << "Setting viewport size";
     QSize size(w,h);
     page->setViewportSize(size);
     page->setAttribute(QWebSettings::JavascriptEnabled, "off");
-    //qDebug() << "Setting up SalorPage Done";
+    qDebug() << "Setting up SalorPage Done";
 
     this->capt = new SalorCapture(page, "/tmp/salor_customer_screen.bmp", 0,"","");
 
@@ -35,4 +35,5 @@ void SalorCustomerScreen::refresh(QString url,int w, int h) {
             SLOT(DocumentComplete(bool))
             );
     webView->load(QUrl(url));
+    qDebug() << "SalorCustomerScreen::refresh complete.";
 }
