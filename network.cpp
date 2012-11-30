@@ -1,5 +1,5 @@
 #include "network.h"
-
+#include <QDateTime>
 Network::Network(QObject *parent) :
     QNetworkAccessManager(parent)
 {
@@ -10,6 +10,7 @@ QNetworkReply * Network::createRequest(
     QIODevice * device)
 {
     QNetworkRequest request = originalRequest;
+    
     if (
             (originalRequest.url().toString().indexOf(".css") != -1) ||
             (originalRequest.url().toString().indexOf(".png") != -1) ||
@@ -17,7 +18,8 @@ QNetworkReply * Network::createRequest(
        ) {
         request.setAttribute(QNetworkRequest::CacheLoadControlAttribute,
             QNetworkRequest::PreferCache);
-        qDebug() << "Setting to prefer cache for: " << request.url().toString();
+    } else {
+      qDebug() << originalRequest.url().toString() << " : " << QDateTime::currentDateTime();
     }
     return QNetworkAccessManager::createRequest(operation, request, device);
 }

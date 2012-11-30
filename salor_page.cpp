@@ -222,7 +222,7 @@ void SalorCapture::saveSnapshot() {
     image.save(mOutput, "bmp");
     SalorProcess *sp = new SalorProcess(this);
     qDebug() << "Running poledancer";
-    sp->run("poledancer",QStringList() << "-dlo" <<  mOutput);
+    sp->run("poledancer",QStringList() << "-dlo" <<  mOutput,2000);
     //display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint() {

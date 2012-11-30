@@ -3,13 +3,16 @@
 
 #include <QObject>
 #include <QProcess>
+#include <QTimer>
+#include <sys/types.h>
+#include <signal.h>
 class SalorProcess : public QObject
 {
     Q_OBJECT
 public:
     explicit SalorProcess(QObject *parent = 0);
     //void run(QString app, QString args);
-    void run(QString app, QStringList args);
+    void run(QString app, QStringList args, int ttl);
 signals:
 
 public slots:
@@ -19,8 +22,11 @@ public slots:
     void 	readyReadStandardOutput ();
     void 	started ();
     void 	stateChanged ( QProcess::ProcessState newState );
+    void    dieMotherfucker();
 private:
     QProcess *proc;
+    qint64 pid;
+    QString name;
 
 };
 

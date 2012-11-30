@@ -10,7 +10,7 @@ SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 }
 void SalorJSApi::playSound(QString name) {
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("aplay", QStringList() << "/usr/share/salor-bin/sounds/" + name + ".wav");
+    sp->run("aplay", QStringList() << "/usr/share/salor-bin/sounds/" + name + ".wav",3000);
 }
 
 
@@ -42,7 +42,7 @@ QStringList SalorJSApi::ls(QString path,QStringList filters) {
 void SalorJSApi::poleDancer(QString path, QString message) {
     SalorProcess *sp = new SalorProcess(this);
     qDebug() << "calling poledancer " << path << " " << message;
-    sp->run("poledancer",QStringList() << "-p" << path << message);
+    sp->run("poledancer",QStringList() << "-p" << path << message,2000);
 }
 
 void SalorJSApi::mimoRefresh(QString path,int h, int w) {
@@ -54,7 +54,7 @@ void SalorJSApi::mimoRefresh(QString path,int h, int w) {
 void SalorJSApi::mimoImage(QString imagepath) {
     qDebug() << "Calling mimoImage";
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("poledancer",QStringList() << "-dlo" <<  imagepath);
+    sp->run("poledancer",QStringList() << "-dlo" <<  imagepath,3000);
 }
 
 void SalorJSApi::completeOrderSnap(QString order_id) {
@@ -155,6 +155,8 @@ void SalorJSApi::_cashDrawerClosed() {
 }
 
 void SalorJSApi::shutdown() {
+  int pid = getpid();
+  kill(pid,SIGKILL);
   QApplication::closeAllWindows();
 }
 void SalorJSApi::cuteWriteData(QString data) {
