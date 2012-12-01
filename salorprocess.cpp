@@ -13,14 +13,9 @@ void SalorProcess::run(QString app, QStringList args, int ttl) {
     //this->connect(this->proc,SIGNAL(readyReadStandardError()),SLOT(readyReadStandardError()));
     //this->connect(this->proc,SIGNAL(readyReadStandardOutput()),SLOT(readyReadStandardOutput()));
     //this->connect(this->proc,SIGNAL(error(QProcess::ProcessError)),SLOT(error(QProcess::ProcessError)));
-    qint64 tpid;
-    this->proc->startDetached(app,QStringList()<<args, QString("/"),&tpid);
+    this->proc->startDetached(app,QStringList()<<args, QString("/"));
     qDebug() << app << " started at: " << QDateTime::currentDateTime();
-    this->name = app;
-    qDebug() << "PID IS: " << QString::number(tpid);
-    this->pid = tpid;
-    qDebug() << " Converted to: " << QString::number(this->pid);
-    QTimer::singleShot(ttl,this,SLOT(dieMotherfucker()));
+    //QTimer::singleShot(ttl,this,SLOT(dieMotherfucker()));
 }
 void SalorProcess::started() {
     qDebug() << "\n\nProcess has started\n\n";

@@ -86,6 +86,7 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
         f.close();
         SalorProcess * p = new SalorProcess(this);
         p->run("lp", QStringList() << "-d" << printer_name << file_path,100000);
+        delete sp;
         emit printed();
     } else {
         qDebug() << "file could not be written" << printer_name;
