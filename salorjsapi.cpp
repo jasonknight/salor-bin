@@ -28,6 +28,7 @@ void SalorJSApi::printPage() {
             chmod(printer.outputFileName().toLatin1().data(),0666);
         }
     }
+    delete dialog;
     qDebug() << "SalorJSApi::printPage complete";
 }
 

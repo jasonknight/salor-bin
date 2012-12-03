@@ -67,6 +67,8 @@ public:
                 const QString& scriptCode
                );
 
+signals:
+  void done();
 public slots:
   void DocumentComplete(bool ok);
   void DocumentPrint();
