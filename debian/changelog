@@ -1,5 +1,6 @@
-salor-bin (2.2.7ubuntu1) UNRELEASED; urgency=low
+salor-bin (2.3.0) testing; urgency=low
 
+  [ Michael Franzl ]
   * added sounds
   * tests
   * fixed paths
@@ -8,7 +9,22 @@ salor-bin (2.2.7ubuntu1) UNRELEASED; urgency=low
   * added mandatory INSTALL file
   * added compilation instructions
 
- -- Michael Franzl <office@michaelfranzl.com>  Mon, 03 Dec 2012 13:12:46 +0100
+  [ Jason Knight ]
+  * Adding debug messages
+  * kill instead of close
+  * removing files
+  * latest iggies
+  * deleting sp may help, trying.
+  * latest salor-bin
+
+  [ Michael Franzl ]
+  * depen
+  * don't add binaries
+  * cleanup
+  * build
+  * build
+
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 03 Dec 2012 13:13:20 +0100
 
 salor-bin (2.2.7) testing; urgency=low
 
