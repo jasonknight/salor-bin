@@ -10,6 +10,6 @@ Homepage: http://red-e.eu/apps/salor-retail
 
 Package: salor-bin
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libqtcore4, libqt4-network, poledancer, gksu
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqtcore4, libqt4-network, poledancer
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>
