@@ -21,7 +21,7 @@ SalorPage::SalorPage(QObject* parent):QWebPage(parent)
     qDebug() << "Setup SalorPage signals";
 }
 void SalorPage::downloadFile(QNetworkRequest request) {
-    qDebug() << "Other download called";
+    qDebug() << "Other download called" << request.url().toString();
     QString default_file_name = QFileInfo(request.url().toString()).fileName();
     QString file_name = QFileDialog::getSaveFileName((QWidget*)this,tr("Save File"),default_file_name);
     if (file_name.isEmpty())
@@ -34,7 +34,7 @@ void SalorPage::downloadFile(QNetworkRequest request) {
 }
 void SalorPage::downloadFile(QNetworkReply *reply) {
 
-    qDebug() << "Download called";
+    qDebug() << "Download called" << reply->url().toString();
     QString default_file_name = QFileInfo(reply->url().toString()).fileName();
     QString file_name = QFileDialog::getSaveFileName(0,tr("Save File"),default_file_name);
     if (file_name.isEmpty())
@@ -77,6 +77,7 @@ QString SalorPage::chooseFile(QWebFrame* /*frame*/, const QString& /*suggestedFi
   if (!file_name.isEmpty()) {
     return file_name;
   }
+  qDebug() << "Returing null from SalorPage::chooseFile";
   return QString::null;
 }
 
@@ -152,10 +153,10 @@ SalorCapture::SalorCapture(SalorPage* page, const QString& output, int delay,
   mScriptCode = scriptCode;
   mScriptObj = new QObject();
 
- // qDebug() << "In SalorCapture";
+  qDebug() << "In SalorCapture";
   mPage->setSalorCapture(this);
 
-  //qDebug() << "setSalorCapture done";
+  qDebug() << "setSalorCapture done";
 }
 
 void SalorCapture::InitialLayoutCompleted() {
@@ -167,7 +168,7 @@ void SalorCapture::InitialLayoutCompleted() {
 }
 
 void SalorCapture::DocumentComplete(bool /*ok*/) {
-  //qDebug() << "In DocumentComplete";
+  qDebug() << "In DocumentComplete";
 
   saveSnapshot();
   return;
@@ -182,7 +183,7 @@ void SalorCapture::JavaScriptWindowObjectCleared() {
 }
 
 void SalorCapture::TryDelayedRender() {
-   // qDebug() << "TryDelayRender called";
+    qDebug() << "TryDelayRender called";
   if (!mPage->getAlertString().isEmpty())
     return;
 
@@ -202,7 +203,7 @@ void SalorCapture::Delayed() {
   saveSnapshot();
 }
 void SalorCapture::saveSnapshot() {
-    //qDebug() << "saveSnapshot was called";
+    qDebug() << "saveSnapshot was called";
     QWebFrame *mainFrame = mPage->mainFrame();
 
     QSize size(800,480);
@@ -217,10 +218,14 @@ void SalorCapture::saveSnapshot() {
     painter.end();
 
     // Here is where we hook in.
-    //qDebug() << "Saving to: " << mOutput;
+    qDebug() << "Saving to: " << mOutput;
     image.save(mOutput, "bmp");
     SalorProcess *sp = new SalorProcess(this);
-    sp->run("poledancer",QStringList() << "-dlo" <<  mOutput);
+    qDebug() << "Running poledancer";
+    sp->run("poledancer",QStringList() << "-dlo" <<  mOutput,2000);
+
+    delete sp;
+    emit done();
     //display_link_write_image(mOutput.toAscii());
 }
 void SalorCapture::DocumentPrint() {
@@ -240,4 +245,5 @@ void SalorCapture::DocumentPrint() {
     {
          mainFrame->print(&printer);
     }
+    emit done();
 }
