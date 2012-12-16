@@ -62,6 +62,7 @@ public slots:
  void cuteWriteData(QString);
  void _cuteBubbleDataRead(QString data);
  void remoteService(QString url, QString username, QString password, QString type);
+ void echo(QString msg);
  bool remoteServiceConnectionOpen(QString type);
 };
 
