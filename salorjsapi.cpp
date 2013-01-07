@@ -1,5 +1,6 @@
 #include "salorjsapi.h"
 #include "common_includes.h"
+#include <QDateTime>;
 SalorJSApi::SalorJSApi(QObject *parent) : QObject(parent)
 {
     SalorJSApi::drawer_thread = NULL;
@@ -215,4 +216,8 @@ bool SalorJSApi::remoteServiceConnectionOpen(QString type) {
         qDebug() << "Nopers...";
     }
     return false;
+}
+void SalorJSApi::echo(QString msg) {
+    QDateTime  d = QDateTime::currentDateTime();
+    qDebug() << "[echo at " << d << "] " << msg;
 }
