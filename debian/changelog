@@ -1,4 +1,4 @@
-salor-bin (2.3.1) precise; urgency=low
+salor-bin (2.3.1precise) precise; urgency=low
 
   [ Jason Knight ]
   * Added echo function to SalorJSAPI
