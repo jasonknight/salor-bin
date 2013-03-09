@@ -1,4 +1,4 @@
-salor-bin (2.3.3-1quantal) quantal; urgency=low
+salor-bin (2.3.4-1quantal) quantal; urgency=low
 
   [ Michael Franzl ]
   * no debian dir
