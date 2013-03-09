@@ -1,3 +1,14 @@
+salor-bin (2.3.3-1quantal) quantal; urgency=low
+
+  [ Michael Franzl ]
+  * no debian dir
+  * re-added debian dir
+
+  [ Jason Martin ]
+  * xxx
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Sat, 09 Mar 2013 07:51:12 -0500
+
 salor-bin (2.3.3-1lucid) lucid; urgency=low
 
   * more
