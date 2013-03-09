@@ -1,4 +1,4 @@
-salor-bin (2.3.3-1lucid) lucid; urgency=low
+salor-bin (2.3.4-1quantal) quantal; urgency=low
 
   * more
   * lower debhelper level
