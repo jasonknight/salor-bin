@@ -1,3 +1,10 @@
+salor-bin (2.3.3-1lucid) lucid; urgency=low
+
+  * more
+  * lower debhelper level
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sat, 09 Mar 2013 10:42:07 +0100
+
 salor-bin (2.3.3) precise; urgency=low
 
   * no poledancer dep
