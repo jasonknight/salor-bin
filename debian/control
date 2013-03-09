@@ -2,7 +2,7 @@ Source: salor-bin
 Section: unknown
 Priority: extra
 Maintainer: Michael Franzl <office@michaelfranzl.com>
-Build-Depends: debhelper (>= 8.0.0), autotools-dev, qt4-dev-tools, libqtwebkit-dev, automoc, dh-autoreconf
+Build-Depends: debhelper, autotools-dev, qt4-dev-tools, libqtwebkit-dev, automoc, dh-autoreconf
 Standards-Version: 3.9.2
 Homepage: http://red-e.eu/apps/salor-retail
 #Vcs-Git: git://github.com/jasonknight/salor-bin.git
