@@ -1,3 +1,9 @@
+salor-bin (2.3.6-1quantal) quantal; urgency=low
+
+  * Adding debug for read bytes in cdrawerobserv
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 11:04:11 -0400
+
 salor-bin (2.3.5-2quantal) quantal; urgency=low
 
   * xxx
