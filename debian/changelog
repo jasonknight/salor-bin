@@ -1,3 +1,9 @@
+salor-bin (2.3.5-1quantal) quantal; urgency=low
+
+  * Attempt to fix Epson printer open drawer bug
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 08:56:45 -0400
+
 salor-bin (2.3.4-1sid) sid; urgency=low
 
   * sid
