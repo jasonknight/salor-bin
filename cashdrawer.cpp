@@ -43,31 +43,60 @@ void DrawerObserverThread::run() {
         buf[j] = '\0';
       }
       count = read(fd, buf, 7);
+      
+      if (drawer_was_open) {
+          qDebug() << (5*close_after_seconds-i) << "Waiting for Drawer close. Bytes from drawer: " << count;
+      } else {
+          qDebug() << (5*close_after_seconds-i) << "Waiting for Drawer open. Bytes from drawer: " << count;
+      }
+      
       for (j = 0; j < 8; j++) {
         printf("[%X]",buf[j]);
       }
       printf("\n");
       fflush(stdout);
+      // What state are we in?
+      if ( drawer_was_open == false ) {
+        // drawer hasn't been opened, so let's loop
+        // over the buf until we find the code
+        for (j = 0; j < 7; j++) {
+            if (buf[j] = 0x10) {
+                // score, the drawer is open
+                drawer_was_open = true;
+                qDebug() << "Open Drawer detected.";
+                break;
+            }
+        }
+      } else if ( drawer_was_open == true ) {
+        // the drawer was open, so we loop to find 0x14
+        for (j = 0; j < 7; j++) {
+            if (buf[j] = 0x14) {
+                // score, the drawer is open
+                stop_drawer_thread = true;
+                qDebug() << "Closed Drawer detected. Halting thread.";
+                break;
+            }
+        }
+      }
+      if (stop_drawer_thread) {
+        break;
+      }
       
 
-      if (!drawer_was_open && strstr(&buf[0],&opened_code[0]) != NULL ) {
+      /* if (!drawer_was_open && strstr(&buf[0],&opened_code[0]) != NULL ) {
           drawer_was_open = true;
           qDebug() << "Open Drawer detected.";
       }
       if (drawer_was_open && strstr(&buf[0],&closed_code[0]) != NULL ) {
           stop_drawer_thread = true;
           qDebug() << "Closed Drawer detected. Halting thread.";
-      }
-      if (drawer_was_open) {
-          qDebug() << (5*close_after_seconds-i) << "Waiting for Drawer close. Bytes from drawer: " << count;
-      } else {
-          qDebug() << (5*close_after_seconds-i) << "Waiting for Drawer open. Bytes from drawer: " << count;
-      }
+      } */
+      
 
       //count = 0;
       //int j = 0;
       //for (j=0;j<count;j++) { printf("%X|",*(buf+j)); } // debug
-      qDebug() << "CashDrawer usleeping...";
+      
       usleep(500000);
     }
     close(fd);
