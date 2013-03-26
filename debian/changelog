@@ -1,3 +1,9 @@
+salor-bin (2.3.9-1quantal) quantal; urgency=low
+
+  * Refactor drawer thread
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 12:06:38 -0400
+
 salor-bin (2.3.8-1quantal) quantal; urgency=low
 
   * more crap
