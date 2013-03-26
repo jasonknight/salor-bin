@@ -60,7 +60,7 @@ void DrawerObserverThread::run() {
         // drawer hasn't been opened, so let's loop
         // over the buf until we find the code
         for (j = 0; j < 7; j++) {
-            if (buf[j] = 0x10) {
+            if (buf[j] == 0x10) {
                 // score, the drawer is open
                 drawer_was_open = true;
                 qDebug() << "Open Drawer detected.";
@@ -70,7 +70,7 @@ void DrawerObserverThread::run() {
       } else if ( drawer_was_open == true ) {
         // the drawer was open, so we loop to find 0x14
         for (j = 0; j < 7; j++) {
-            if (buf[j] = 0x14) {
+            if (buf[j] == 0x14) {
                 // score, the drawer is open
                 stop_drawer_thread = true;
                 qDebug() << "Closed Drawer detected. Halting thread.";
