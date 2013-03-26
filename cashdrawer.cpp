@@ -31,6 +31,15 @@ void DrawerObserverThread::run() {
     } else {
       qDebug() << QString("Opened file descriptor 0x%1 for cash drawer.").arg(uchar(fd),0,16);
     }
+ 
+    //--------
+    count = write(fd, "\x1B\x40", 2);
+    qDebug() << "Wrote "  << count << " bytes to initialize printer.";
+    usleep(6000); //60ms
+    count = write(fd, "\x1D\x61\x01", 3);
+    qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
+    //--------
+    
     //count = read(fd, buf, 20); // clear serial buffer
     //qDebug() << "Cleared" << count << "bytes from the serial buffer on the first run.";
     //usleep(200000); // the printer will wait for a clear buffer to send any pending bytes...
