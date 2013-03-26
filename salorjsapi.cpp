@@ -125,7 +125,7 @@ void SalorJSApi::newOpenCashDrawer(QString addy) {
     count = write(fd, "\x1D\x61\x01", 3);
     qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
     usleep(5000); //50ms
-    count = write(fd, "\x1B\x70\x00\xFF\x01", 5);
+    count = write(fd, "\x1B\x70\x00\xFF\x01 ", 6);
     qDebug() << "Wrote "  << count << " bytes to open cash drawer.";
     close(fd);
 }
