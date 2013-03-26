@@ -39,10 +39,15 @@ void DrawerObserverThread::run() {
     int j = 0;
     while (i < (2 * close_after_seconds) && !stop_drawer_thread) {
       i += 1;
-      count = read(fd, buf, 7);
-      for (j = 0; j < 7; j++) {
-        printf("[%x]",buf[j]);
+      for (j = 0; j < 8; j++) {
+        buf[j] = '\0';
       }
+      count = read(fd, buf, 7);
+      for (j = 0; j < 8; j++) {
+        printf("[%X]",buf[j]);
+      }
+      printf("\n");
+      fflush(stdout);
       
 
       if (!drawer_was_open && strstr(&buf[0],&opened_code[0]) != NULL ) {
