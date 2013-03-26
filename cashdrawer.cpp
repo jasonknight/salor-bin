@@ -17,8 +17,8 @@ void DrawerObserverThread::run() {
     int close_after_seconds = 30;
 
     char buf[20];
-    char closed_code[5] = "\x14\x00\x00\x0f";
-    char opened_code[5] = "\x10\x00\x00\x0f";
+    char closed_code[5] = "\x14";
+    char opened_code[5] = "\x10";
     bool drawer_was_open = false;
 
     qDebug() << "Called DrawerObserverThread::run()";
@@ -54,7 +54,7 @@ void DrawerObserverThread::run() {
           drawer_was_open = true;
           qDebug() << "Open Drawer detected.";
       }
-      if (drawer_was_open && strcmp(&buf[0],&closed_code[0]) != NULL ) {
+      if (drawer_was_open && strstr(&buf[0],&closed_code[0]) != NULL ) {
           stop_drawer_thread = true;
           qDebug() << "Closed Drawer detected. Halting thread.";
       }
