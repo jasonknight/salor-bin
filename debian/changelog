@@ -1,3 +1,9 @@
+salor-bin (2.3.10-1quantal) quantal; urgency=low
+
+  * shits all tarded and...
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 12:39:44 -0400
+
 salor-bin (2.3.9-1quantal) quantal; urgency=low
 
   * Refactor drawer thread
