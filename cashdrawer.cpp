@@ -36,16 +36,20 @@ void DrawerObserverThread::run() {
     //usleep(200000); // the printer will wait for a clear buffer to send any pending bytes...
     //count = read(fd, buf, 20); // ... so clear serial buffer again
     //qDebug() << "Cleared" << count << "bytes from the serial buffer on the second run.";
-
+    int j = 0;
     while (i < (2 * close_after_seconds) && !stop_drawer_thread) {
       i += 1;
       count = read(fd, buf, 7);
+      for (j = 0; j < 7; j++) {
+        printf("[%x]",buf[j]);
+      }
+      
 
-      if (!drawer_was_open && strcmp(opened_code, buf) == 0 ) {
+      if (!drawer_was_open && strstr(&buf[0],&opened_code[0]) != NULL ) {
           drawer_was_open = true;
           qDebug() << "Open Drawer detected.";
       }
-      if (drawer_was_open && strcmp(closed_code, buf) == 0) {
+      if (drawer_was_open && strcmp(&buf[0],&closed_code[0]) != NULL ) {
           stop_drawer_thread = true;
           qDebug() << "Closed Drawer detected. Halting thread.";
       }
