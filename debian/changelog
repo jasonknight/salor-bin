@@ -1,4 +1,63 @@
+salor-bin (2.3.10-1quantal) quantal; urgency=low
+
+  * shits all tarded and...
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 12:39:44 -0400
+
+salor-bin (2.3.9-1quantal) quantal; urgency=low
+
+  * Refactor drawer thread
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 12:06:38 -0400
+
+salor-bin (2.3.8-1quantal) quantal; urgency=low
+
+  * more crap
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 11:46:56 -0400
+
+salor-bin (2.3.7-1quantal) quantal; urgency=low
+
+  * New shit has come to light that you may not be aware of.
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 11:19:05 -0400
+
+salor-bin (2.3.6-1quantal) quantal; urgency=low
+
+  * Adding debug for read bytes in cdrawerobserv
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 11:04:11 -0400
+
+salor-bin (2.3.5-2quantal) quantal; urgency=low
+
+  * xxx
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 09:07:47 -0400
+
+salor-bin (2.3.5-1quantal) quantal; urgency=low
+
+  * Attempt to fix Epson printer open drawer bug
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 26 Mar 2013 08:56:45 -0400
+
+salor-bin (2.3.4-1sid) sid; urgency=low
+
+  * sid
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Mon, 18 Mar 2013 04:14:39 -0400
+
 salor-bin (2.3.4-1quantal) quantal; urgency=low
+
+  [ Michael Franzl ]
+  * no debian dir
+  * re-added debian dir
+
+  [ Jason Martin ]
+  * xxx
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Sat, 09 Mar 2013 07:51:12 -0500
+
+salor-bin (2.3.3-1lucid) lucid; urgency=low
 
   * more
   * lower debhelper level
