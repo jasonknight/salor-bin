@@ -1,3 +1,10 @@
+salor-bin (2.3.11-1quantal) quantal; urgency=low
+
+  * build
+  * fopen instead of open to fix drawer issues
+
+ -- Michael Franzl <office@michaelfranzl.com>  Thu, 28 Mar 2013 09:46:32 +0100
+
 salor-bin (2.3.10-1quantal) quantal; urgency=low
 
   * shits all tarded and...
