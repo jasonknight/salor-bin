@@ -111,23 +111,16 @@ QString SalorJSApi::toperScale(QString addy) {
 }
 
 void SalorJSApi::newOpenCashDrawer(QString addy) {
-    int fd;
     int count;
     qDebug() << "Attempting to open CashDrawer at " << addy;
-    fd = open_serial_port_for_drawer(addy.toLatin1().data());
+    FILE * fd = fopen(addy.toLatin1().data(),"w");
     if (fd <= 0) {
         qDebug() << "CashDrawer failed to open!";
         return;
     }
-    count = write(fd, "\x1B\x40", 2);
-    qDebug() << "Wrote "  << count << " bytes to initialize printer.";
-    usleep(6000); //60ms
-    count = write(fd, "\x1D\x61\x01", 3);
-    qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
-    usleep(6000); //60ms
-    count = write(fd, "\x1B\x70\x00\xFF\x01\n", 6);
-    qDebug() << "Wrote "  << count << " bytes to open cash drawer.";
-    close(fd);
+    count = fwrite("\x1B\x70\x00\x55\x55", sizeof(char), 6, fd);
+    qDebug() << "Wrote "  << count << " bytes to printer.";
+    fclose(fd);
 }
 
 void SalorJSApi::startDrawerObserver(QString addy) {
