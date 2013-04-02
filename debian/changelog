@@ -1,3 +1,9 @@
+salor-bin (2.3.12-1quantal) quantal; urgency=low
+
+  * quantal
+
+ -- Jason Martin <jason@jason-knight-martin.com>  Tue, 02 Apr 2013 06:04:32 -0400
+
 salor-bin (2.3.11-1quantal) quantal; urgency=low
 
   * build
