@@ -1,8 +1,9 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
+#include "common_includes.h"
 #include <QPrinterInfo>
 #include <QList>
-#include "common_includes.h"
+
 OptionsDialog::OptionsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OptionsDialog)
@@ -30,7 +31,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
         ui->printerComboBox->addItem(fileInfo.fileName(),QVariant(fileInfo.fileName()));
     }
 #endif
-#ifdef WINDOWS
+#ifdef WIN32
     LPBYTE pPrinterEnum;
     DWORD pcbNeeded, pcbReturned;
     PRINTER_INFO_2 *piTwo = NULL;
@@ -59,6 +60,7 @@ OptionsDialog::~OptionsDialog()
 {
     delete ui;
 }
+
 void OptionsDialog::on_printerComboBox_currentIndexChanged(QString name) {
     if(this->_ready == false)
         return;
@@ -67,6 +69,7 @@ void OptionsDialog::on_printerComboBox_currentIndexChanged(QString name) {
     clipboard->setText(name);
 
 }
+
 void OptionsDialog::on_ClearCacheButton_clicked() {
     emit clearCache();
 }

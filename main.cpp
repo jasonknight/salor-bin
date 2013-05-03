@@ -1,25 +1,26 @@
-#include <QtGui/QApplication>
 #include "mainwindow.h"
-#include <iostream>
-#include <signal.h>
 #include "common_includes.h"
+
 char * __path;
 size_t __size;
+
 #ifdef LINUX
-    #include <termios.h> /* POSIX terminal control definitions */
-    const QString PathWorking = QDir::homePath() + "/.Salor";
+    extern const QString PathWorking = QDir::homePath() + "/.salor-bin";
 #endif
 
-#ifdef WINDOWS
-    const QString PathWorking = _getcwd(__path,__size);
+#ifdef WIN32
+    extern const QString PathWorking = _getcwd(__path,__size);
 #endif
 
 #ifdef MAC
-    const QString PathWorking = getcwd(__path,__size);
+    extern const QString PathWorking = getcwd(__path,__size);
 #endif
-const QString PathCache = PathWorking + "/SalorCache";
-const QString PathSettings = PathWorking + "/SalorSettings";
-const QString PathDownloads = PathWorking + "/SalorDownloads";
+
+extern const QString PathCookies = PathWorking + "/cookiejar";
+extern const QString PathCache = PathWorking + "/cache";
+extern const QString PathSettings = PathWorking + "/settings";
+extern const QString PathDownloads = PathWorking + "/downloads";
+
 void help() {
     std::cout << "Usage:\n";
     std::cout << "\tsalor -[uh] [value]\n";
@@ -30,23 +31,24 @@ void help() {
     exit(0);
     return;
 }
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    QString arg;
+    bool fullscreen = false;
 
     if (!QDir(PathWorking).exists()) {
         QDir().mkdir(PathWorking);
     }
 
-    //w.to_url = QString("http://salor-retail/orders/new");
     if (_get("salor.url").isNull() != true && _get("salor.url").toString() != "") {
         w.to_url = _get("salor.url").toString();
     } else {
-        w.to_url = QString("http://sr.red-e.eu");
+        w.to_url = QString("http://documentation.red-e.eu");
     }
-    QString arg;
-    bool fs = true;
+
     for (int i = 1; i < argc; i++) {
       arg = QString(argv[i]);
       if (arg == "-h") {
@@ -59,34 +61,22 @@ int main(int argc, char *argv[])
          } else if (arg == "-h") {
              help();
          } else if (arg == "-w") {
-             fs = false;
+             fullscreen = false;
          }
       }
     }
-    //QPixmap pixmap(":/salor-splash.png");
-    //QSplashScreen sp(pixmap);
-   // sp.show();
-   // sp.showMessage("Loading salor");
 
-   // sp.showMessage("initializing");
     w.init();
-    //sp.showMessage("initialization completed, waiting for load");
-    //while (w.shown == false) {
-    //    a.processEvents();
-    //}
-    if (fs) {
-      #ifdef LINUX
+
+    if (fullscreen) {
         w.showMaximized();
-      #else
-        w.showMaximized();
-      #endif
     } else {
-      w.show();
+        w.show();
     }
-    //sp.finish(&w);
-#ifdef Q_OS_LINUX
+
+#ifdef LINUX
     signal(SIGCHLD, SIG_IGN);
 #endif
+    
     return a.exec();
 }
-

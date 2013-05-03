@@ -1,11 +1,9 @@
 #include "salorprinter.h"
-#include <QDebug>
-#include <QList>
-#include <QPrinter>
-#include <QPrinterInfo>
-#include <QTextDocument>
-#include "salorprocess.h"
 #include "common_includes.h"
+#ifdef WIN32
+#include "winspool.h"
+#endif
+
 SalorPrinter::SalorPrinter(QObject *parent) :
     QObject(parent)
 {
@@ -24,44 +22,14 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
     QByteArray ba = reply->readAll();
     qDebug() << "Buffer is: " << QString(ba).toAscii();
 #ifdef LINUX
-    if (this->m_printer_path.indexOf("tty") != -1) {
-        int fd;
-        struct termios options;
-        char * port = this->m_printer_path.toAscii().data();
-
-        fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
-
-        if (fd == -1) {
-
-          printf("Unable to open port %s", port);
-
-        } else {
-
-          tcgetattr(fd, &options); // Get the current options for the port...
-          cfsetispeed(&options, B9600); // Set the baud rates
-          cfsetospeed(&options, B9600);
-          //printf("c_cflag = %X \n", options.c_cflag);
-          //options.c_cflag &= ~CSIZE;
-          //printf("c_cflag = %X \n", options.c_cflag);
-          //options.c_cflag |= (CLOCAL | CREAD | CS7 | PARENB); // Enable the receiver and set local mode...  | CS7 | PARENB
-          //printf("c_cflag = %X \n", options.c_cflag);
-          tcsetattr(fd, TCSANOW, &options); // Set the new options for the port...
-          //fcntl(fd, F_SETFL, 0); // seems to enable blocking mode
-          int r = write(fd,ba.constData(),ba.size());
-          close(fd);
-          qDebug() << "Printed " << QString::number(r) << "bytes";
-          qDebug() << "print completed.";
-          emit printed();
-        }
-        return;
-    }
     QFile f(this->m_printer_path);
+
     if (f.exists() && f.open(QIODevice::WriteOnly)) {
+        qDebug() << "SalorPrinter::pageFetched(): Printing to everything that QFile supports.";
         QTextStream out(&f);
         out.setCodec("ISO 8859-1");
         out << ba;
         f.close();
-        qDebug() << "print completed.";
         emit printed();
         if(this->confirmation_url.length() > 0) {
           QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
@@ -69,8 +37,29 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
           confirmator->get(QNetworkRequest(QUrl(this->confirmation_url)));
         }
 
+    } else if (this->m_printer_path.indexOf("tty") != -1) {
+        qDebug() << "SalorPrinter::pageFetched(): Printing to a serial port.";
+        int fd;
+        struct termios options;
+        char * port = this->m_printer_path.toAscii().data();
+
+        fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
+
+        if (fd == -1) {
+          printf("Unable to open port %s", port);
+        } else {
+          tcgetattr(fd, &options); // Get the current options for the port...
+          cfsetispeed(&options, B9600); // Set the baud rates
+          cfsetospeed(&options, B9600);
+          tcsetattr(fd, TCSANOW, &options); // Set the new options for the port...
+          int r = write(fd,ba.constData(),ba.size());
+          close(fd);
+          qDebug() << "Printed " << QString::number(r) << "bytes";
+          qDebug() << "print completed.";
+          emit printed();
+        }
     } else {
-        qDebug() << "Failed to open file";
+        qDebug() << "Failed to open as either file or serial port" << m_printer_path;
         emit printerDoesNotExist();
     }
 #endif
@@ -92,7 +81,7 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
         qDebug() << "file could not be written" << printer_name;
     }
 #endif
-#ifdef WINDOWS
+#ifdef WIN32
     BOOL     bStatus = FALSE;
     DOC_INFO_1 DocInfo;
     DWORD      dwJob = 0L;
@@ -101,6 +90,7 @@ void SalorPrinter::pageFetched(QNetworkReply *reply) {
     wchar_t * name = new wchar_t[this->m_printer_path.length()+1];
     this->m_printer_path.toWCharArray(name);
     name[this->m_printer_path.length() + 1] = 0;
+    // TODO: LD ERROR
     bStatus = OpenPrinter(name,&hPrinter, NULL);
 
     if (bStatus) {

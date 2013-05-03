@@ -1,11 +1,12 @@
 #include "cutecredit.h"
-#include <QDebug>
-#include <QFile>
+#include "common_includes.h"
+
 CuteCredit::CuteCredit(QObject *parent) :
     QThread(parent)
 {
-        this->running = true;
+    this->running = true;
 }
+
 void CuteCredit::run() {
     FILE * fp;
     char readbuf[512];
@@ -22,6 +23,7 @@ void CuteCredit::run() {
     }
     qDebug() << "Ending CuteCredit THread";
 }
+
 void CuteCredit::writeData(QString data) {
     qDebug() << "CuteCredit Thread received: " << data;
             ;
@@ -30,6 +32,7 @@ void CuteCredit::writeData(QString data) {
     fputs(data.toAscii().data(),fp);
     fclose(fp);
 }
+
 void CuteCredit::stopRunning() {
     this->running = false;
 }

@@ -1,44 +1,46 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QtWebKit>
-#include <QSplashScreen>
-#include "salor_customer_screen.h"
-#include "cashdrawer.h"
-#include <QVariant>
-#include "salorprocess.h"
+#include "salorpage.h"
 #include "salorjsapi.h"
 #include "salorprinter.h"
-#include "salor_page.h"
 #include "common_includes.h"
-#include "optionsdialog.h"
-#include <QStatusBar>
-#include <QBoxLayout>
-#include <QProgressBar>
-#include <QLabel>
-class MainWindow : public QMainWindow {
+
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
+    
 public:
-    MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void init();
-    void connectSlots();
-    bool mousePressed;
-    bool shown;
-    QString to_url;
     SalorPage * page;
     QStatusBar * statusBar;
-private slots:
+    QString to_url;
+    void connectSlots();
+    bool shown;
+    
+private:
+    Ui::MainWindow *ui;
+    QWebView *webView;
+    SalorJsApi *js;
+    SalorPrinter *sp;
+    QBoxLayout * layout;
+    int progress;
+    QProgressBar * status_bar_progressBar;
+    QLabel * status_bar_urlLabel;
+    void attach();
 
 public slots:
     void setProgress(int);
     void finishLoading(bool);
     void adjustTitle();
     void repaintViews();
-    QWebView* getWebView();
     void addJavascriptObjects();
-   // bool eventFilter(QObject *, QEvent *);
     void windowCloseRequested();
     void lastFiveOrders();
     void completeOrder();
@@ -54,20 +56,7 @@ public slots:
     void executeJS(QString &js);
     void addStatusBarWidget(QWidget * w);
     void removeStatusBarWidget(QWidget * w);
-signals:
-    void camWasCaptured(int id,QString filePath);
-    void dataRead(QString source, QString data);
-protected:
-    //void changeEvent(QEvent *e);
-private:
-    QWebView *webView;
-    SalorPrinter *sp;
-    SalorJSApi *js;
-    void attach();
-    int progress;
-    QBoxLayout * layout;
-    QProgressBar * status_bar_progressBar;
-    QLabel * status_bar_urlLabel;
+    QWebView* getWebView();
 };
 
 #endif // MAINWINDOW_H
