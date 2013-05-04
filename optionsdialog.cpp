@@ -40,40 +40,30 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     filters << "ttyS*" << "ttyUSB*" << "usb";
     QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
     (*devs).setNameFilters(filters);
-    ui->localPrinters1Combo->addItems(devs->entryList());
 
-    // populate combo box for remote printers
     QStringList groups = (*settings).childGroups();
     QStringList remoteprinters;
-    //qDebug() << "GROUPS" << groups;
-    for (int i = 0; i < groups.size(); i++)
-    {
+
+    // filter out all setting groups that are not printer definitions
+    for (int i = 0; i < groups.size(); i++) {
         QString group = groups[i];
         if (group.indexOf("printer") != -1) {
-            settings->beginGroup(group);
-            remoteprinters << settings->value("name").toString();
-            settings->endGroup();
+            remoteprinters << group;
         }
     }
 
-    /*QLineEdit * inputfield = new QLineEdit();
-    connect(inputfield, SIGNAL(textChanged(const QString &)), signalMapper, SLOT(map()));
-    signalMapper->setMapping(inputfield, group);
-    ui->myGrid->addWidget(inputfield,i,0);*/
 
-
-    foreach(QString instance, remoteprinters) {
-      qDebug() << instance;
-      unselectButtonMap[instance] = new QLineEdit();
-      connect(unselectButtonMap[instance], SIGNAL(textChanged(const QString &)), signalMapper, SLOT(map()));
-      signalMapper->setMapping(unselectButtonMap[instance], instance);
-      ui->myGrid->addWidget(unselectButtonMap[instance]);
-      //QObject::connect(unselectButtonMap[instance],SIGNAL(clicked()),this,SLOT(unselectInstance()));
+    foreach(QString remoteprinter, remoteprinters) {
+      qDebug() << "Dynamically setting up combobox for printer" << remoteprinter;
+      QComboBox * combobox = new QComboBox();
+      combobox->addItems(devs->entryList());
+      connect(combobox, SIGNAL(currentIndexChanged(const QString &)), signalMapper, SLOT(map()));
+      signalMapper->setMapping(combobox, remoteprinter);
+      ui->myGrid->addWidget(combobox);
+      localPrinterInputWidgetMap[remoteprinter] = combobox;
     }
+    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(localPrinterInputWidgetChanged(const QString &)));
 
-
-    connect(signalMapper, SIGNAL(mapped(const QString &)),         this, SLOT(myTextChanged(const QString &)));
-    //ui->remotePrinters1Combo->addItems(remoteprinters);
 #endif
 #ifdef WIN32
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
@@ -118,9 +108,12 @@ OptionsDialog::~OptionsDialog()
     delete ui;
 }
 
-void OptionsDialog::myTextChanged(QString text) {
-
-    qDebug() << "TEXT CHANGED" << text << unselectButtonMap[text]->text();
+void OptionsDialog::localPrinterInputWidgetChanged(QString remoteprinter) {
+    QString localprinter = localPrinterInputWidgetMap[remoteprinter]->currentText();
+    qDebug() << "QComboBox changed:" << remoteprinter << localprinter;
+    settings->beginGroup(remoteprinter);
+    settings->setValue("localprinter", localprinter);
+    settings->endGroup();
 }
 
 void OptionsDialog::on_urlEditInput_textChanged(QString value)

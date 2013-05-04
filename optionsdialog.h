@@ -23,7 +23,7 @@ private:
     bool auth_tried;
     QNetworkAccessManager * networkManagerSettings;
     QSignalMapper *signalMapper;
-    QMap<QString, QLineEdit *> unselectButtonMap;
+    QMap<QString, QComboBox *> localPrinterInputWidgetMap;
 
 signals:
     void navigateToUrl(QString);
@@ -46,7 +46,7 @@ private slots:
     void on_updateSettingsButton_clicked();
     void on_printUrlInput_textChanged(const QString &arg1);
     void on_printUsernameInput_textChanged(const QString &arg1);
-    void myTextChanged(QString text);
+    void localPrinterInputWidgetChanged(QString text);
 };
 
 #endif // OPTIONSDIALOG_H
