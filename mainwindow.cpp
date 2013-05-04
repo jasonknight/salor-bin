@@ -67,6 +67,27 @@ void MainWindow::init()
 
     webView->load(this->to_url);
     connectSlots();
+    startPrintTimer();
+}
+
+void MainWindow::startPrintTimer() {
+    printTimer = new QTimer(this);
+    connect(
+        printTimer,
+        SIGNAL(timeout()),
+        this,
+        SLOT(on_timerTimeout())
+    );
+    QSettings * settings = new QSettings(PathSettings, QSettings::IniFormat);
+    settings->beginGroup("printers");
+    int interval = settings->value("interval").toInt();
+    if (interval) {
+        qDebug() << "Interval is " << interval;
+        printTimer->start(interval * 1000);
+    } else {
+        qDebug() << "Not starting timers";
+    }
+    settings->endGroup();
 }
 
 void MainWindow::connectSlots() {
@@ -157,14 +178,24 @@ void MainWindow::setProgress(int p) {
 }
 
 void MainWindow::finishLoading(bool) {
-     progress = 100;
+     //progress = 100;
      adjustTitle();
 }
 
 void MainWindow::showOptionsDialog() {
     OptionsDialog* d = new OptionsDialog(this);
-    connect(d,SIGNAL(navigateToUrl(QString)),this,SLOT(navigateToUrl(QString)));
-    connect(d,SIGNAL(clearCache()),webView->page()->networkAccessManager()->cache(),SLOT(clear()));
+    connect(
+            d, SIGNAL(navigateToUrl(QString)),
+            this, SLOT(navigateToUrl(QString))
+            );
+    connect(
+            d, SIGNAL(clearCache()),
+            webView->page()->networkAccessManager()->cache(), SLOT(clear())
+            );
+    connect(
+            d, SIGNAL(startPrintTimer()),
+            this, SLOT(startPrintTimer())
+            );
     d->show();
 }
 

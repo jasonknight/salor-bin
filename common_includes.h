@@ -104,11 +104,12 @@ extern const QString PathCookies;
 static QVariant _get(QString key) {
     QSettings settings(PathSettings,QSettings::IniFormat);
     QVariant val = settings.value(key);
-    if (!val.isNull()) {
+    return val;
+    /*if (!val.isNull()) {
         return val;
     } else {
         return QVariant();
-    }
+    }*/
 }
 
 static void _set(QString key, QString &value) {

@@ -34,8 +34,10 @@ private:
     QProgressBar * status_bar_progressBar;
     QLabel * status_bar_urlLabel;
     void attach();
+    QTimer * printTimer;
 
 public slots:
+    void startPrintTimer();
     void setProgress(int);
     void finishLoading(bool);
     void adjustTitle();

@@ -19,22 +19,28 @@ public:
     
 private:
     Ui::OptionsDialog *ui;
+    QSettings *settings;
 
 signals:
     void navigateToUrl(QString);
     void clearCache();
     void sendJS(QString &js);
+    void startPrintTimer();
+
 
 public slots:
-    void on_URLEdit_textChanged(QString value) {
-       _set(QString("salor.url"),value);
-   }
-   void on_pushButton_clicked() {
-       QString url = _get("salor.url").toString();
-       emit navigateToUrl(url);
-   }
-   void on_printerComboBox_currentIndexChanged(QString);
-   void on_ClearCacheButton_clicked();
+    void on_goButton_clicked();
+    void on_clearCacheButton_clicked();
+
+private slots:
+    void on_localPrinters1Combo_currentIndexChanged(QString name);
+    void on_urlEditInput_textChanged(QString value);
+    void on_updateSettingsButton_clicked();
+    void on_printUrlInput_textChanged(const QString &arg1);
+    void on_printUsernameInput_textChanged(const QString &arg1);
+    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
+    void on_printInfoFetched(QNetworkReply * rep);
+    void on_printoutFetched(QNetworkReply * rep);
 };
 
 #endif // OPTIONSDIALOG_H

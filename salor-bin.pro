@@ -7,7 +7,7 @@
 QT       += core gui webkit network
 
 # Don't commit a change to the following line into a repository. If you want to compile for Linux, use make.
-LIBS += -lwinspool
+#LIBS += -lwinspool
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

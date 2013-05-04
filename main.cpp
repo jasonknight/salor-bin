@@ -18,7 +18,7 @@ size_t __size;
 
 extern const QString PathCookies = PathWorking + "/cookiejar";
 extern const QString PathCache = PathWorking + "/cache";
-extern const QString PathSettings = PathWorking + "/settings";
+extern const QString PathSettings = PathWorking + "/salor-bin.ini";
 extern const QString PathDownloads = PathWorking + "/downloads";
 
 void help() {
@@ -38,13 +38,14 @@ int main(int argc, char *argv[])
     MainWindow w;
     QString arg;
     bool fullscreen = false;
+    QVariant url;
 
     if (!QDir(PathWorking).exists()) {
         QDir().mkdir(PathWorking);
     }
-
-    if (_get("salor.url").isNull() != true && _get("salor.url").toString() != "") {
-        w.to_url = _get("salor.url").toString();
+    url = _get("url");
+    if (url.isNull() != true && url.toString() != "") {
+        w.to_url = url.toString();
     } else {
         w.to_url = QString("http://documentation.red-e.eu");
     }
