@@ -23,6 +23,7 @@ private:
     bool auth_tried;
     QNetworkAccessManager * networkManagerSettings;
     QSignalMapper *signalMapper;
+    QMap<QString, QLineEdit *> unselectButtonMap;
 
 signals:
     void navigateToUrl(QString);

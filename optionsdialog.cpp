@@ -53,14 +53,27 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
             settings->beginGroup(group);
             remoteprinters << settings->value("name").toString();
             settings->endGroup();
-            QLineEdit * inputfield = new QLineEdit();
-            connect(inputfield, SIGNAL(textChanged(const QString &)), signalMapper, SLOT(map()));
-            signalMapper->setMapping(inputfield, group);
-            ui->myGrid->addWidget(inputfield,i,0);
         }
     }
+
+    /*QLineEdit * inputfield = new QLineEdit();
+    connect(inputfield, SIGNAL(textChanged(const QString &)), signalMapper, SLOT(map()));
+    signalMapper->setMapping(inputfield, group);
+    ui->myGrid->addWidget(inputfield,i,0);*/
+
+
+    foreach(QString instance, remoteprinters) {
+      qDebug() << instance;
+      unselectButtonMap[instance] = new QLineEdit();
+      connect(unselectButtonMap[instance], SIGNAL(textChanged(const QString &)), signalMapper, SLOT(map()));
+      signalMapper->setMapping(unselectButtonMap[instance], instance);
+      ui->myGrid->addWidget(unselectButtonMap[instance]);
+      //QObject::connect(unselectButtonMap[instance],SIGNAL(clicked()),this,SLOT(unselectInstance()));
+    }
+
+
     connect(signalMapper, SIGNAL(mapped(const QString &)),         this, SLOT(myTextChanged(const QString &)));
-    ui->remotePrinters1Combo->addItems(remoteprinters);
+    //ui->remotePrinters1Combo->addItems(remoteprinters);
 #endif
 #ifdef WIN32
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
@@ -106,7 +119,8 @@ OptionsDialog::~OptionsDialog()
 }
 
 void OptionsDialog::myTextChanged(QString text) {
-    qDebug() << "TEXT CHANGED" << text;
+
+    qDebug() << "TEXT CHANGED" << text << unselectButtonMap[text]->text();
 }
 
 void OptionsDialog::on_urlEditInput_textChanged(QString value)
