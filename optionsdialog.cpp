@@ -89,20 +89,33 @@ void OptionsDialog::setupPrinterCombos() {
     }
 
     QString labeltext;
+    QString localprintername;
     int i = 0;
     foreach(QString remoteprinter, remoteprinters) {
       qDebug() << "Dynamically setting up combobox for printer" << remoteprinter;
       QComboBox * combobox = new QComboBox();
       settings->beginGroup(remoteprinter);
       labeltext = settings->value("name").toString();
+      localprintername = settings->value("localprinter").toString();
       qDebug() << labeltext;
       QLabel * label = new QLabel(labeltext);
       settings->endGroup();
       combobox->addItems(devs->entryList());
       connect(combobox, SIGNAL(currentIndexChanged(const QString &)), signalMapper, SLOT(map()));
       signalMapper->setMapping(combobox, remoteprinter);
+
+      //select current value
+      qDebug() << "finding index for " << localprintername;
+      int index = combobox->findText(localprintername);
+      qDebug() << "index is " << index;
+      if (index != -1) {
+          combobox->setCurrentIndex(index);
+      }
+
+      //add stuff to ui
       ui->printerGrid->addWidget(label, i, 0);
       ui->printerGrid->addWidget(combobox, i, 1);
+
       localPrinterInputWidgetMap[remoteprinter] = combobox;
       i++;
     }
@@ -145,6 +158,7 @@ void OptionsDialog::on_updateSettingsButton_clicked()
         qDebug() << "DELETING";
         delete child->widget();
     }
+
 
     //another way to delete:
     /*QMap<QString, QComboBox *>::iterator i;
