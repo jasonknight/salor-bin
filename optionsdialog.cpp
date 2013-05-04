@@ -9,11 +9,19 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OptionsDialog)
 {
-    settings = new QSettings(PathSettings, QSettings::IniFormat);
     ui->setupUi(this);
+
+    auth_tried = false;
+
+    signalMapper = new QSignalMapper(this);
+    settings = new QSettings(PathSettings, QSettings::IniFormat);
+
     ui->urlEditInput->setText(_get(QString("url")).toString());
-    ui->printUrlInput->setText(settings->value("print-url").toString());
-    ui->printUsernameInput->setText(settings->value("print-username").toString());
+    settings->beginGroup("printing");
+    ui->printUrlInput->setText(settings->value("url").toString());
+    ui->printUsernameInput->setText(settings->value("username").toString());
+    settings->endGroup();
+
     _ready = false;
 #ifdef MAC
     int i;
@@ -27,11 +35,32 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
 
 #endif
 #ifdef LINUX
+    // populate combo box for local printers
     QStringList filters;
     filters << "ttyS*" << "ttyUSB*" << "usb";
     QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
     (*devs).setNameFilters(filters);
     ui->localPrinters1Combo->addItems(devs->entryList());
+
+    // populate combo box for remote printers
+    QStringList groups = (*settings).childGroups();
+    QStringList remoteprinters;
+    //qDebug() << "GROUPS" << groups;
+    for (int i = 0; i < groups.size(); i++)
+    {
+        QString group = groups[i];
+        if (group.indexOf("printer") != -1) {
+            settings->beginGroup(group);
+            remoteprinters << settings->value("name").toString();
+            settings->endGroup();
+            QLineEdit * inputfield = new QLineEdit();
+            connect(inputfield, SIGNAL(textChanged(const QString &)), signalMapper, SLOT(map()));
+            signalMapper->setMapping(inputfield, group);
+            ui->myGrid->addWidget(inputfield,i,0);
+        }
+    }
+    connect(signalMapper, SIGNAL(mapped(const QString &)),         this, SLOT(myTextChanged(const QString &)));
+    ui->remotePrinters1Combo->addItems(remoteprinters);
 #endif
 #ifdef WIN32
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
@@ -76,6 +105,10 @@ OptionsDialog::~OptionsDialog()
     delete ui;
 }
 
+void OptionsDialog::myTextChanged(QString text) {
+    qDebug() << "TEXT CHANGED" << text;
+}
+
 void OptionsDialog::on_urlEditInput_textChanged(QString value)
 {
     _set(QString("url"),value);
@@ -109,52 +142,81 @@ void OptionsDialog::on_localPrinters1Combo_currentIndexChanged(QString name)
 void OptionsDialog::on_updateSettingsButton_clicked()
 {
     qDebug() << "update button clicked";
-    QNetworkRequest request(QUrl::fromUserInput(settings->value("url").toString()));
+    settings->beginGroup("printing");
+    QString url = settings->value("url").toString();
+    QString username = settings->value("username").toString();
+    settings->endGroup();
+
+    QNetworkRequest request(QUrl::fromUserInput(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-    QNetworkAccessManager * manager = new QNetworkAccessManager(this);
-    connect(manager,
-              SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
+    networkManagerSettings = new QNetworkAccessManager(this);
+    connect(networkManagerSettings,
+              SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
               this,
-              SLOT(on_authenticationRequired(QNetworkReply*,QAuthenticator*))
+              SLOT(on_authenticationRequired(QNetworkReply*, QAuthenticator*))
     );
     QByteArray data;
     QUrl params;
     QSslConfiguration c = request.sslConfiguration();
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
     request.setSslConfiguration(c);
-    params.addQueryItem("id",settings->value("print-username").toString());
+    params.addQueryItem("id",username);
     data = params.encodedQuery();
-    connect(manager,SIGNAL(finished(QNetworkReply*)),
+    connect(networkManagerSettings,SIGNAL(finished(QNetworkReply*)),
             this,SLOT(on_printInfoFetched(QNetworkReply*)));
-    manager->post(request,data);
+    networkManagerSettings->post(request,data);
 }
 
 void OptionsDialog::on_authenticationRequired(QNetworkReply *reply, QAuthenticator *auth) {
     qDebug() << "Authentication required";
-    auth->setUser(settings->value("username").toString());
-    auth->setPassword(settings->value("password").toString());
+    //auth->setUser(settings->value("username").toString());
+    //auth->setPassword(settings->value("password").toString());
+    auth->setUser("username222");
+    auth->setPassword("password222");
+    if(auth_tried == true) {
+      // problem with the authenticationRequired signal is that it will cache wrong auth username/password, which leads to an endless loop with the server is immediately asking again for authentication. so, we kill it at the second attempt.
+      delete networkManagerSettings;
+    }
+    auth_tried = true;
 }
 
 void OptionsDialog::on_printInfoFetched(QNetworkReply *rep) {
+    auth_tried = false;
     qDebug() << "Attempting to read reply";
     QString body = rep->readAll();
     qDebug() << "Reply is: " << body;
     QStringList lines = body.split("\n");
     QRegExp rx("([\\w\-]+)\\:(.+)");
     foreach(QString line,lines) {
+        qDebug() << "line is" << line;
         int pos = 0;
         while( ( pos = rx.indexIn(line,pos) ) != -1 ) {
             QString key = rx.cap(1);
             QString val = rx.cap(2);
             qDebug() << "Key is: " << key << " value is: " << val;
-            settings->beginGroup("printer-info");
+            if (key.indexOf("printerurl") != -1) {
+                QString printernumber = key.mid(10, 1);
+                QString printergroup = "printer" + printernumber;
+                settings->beginGroup(printergroup);
+                settings->setValue("url", val);
+                settings->endGroup();
+            } else if (key.indexOf("printername") != -1) {
+                QString printernumber = key.mid(11, 1);
+                QString printergroup = "printer" + printernumber;
+                settings->beginGroup(printergroup);
+                settings->setValue("name", val);
+                settings->endGroup();
+            } else {
+                // other print settings
+                settings->beginGroup("printing");
                 settings->setValue(key,val);
-            settings->endGroup();
+                settings->endGroup();
+            }
             pos += rx.matchedLength();
         }
     }
-    qDebug() << "Setting up timer";
-    emit startPrintTimer();
+    //qDebug() << "Setting up timer";
+    //emit startPrintTimer();
     /*settings->beginGroup("printer-info");
         timer->stop();
         int interval = settings->value("interval").toInt();
@@ -182,10 +244,14 @@ void OptionsDialog::on_printoutFetched(QNetworkReply *rep) {
 
 void OptionsDialog::on_printUrlInput_textChanged(const QString &arg1)
 {
-    settings->setValue("print-url", arg1);
+    settings->beginGroup("printing");
+    settings->setValue("url", arg1);
+    settings->endGroup();
 }
 
 void OptionsDialog::on_printUsernameInput_textChanged(const QString &arg1)
 {
-    settings->setValue("print-username", arg1);
+    settings->beginGroup("printing");
+    settings->setValue("username", arg1);
+    settings->endGroup();
 }

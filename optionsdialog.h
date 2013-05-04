@@ -20,6 +20,9 @@ public:
 private:
     Ui::OptionsDialog *ui;
     QSettings *settings;
+    bool auth_tried;
+    QNetworkAccessManager * networkManagerSettings;
+    QSignalMapper *signalMapper;
 
 signals:
     void navigateToUrl(QString);
@@ -28,9 +31,13 @@ signals:
     void startPrintTimer();
 
 
+
 public slots:
     void on_goButton_clicked();
     void on_clearCacheButton_clicked();
+    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
+    void on_printInfoFetched(QNetworkReply * rep);
+    void on_printoutFetched(QNetworkReply * rep);
 
 private slots:
     void on_localPrinters1Combo_currentIndexChanged(QString name);
@@ -38,9 +45,7 @@ private slots:
     void on_updateSettingsButton_clicked();
     void on_printUrlInput_textChanged(const QString &arg1);
     void on_printUsernameInput_textChanged(const QString &arg1);
-    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
-    void on_printInfoFetched(QNetworkReply * rep);
-    void on_printoutFetched(QNetworkReply * rep);
+    void myTextChanged(QString text);
 };
 
 #endif // OPTIONSDIALOG_H

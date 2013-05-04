@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>254</height>
+    <height>403</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -195,6 +195,17 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>240</y>
+     <width>160</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="myGrid"/>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -279,10 +290,4 @@
    </hints>
   </connection>
  </connections>
- <slots>
-  <slot>on_pushButton_clicked()</slot>
-  <slot>on_URLEdit_textChanged(QString)</slot>
-  <slot>on_printerComboBox_currentIndexChanged(QString)</slot>
-  <slot>on_ClearCacheButton_clicked()</slot>
- </slots>
 </ui>
