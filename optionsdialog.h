@@ -24,6 +24,7 @@ private:
     QNetworkAccessManager * networkManagerSettings;
     QSignalMapper *signalMapper;
     QMap<QString, QComboBox *> localPrinterInputWidgetMap;
+    void setupPrinterCombos();
 
 signals:
     void navigateToUrl(QString);
@@ -41,7 +42,6 @@ public slots:
     void on_printoutFetched(QNetworkReply * rep);
 
 private slots:
-    void on_localPrinters1Combo_currentIndexChanged(QString name);
     void on_urlEditInput_textChanged(QString value);
     void on_updateSettingsButton_clicked();
     void on_printUrlInput_textChanged(const QString &arg1);

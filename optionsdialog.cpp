@@ -10,17 +10,16 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     ui(new Ui::OptionsDialog)
 {
     ui->setupUi(this);
-
-    auth_tried = false;
-
-    signalMapper = new QSignalMapper(this);
     settings = new QSettings(PathSettings, QSettings::IniFormat);
+    auth_tried = false;
 
     ui->urlEditInput->setText(_get(QString("url")).toString());
     settings->beginGroup("printing");
     ui->printUrlInput->setText(settings->value("url").toString());
     ui->printUsernameInput->setText(settings->value("username").toString());
     settings->endGroup();
+
+    setupPrinterCombos();
 
     _ready = false;
 #ifdef MAC
@@ -35,34 +34,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
 
 #endif
 #ifdef LINUX
-    // populate combo box for local printers
-    QStringList filters;
-    filters << "ttyS*" << "ttyUSB*" << "usb";
-    QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
-    (*devs).setNameFilters(filters);
 
-    QStringList groups = (*settings).childGroups();
-    QStringList remoteprinters;
-
-    // filter out all setting groups that are not printer definitions
-    for (int i = 0; i < groups.size(); i++) {
-        QString group = groups[i];
-        if (group.indexOf("printer") != -1) {
-            remoteprinters << group;
-        }
-    }
-
-
-    foreach(QString remoteprinter, remoteprinters) {
-      qDebug() << "Dynamically setting up combobox for printer" << remoteprinter;
-      QComboBox * combobox = new QComboBox();
-      combobox->addItems(devs->entryList());
-      connect(combobox, SIGNAL(currentIndexChanged(const QString &)), signalMapper, SLOT(map()));
-      signalMapper->setMapping(combobox, remoteprinter);
-      ui->myGrid->addWidget(combobox);
-      localPrinterInputWidgetMap[remoteprinter] = combobox;
-    }
-    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(localPrinterInputWidgetChanged(const QString &)));
 
 #endif
 #ifdef WIN32
@@ -88,24 +60,53 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
         }
     }*/
 #endif
-    settings->beginGroup("printer1");
-    int index = ui->localPrinters1Combo->findText(settings->value("name").toString());
-    settings->endGroup();
-    //qDebug() << "index is: " << index << "get is:" << _get("salor.thermal_printer");
-    if (index != -1) {
-        ui->localPrinters1Combo->setCurrentIndex(index);
-    }
-    connect(ui->localPrinters1Combo,
-            SIGNAL(currentIndexChanged(QString)),
-            this,
-            SLOT(on_localPrinters1Combo_currentIndexChanged(QString))
-            );
     _ready = true;
 }
 
 OptionsDialog::~OptionsDialog()
 {
     delete ui;
+}
+
+void OptionsDialog::setupPrinterCombos() {
+    signalMapper = new QSignalMapper(this);
+
+    // populate combo box for local printers
+    QStringList filters;
+    filters << "ttyS*" << "ttyUSB*" << "usb";
+    QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
+    (*devs).setNameFilters(filters);
+
+    QStringList groups = (*settings).childGroups();
+    QStringList remoteprinters;
+
+    // filter out all setting groups that are not printer definitions
+    for (int i = 0; i < groups.size(); i++) {
+        QString group = groups[i];
+        if (group.indexOf("printer") != -1) {
+            remoteprinters << group;
+        }
+    }
+
+    QString labeltext;
+    int i = 0;
+    foreach(QString remoteprinter, remoteprinters) {
+      qDebug() << "Dynamically setting up combobox for printer" << remoteprinter;
+      QComboBox * combobox = new QComboBox();
+      settings->beginGroup(remoteprinter);
+      labeltext = settings->value("name").toString();
+      qDebug() << labeltext;
+      QLabel * label = new QLabel(labeltext);
+      settings->endGroup();
+      combobox->addItems(devs->entryList());
+      connect(combobox, SIGNAL(currentIndexChanged(const QString &)), signalMapper, SLOT(map()));
+      signalMapper->setMapping(combobox, remoteprinter);
+      ui->printerGrid->addWidget(label, i, 0);
+      ui->printerGrid->addWidget(combobox, i, 1);
+      localPrinterInputWidgetMap[remoteprinter] = combobox;
+      i++;
+    }
+    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(localPrinterInputWidgetChanged(const QString &)));
 }
 
 void OptionsDialog::localPrinterInputWidgetChanged(QString remoteprinter) {
@@ -133,22 +134,25 @@ void OptionsDialog::on_clearCacheButton_clicked() {
     emit clearCache();
 }
 
-void OptionsDialog::on_localPrinters1Combo_currentIndexChanged(QString name)
-{
-    if(this->_ready == false)
-        return;
-
-    settings->beginGroup("printer1");
-    settings->setValue("name", name);
-    settings->endGroup();
-    //QClipboard *clipboard = QApplication::clipboard();
-    //clipboard->setText(name);
-}
-
-
 void OptionsDialog::on_updateSettingsButton_clicked()
 {
     qDebug() << "update button clicked";
+
+    //int childWidgets = ui->printerGrid->count() - 1;
+    //qDebug() << "CHILD" << childWidgets;
+    QLayoutItem * child;
+    while ((child = ui->printerGrid->takeAt(0)) != 0) {
+        qDebug() << "DELETING";
+        delete child->widget();
+    }
+
+    //another way to delete:
+    /*QMap<QString, QComboBox *>::iterator i;
+    for (i = localPrinterInputWidgetMap.begin(); i != localPrinterInputWidgetMap.end(); ++i) {
+        delete i.value();
+        qDebug() << "DELETING" << i.key();
+    }*/
+
     settings->beginGroup("printing");
     QString url = settings->value("url").toString();
     QString username = settings->value("username").toString();
@@ -222,6 +226,7 @@ void OptionsDialog::on_printInfoFetched(QNetworkReply *rep) {
             pos += rx.matchedLength();
         }
     }
+    setupPrinterCombos();
     //qDebug() << "Setting up timer";
     //emit startPrintTimer();
     /*settings->beginGroup("printer-info");

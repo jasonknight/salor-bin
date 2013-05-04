@@ -158,16 +158,6 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QComboBox" name="localPrinters1Combo"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Print to</string>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="0" colspan="2">
       <widget class="Line" name="line">
        <property name="orientation">
@@ -175,20 +165,10 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="4" column="1">
       <widget class="QPushButton" name="printNowButton">
        <property name="text">
         <string>Print now</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QComboBox" name="remotePrinters1Combo"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Printer</string>
        </property>
       </widget>
      </item>
@@ -198,13 +178,17 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>240</y>
+     <x>320</x>
+     <y>220</y>
      <width>160</width>
      <height>80</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="myGrid"/>
+   <layout class="QGridLayout" name="printerGrid" rowminimumheight="0" columnminimumwidth="0">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
+   </layout>
   </widget>
  </widget>
  <resources/>
