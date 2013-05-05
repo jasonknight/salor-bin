@@ -20,12 +20,11 @@
   <div onclick="Salor.playSound('drop3');">Test sound playing drop3</div>
   <div onclick="Salor.playSound('medium_warning');">Test sound playing medium_warning</div>
   <div onclick="Salor.playSound('notice');">Test sound playing notice</div>
-  <div onclick="Salor.toperScale('/dev/ttyUSB0');">Test toperScale on /dev/ttyUSB0</div>
-  <div onclick="SalorPrinter.printURL('/dev/usb/lp0', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test Printing on /dev/usb/lp0 (Escper logo)</div>
-  <!-- <div onclick="Salor.remoteService('ip','user','pass','ssh');">Test remoteService SSH</div> -->
-  <!-- <div onclick="Salor.remoteService('ip','user','pass','vnc');">Test remoteService VNC</div> -->
-  <!-- <div onclick="alert(Salor.remoteServiceConnectionOpen('vnc'));">Test remoteService VNC Open</div> -->
-  <!-- <div onclick="alert(Salor.remoteServiceConnectionOpen('ssh'));">Test remoteService SSH Open</div> -->
+  <div onclick="weigh();">Test weighing on /dev/ttyUSB0</div>
+  <div id='weight'></div>
+  <div onclick="SalorPrinter.printURL('/dev/ttyUSB0', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test Printing on /dev/usb/lp0 (Escper logo)</div>
+  <div onclick="Salor.shutdown();">Shutdown</div>
+
 
   <script type="text/javascript">
     function call_poledancer() {
@@ -36,7 +35,7 @@
       alert("Complete Order PopUp hidden");
     }
     function start_drawer_observer() {
-      Salor.startDrawerObserver('/dev/usb/lp0');
+      Salor.startDrawerObserver('/dev/ttyUSB0');
       document.getElementById('drawerstatus').innerHTML = '';
     }
     function stop_drawer_observer() {
@@ -45,9 +44,14 @@
     }
     function open_drawer() {
       Salor.stopDrawerObserver();
-      Salor.newOpenCashDrawer('/dev/usb/lp0');
-      Salor.startDrawerObserver('/dev/usb/lp0');
+      Salor.newOpenCashDrawer('/dev/ttyUSB0');
+      Salor.startDrawerObserver('/dev/ttyUSB0');
       document.getElementById('drawerstatus').innerHTML = '';
+    }
+    
+    function weigh() {
+      var weight = parseFloat(Salor.weigh('/dev/ttyUSB0', 0));
+      document.getElementById('weight').innerHTML = Salor.weigh('/dev/ttyUSB0', 0) + " " + typeof weight;
     }
   </script>
 

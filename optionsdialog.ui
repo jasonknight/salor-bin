@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>656</width>
-    <height>300</height>
+    <width>630</width>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,9 +19,9 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>240</y>
-     <width>341</width>
+     <x>30</x>
+     <y>170</y>
+     <width>161</width>
      <height>32</height>
     </rect>
    </property>
@@ -32,113 +32,165 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget">
+  <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>10</y>
-     <width>461</width>
-     <height>254</height>
+     <width>251</width>
+     <height>121</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetNoConstraint</enum>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>100</height>
+    </size>
+   </property>
+   <property name="title">
+    <string>Basic Settings</string>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>231</width>
+      <height>285</height>
+     </rect>
     </property>
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>URL</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="URLEdit">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>300</width>
-        <height>0</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Printer</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QComboBox" name="printerComboBox"/>
-    </item>
-    <item row="2" column="1">
-     <widget class="QGroupBox" name="groupBox">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>100</height>
-       </size>
-      </property>
-      <property name="title">
-       <string>Additional</string>
-      </property>
-      <widget class="QPushButton" name="ClearCacheButton">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>75</width>
-         <height>23</height>
-        </rect>
+    <layout class="QFormLayout" name="formLayout_3">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>URL</string>
        </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="urlEditInput">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="goButton">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Go</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="clearCacheButton">
        <property name="text">
         <string>Clear Cache</string>
        </property>
       </widget>
-     </widget>
-    </item>
-   </layout>
+     </item>
+    </layout>
+   </widget>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget_2">
+  <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>470</x>
+     <x>260</x>
      <y>10</y>
-     <width>160</width>
-     <height>221</height>
+     <width>361</width>
+     <height>211</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout_2">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+   <property name="title">
+    <string>Printing</string>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>331</width>
+      <height>171</height>
+     </rect>
     </property>
-    <property name="leftMargin">
-     <number>5</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QPushButton" name="pushButton">
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Go</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>URL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="printUrlInput"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Username</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="printUsernameInput"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="updateSettingsButton">
+       <property name="text">
+        <string>Update Settings</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="2">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <layout class="QGridLayout" name="printerGrid" rowminimumheight="0" columnminimumwidth="0">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+      </layout>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="printNowButton">
+       <property name="text">
+        <string>Print now</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="printTestButton">
+       <property name="text">
+        <string>Test</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <resources/>
@@ -176,23 +228,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>URLEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>OptionsDialog</receiver>
-   <slot>on_URLEdit_textChanged(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>220</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
+   <sender>goButton</sender>
    <signal>clicked()</signal>
    <receiver>OptionsDialog</receiver>
    <slot>on_pushButton_clicked()</slot>
@@ -208,7 +244,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>ClearCacheButton</sender>
+   <sender>clearCacheButton</sender>
    <signal>clicked()</signal>
    <receiver>OptionsDialog</receiver>
    <slot>on_ClearCacheButton_clicked()</slot>
@@ -223,11 +259,21 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>urlEditInput</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>OptionsDialog</receiver>
+   <slot>on_URLEdit_textChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>62</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
- <slots>
-  <slot>on_pushButton_clicked()</slot>
-  <slot>on_URLEdit_textChanged(QString)</slot>
-  <slot>on_printerComboBox_currentIndexChanged(QString)</slot>
-  <slot>on_ClearCacheButton_clicked()</slot>
- </slots>
 </ui>

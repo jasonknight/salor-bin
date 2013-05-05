@@ -2,7 +2,9 @@
 #define OPTIONSDIALOG_H
 
 #include <QDialog>
+#include "salorprinter.h"
 #include <common_includes.h>
+
 namespace Ui {
 class OptionsDialog;
 }
@@ -14,23 +16,37 @@ class OptionsDialog : public QDialog
 public:
     explicit OptionsDialog(QWidget *parent = 0);
     ~OptionsDialog();
-    bool _ready;
+    
+private:
+    Ui::OptionsDialog *ui;
+    bool auth_tried;
+    QNetworkAccessManager * networkManagerSettings;
+    QSignalMapper *signalMapper;
+    QMap<QString, QComboBox *> localPrinterInputWidgetMap;
+    void setupPrinterCombos();
+    SalorPrinter *sp;
+
 signals:
     void navigateToUrl(QString);
     void clearCache();
     void sendJS(QString &js);
+    void printTimerStart();
+    void setPrinterCounter(int value);
+
 public slots:
-    void on_URLEdit_textChanged(QString value) {
-        _set(QString("salor.url"),value);
-    }
-    void on_pushButton_clicked() {
-        QString url = _get("salor.url").toString();
-        emit navigateToUrl(url);
-    }
-    void on_printerComboBox_currentIndexChanged(QString);
-    void on_ClearCacheButton_clicked();
-private:
-    Ui::OptionsDialog *ui;
+    void on_goButton_clicked();
+    void on_clearCacheButton_clicked();
+    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
+    void on_printInfoFetched(QNetworkReply * rep);
+
+private slots:
+    void on_urlEditInput_textChanged(QString value);
+    void on_updateSettingsButton_clicked();
+    void on_printUrlInput_textChanged(const QString &arg1);
+    void on_printUsernameInput_textChanged(const QString &arg1);
+    void localPrinterInputWidgetChanged(QString text);
+    void on_printNowButton_clicked();
+    void on_printTestButton_clicked();
 };
 
 #endif // OPTIONSDIALOG_H

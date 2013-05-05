@@ -1,43 +1,51 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2011-05-15T23:01:02
+# Project created by QtCreator 2013-05-02T11:10:26
 #
 #-------------------------------------------------
 
 QT       += core gui webkit network
 
-TARGET = salor
+# Don't commit a change to the following line into a repository. If you want to compile for Linux, use make.
+LIBS += -lwinspool
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = salor-bin
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    salor_page.cpp \
-    salor_customer_screen.cpp \
-    cashdrawer.cpp \
-    salorprinter.cpp \
-    salorcookiejar.cpp \
-    salorprocess.cpp \
+    salorpage.cpp \
+    network.cpp \
     salorjsapi.cpp \
+    salorprocess.cpp \
+    salorprinter.cpp \
+    optionsdialog.cpp \
+    salorcookiejar.cpp \
+    downloader.cpp \
     cutecredit.cpp \
-    optionsdialog.cpp
+    customerscreen.cpp \
+    salorcapture.cpp \
+    drawerobserver.cpp \
+    scale.cpp
 
 HEADERS  += mainwindow.h \
-    salor_page.h \
-    salor_customer_screen.h \
-    cashdrawer.h \
-    scales.h \
-    salorprinter.h \
-    salorcookiejar.h \
-    salorprocess.h \
-    salorjsapi.h \
-    cutecredit.h \
+    salorpage.h \
+    network.h \
     common_includes.h \
-    optionsdialog.h
+    salorjsapi.h \
+    salorprocess.h \
+    salorprinter.h \
+    optionsdialog.h \
+    salorcookiejar.h \
+    downloader.h \
+    cutecredit.h \
+    customerscreen.h \
+    salorcapture.h \
+    drawerobserver.h \
+    scale.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui
-
-macx {
-    LIBS += -lcups
-}

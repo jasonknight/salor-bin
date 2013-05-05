@@ -2,68 +2,39 @@
 #define SALORJSAPI_H
 
 #include <QObject>
-#include <QDebug>
-#include <QVariant>
-#include <QMap>
-#include <QWebView>
-#include <QPrinter>
-#include <QPrintDialog>
-#include <QDir>
-#include <QFile>
-#include <QTextStream>
-#include <QDateTime>
-#include <QApplication>
-#include <QWebFrame>
-#include <QWebPage>
-#include <QSettings>
-
-#include "salorjsapi.h"
-#include "salorprocess.h"
-#include "salorprinter.h"
-#include "salor_customer_screen.h"
-#include "scales.h"
-#include "cashdrawer.h"
-#include "cutecredit.h"
-
 #include "common_includes.h"
+#include "drawerobserver.h"
+#include "salorprocess.h"
 
-class SalorJSApi : public QObject
+class SalorJsApi : public QObject
 {
     Q_OBJECT
 public:
-    explicit SalorJSApi(QObject *parent = 0);
+    explicit SalorJsApi(QObject *parent = 0);
     QWebView *webView;
-    CuteCredit * credit_thread;
     DrawerObserverThread * drawer_thread;
 
 signals:
     void cuteDataRead(QString);
     void _cuteWriteData(QString);
-
+    
 public slots:
- void poleDancer(QString path, QString message);
- QString toperScale(QString addy);
- QString testScale() {
-   qDebug() << "Reading from Test: " << "2.754";
-   return QString("2.754");
- }
- void newOpenCashDrawer(QString addy);
- void startDrawerObserver(QString addy);
- void stopDrawerObserver();
- void _cashDrawerClosed();
- void shutdown();
- void printPage();
- QStringList ls(QString path,QStringList filters);
- void completeOrderSnap(QString order_id);
- void generalSnap(QString msg);
- void playSound(QString name);
- void mimoRefresh(QString path,int h, int w);
- void mimoImage(QString imagepath);
- void cuteWriteData(QString);
- void _cuteBubbleDataRead(QString data);
- void remoteService(QString url, QString username, QString password, QString type);
- void echo(QString msg);
- bool remoteServiceConnectionOpen(QString type);
+    void poleDancer(QString path, QString message);
+    void newOpenCashDrawer(QString addy);
+    void startDrawerObserver(QString addy);
+    void stopDrawerObserver();
+    void _cashDrawerClosed();
+    void printPage();
+    void playSound(QString name);
+    void echo(QString msg);
+    void mimoRefresh(QString path,int h, int w);
+    void mimoImage(QString imagepath);
+    QStringList ls(QString path,QStringList filters);
+    void shutdown();
+    void cuteWriteData(QString);
+    void _cuteBubbleDataRead(QString data);
+    QString weigh(QString addy, int protocol);
+    
 };
 
 #endif // SALORJSAPI_H
