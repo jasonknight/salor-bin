@@ -107,7 +107,7 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
 #ifdef LINUX
     QFile f(m_printer_path);
 
-    if (false && f.exists() && f.open(QIODevice::WriteOnly)) {
+    if (f.exists() && f.open(QIODevice::WriteOnly)) {
         qDebug() << "SalorPrinter::print(): Printing to everything that QFile supports.";
         QDataStream out(&f);
         out << printdata;
