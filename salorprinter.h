@@ -14,7 +14,6 @@ class SalorPrinter : public QObject
 public:
     explicit SalorPrinter(QObject *parent = 0);
     void print(QString printer, QByteArray printdata);
-    void printURL(QString printer, QString url, QString confirm_url = "");
     void setPrinterNames();
 
 private:
@@ -23,6 +22,9 @@ private:
     QString confirmation_url;
     void printed();
     bool auth_tried;
+
+public slots:
+    void printURL(QString printer, QString url, QString confirm_url = "");
 
 private slots:
     void printDataReady(QNetworkReply * reply);

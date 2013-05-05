@@ -45,9 +45,12 @@ void SalorJsApi::printPage() {
 }
 
 void SalorJsApi::newOpenCashDrawer(QString addy) {
+#ifdef LINUX
     int count;
-    qDebug() << "Attempting to open CashDrawer at " << addy;
-    FILE * fd = fopen(addy.toLatin1().data(),"w");
+    QString appendedPath;
+    appendedPath = "/dev/" + addy;
+    qDebug() << "Attempting to open CashDrawer at " << appendedPath;
+    FILE * fd = fopen(appendedPath.toLatin1().data(),"w");
     if (fd <= 0) {
         qDebug() << "CashDrawer failed to open!";
         return;
@@ -55,6 +58,7 @@ void SalorJsApi::newOpenCashDrawer(QString addy) {
     count = fwrite("\x1B\x70\x00\x55\x55", sizeof(char), 6, fd);
     qDebug() << "Wrote "  << count << " bytes to printer.";
     fclose(fd);
+#endif
 }
 
 void SalorJsApi::startDrawerObserver(QString path) {
