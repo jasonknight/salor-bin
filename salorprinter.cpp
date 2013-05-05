@@ -50,7 +50,7 @@ void SalorPrinter::setPrinterNames() {
 void SalorPrinter::printURL(QString printer, QString url, QString confirm_url) {
     qDebug() << "Fetching: " << url << " and sending it to path " << printer;
 
-    QNetworkRequest request(QUrl::fromUserInput(url));
+    QNetworkRequest request = QNetworkRequest(QUrl(url));
 
     QSslConfiguration c = request.sslConfiguration();
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
@@ -63,6 +63,7 @@ void SalorPrinter::printURL(QString printer, QString url, QString confirm_url) {
     connect(m_manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(printDataReady(QNetworkReply*))
             );
+
     m_printer_path = printer;
     m_manager->get(request);
     confirmation_url = confirm_url;
@@ -101,6 +102,8 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
     m_printer_path = printer;
     qDebug() << "SalorPrinter::print(): Printer is" << printer << "Buffer is" << printdata;
 #ifdef LINUX
+    QString appendedPath;
+    appendedPath = "/dev/" + m_printer_path;
     QFile f(m_printer_path);
 
     if (false && f.exists() && f.open(QIODevice::WriteOnly)) {
@@ -114,12 +117,12 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         qDebug() << "SalorPrinter::print(): Printing to a serial port.";
         int fd;
         struct termios options;
-        char * port = m_printer_path.toAscii().data();
+        char * port = appendedPath.toAscii().data();
 
         fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
 
         if (fd == -1) {
-          qDebug() << "SalorPrinter::print(): Unable to open" << m_printer_path;
+          qDebug() << "SalorPrinter::print(): Unable to open" << appendedPath;
         } else {
           tcgetattr(fd, &options); // Get the current options for the port...
           cfsetispeed(&options, B9600); // Set the baud rates
@@ -131,12 +134,12 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
           printed();
         }
     } else {
-        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer_path;
+        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << appendedPath;
         //emit printerDoesNotExist();
     }
 #endif
 #ifdef MAC
-    QString printer_name = this->m_printer_path;
+    QString printer_name = m_printer_path;
     QString file_path = QDir::tempPath() + "/" + printer_name;
     qDebug() << "Path is: " << file_path;
     QFile f(file_path);
@@ -159,7 +162,7 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
     DWORD      dwJob = 0L;
     DWORD      dwBytesWritten = 0L;
     HANDLE     hPrinter;
-    wchar_t * name = new wchar_t[this->m_printer_path.length()+1];
+    wchar_t * name = new wchar_t[m_printer_path.length()+1];
     m_printer_path.toWCharArray(name);
     name[m_printer_path.length()] = 0;
     bStatus = OpenPrinter(name,&hPrinter, NULL);
@@ -203,7 +206,7 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
 void SalorPrinter::printed() {
     if(confirmation_url.length() > 0) {
         QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
-        qDebug() << "Sending print confirmation to " << this->confirmation_url;
-        confirmator->get(QNetworkRequest(QUrl(this->confirmation_url)));
+        qDebug() << "Sending print confirmation to " << confirmation_url;
+        confirmator->get(QNetworkRequest(QUrl(confirmation_url)));
     }
 }
