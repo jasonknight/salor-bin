@@ -46,11 +46,9 @@ void SalorJsApi::printPage() {
 
 void SalorJsApi::newOpenCashDrawer(QString addy) {
 #ifdef LINUX
-    int count;
-    QString appendedPath;
-    appendedPath = "/dev/" + addy;
-    qDebug() << "Attempting to open CashDrawer at " << appendedPath;
-    FILE * fd = fopen(appendedPath.toLatin1().data(),"w");
+    int count;    
+    qDebug() << "Attempting to open CashDrawer at " << addy;
+    FILE * fd = fopen(addy.toLatin1().data(),"w");
     if (fd <= 0) {
         qDebug() << "CashDrawer failed to open!";
         return;
@@ -136,10 +134,10 @@ void SalorJsApi::_cuteBubbleDataRead(QString data) {
 }
 
 void SalorJsApi::shutdown() {
-  int pid = getpid();
-  qDebug() << "Shutdown called.";
-  QApplication::closeAllWindows();
+    int pid = getpid();
+    qDebug() << "Shutdown called.";
+    QApplication::closeAllWindows();
 #ifdef LINUX
-  kill(pid,SIGKILL); // to make really sure
+    kill(pid,SIGKILL); // to make really sure
 #endif
 }

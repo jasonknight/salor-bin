@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
 
     w.init();
 
-    if (fullscreen) {
-        w.showMaximized();
+    if (fullscreen || settings->value("kiosk").toString() == "true") {
+        w.showFullScreen();
     } else {
         w.show();
     }

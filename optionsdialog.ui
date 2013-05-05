@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>630</width>
-    <height>229</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
      <x>0</x>
      <y>10</y>
      <width>251</width>
-     <height>121</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -106,6 +106,13 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="kioskCheckBox">
+       <property name="text">
+        <string>Kiosk Fullscreen Mode</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -115,7 +122,7 @@
      <x>260</x>
      <y>10</y>
      <width>361</width>
-     <height>211</height>
+     <height>241</height>
     </rect>
    </property>
    <property name="title">
@@ -127,7 +134,7 @@
       <x>10</x>
       <y>30</y>
       <width>331</width>
-      <height>171</height>
+      <height>211</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
