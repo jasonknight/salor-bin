@@ -1,3 +1,10 @@
+salor-bin (2.4.1-1wheezy) wheezy; urgency=low
+
+  * fixes
+  * kiosk mode and generic button events
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sun, 05 May 2013 17:37:16 +0200
+
 salor-bin (2.4.0-1wheezy) wheezy; urgency=low
 
   * compiles in Qt for Windows 4.8.4
