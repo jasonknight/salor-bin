@@ -35,59 +35,54 @@ void MainWindow::init()
     this->page = new SalorPage(this);
     this->page->main = this;
     this->page->setForwardUnsupportedContent(true);
+    webView->setPage(this->page);
+
+    //signals and slots
     connect(this->page,SIGNAL(unsupportedContent(QNetworkReply*)),this->page,SLOT(downloadFile(QNetworkReply*)));
     connect(this->page,SIGNAL(addWidget(QWidget*)),this,SLOT(addStatusBarWidget(QWidget*)));
     connect(this->page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
-    webView->setPage(this->page);
     connect(this->page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
+
+    //networmanager
     Network* net = new Network(this);
     webView->page()->setNetworkAccessManager(net);
-    SalorCookieJar * jar = new SalorCookieJar(this);
 
+    //cookiejar
+    SalorCookieJar * jar = new SalorCookieJar(this);
     webView->page()->networkAccessManager()->setCookieJar(jar);
+
+    //salorprinter
     this->sp = new SalorPrinter(this);
+
+    //salorjsapi
     this->js = new SalorJsApi(this);
     this->js->webView = this->webView;
-    //connect(page,SIGNAL(generalSnap(QString)),this->js,SLOT(generalSnap(QString)));
+
+    //diskcache
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
     diskCache->setCacheDirectory(PathCache);
-    qDebug() << PathCache << " is the cache location";
     webView->page()->networkAccessManager()->setCache(diskCache);
-    setCentralWidget(webView);
 
-    webView->show();
+    //statusbar
     statusBar = new QStatusBar(this);
+    statusBar->setMaximumHeight(20);
     this->setStatusBar(statusBar);
-    status_bar_progressBar = new QProgressBar();
-    status_bar_progressBar->setMinimum(0);
-    status_bar_progressBar->setMaximum(100);
-    status_bar_urlLabel = new QLabel( "Location" );
-    this->statusBar->addPermanentWidget(status_bar_urlLabel);
-    this->statusBar->addPermanentWidget(status_bar_progressBar);
+    progressBar = new QProgressBar();
+    progressBar->setMinimum(0);
+    progressBar->setMaximum(100);
+    progressBar->setMaximumWidth(50);
+    urlLabel = new QLabel("Location");
+    printCounterLabel = new QLabel();
+    statusBar->addPermanentWidget(urlLabel);
+    statusBar->addPermanentWidget(progressBar);
+    statusBar->addPermanentWidget(printCounterLabel);
 
+    setCentralWidget(webView);
+    webView->show();
     webView->load(this->to_url);
     connectSlots();
-    startPrintTimer();
-}
-
-void MainWindow::startPrintTimer() {
-    printTimer = new QTimer(this);
-    connect(
-        printTimer,
-        SIGNAL(timeout()),
-        this,
-        SLOT(on_timerTimeout())
-    );
-    QSettings * settings = new QSettings(PathSettings, QSettings::IniFormat);
-    settings->beginGroup("printers");
-    int interval = settings->value("interval").toInt();
-    if (interval) {
-        qDebug() << "Interval is " << interval;
-        printTimer->start(interval * 1000);
-    } else {
-        qDebug() << "Not starting timers";
-    }
-    settings->endGroup();
+    timerSetup();
+    counterSetup();
 }
 
 void MainWindow::connectSlots() {
@@ -172,7 +167,7 @@ void MainWindow::removeStatusBarWidget(QWidget *w) {
 }
 
 void MainWindow::setProgress(int p) {
-    qDebug() << "set progress called" << QString::number(p);
+    //qDebug() << "set progress called" << QString::number(p);
     progress = p;
     adjustTitle();
 }
@@ -180,23 +175,6 @@ void MainWindow::setProgress(int p) {
 void MainWindow::finishLoading(bool) {
      //progress = 100;
      adjustTitle();
-}
-
-void MainWindow::showOptionsDialog() {
-    OptionsDialog* d = new OptionsDialog(this);
-    connect(
-            d, SIGNAL(navigateToUrl(QString)),
-            this, SLOT(navigateToUrl(QString))
-            );
-    connect(
-            d, SIGNAL(clearCache()),
-            webView->page()->networkAccessManager()->cache(), SLOT(clear())
-            );
-    connect(
-            d, SIGNAL(startPrintTimer()),
-            this, SLOT(startPrintTimer())
-            );
-    d->show();
 }
 
 void MainWindow::executeJS(QString &js) {
@@ -208,8 +186,8 @@ void MainWindow::adjustTitle() {
          setWindowTitle(webView->title());
      else
          setWindowTitle(QString("%1 (%2%)").arg(webView->title()).arg(progress));
-     this->status_bar_progressBar->setValue(progress);
-     this->status_bar_urlLabel->setText(this->webView->url().encodedHost());
+     this->progressBar->setValue(progress);
+     this->urlLabel->setText(this->webView->url().encodedHost());
 }
 
 void MainWindow::navigateToUrl(QString url) {
@@ -265,3 +243,64 @@ void MainWindow::windowCloseRequested() {
   QApplication::closeAllWindows();
 }
 
+void MainWindow::showOptionsDialog() {
+    OptionsDialog* d = new OptionsDialog(this);
+    connect(
+            d, SIGNAL(navigateToUrl(QString)),
+            this, SLOT(navigateToUrl(QString))
+            );
+    connect(
+            d, SIGNAL(clearCache()),
+            webView->page()->networkAccessManager()->cache(), SLOT(clear())
+            );
+    d->show();
+}
+
+void MainWindow::timerSetup() {
+    qDebug() << "MainWindow::printTimerSetup()";
+    mainTimer = new QTimer(this);
+    mainTimer->start(1000);
+    connect(
+        mainTimer, SIGNAL(timeout()),
+        this, SLOT(timerTimeout())
+    );
+}
+
+
+void MainWindow::counterSetup() {
+    qDebug() << "MainWindow::counterSetup()";
+    QSettings * settings = new QSettings(PathSettings, QSettings::IniFormat);
+    settings->beginGroup("printing");
+    intervalPrint = settings->value("interval").toInt();
+    settings->endGroup();
+
+    if (intervalPrint < 10) intervalPrint = 10; // security measure
+    counterPrint = intervalPrint;
+}
+
+void MainWindow::timerTimeout() {
+    //qDebug() << "MainWindow::timerTimeout()";
+    counterPrint--;
+    if (counterPrint == 0) {
+        counterPrint = intervalPrint;
+        qDebug() << "counter print 0";
+    }
+    printCounterLabel->setText(QString::number(counterPrint));
+    /*
+    settings->beginGroup("printer-info");
+    QNetworkRequest request(QUrl::fromUserInput(settings->value("url").toString()));
+    QNetworkAccessManager * manager = new QNetworkAccessManager(this);
+    connect(manager,
+            SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
+            this,
+            SLOT(on_authenticationRequired(QNetworkReply*,QAuthenticator*))
+    );
+
+    QSslConfiguration c = request.sslConfiguration();
+    c.setPeerVerifyMode(QSslSocket::VerifyNone);
+    request.setSslConfiguration(c);
+
+    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(on_printoutFetched(QNetworkReply*)));
+    manager->get(request);
+    settings->endGroup();*/
+}

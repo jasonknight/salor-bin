@@ -23,6 +23,7 @@ public:
     QString to_url;
     void connectSlots();
     bool shown;
+    int counterPrint;
     
 private:
     Ui::MainWindow *ui;
@@ -31,13 +32,19 @@ private:
     SalorPrinter *sp;
     QBoxLayout * layout;
     int progress;
-    QProgressBar * status_bar_progressBar;
-    QLabel * status_bar_urlLabel;
+    QProgressBar * progressBar;
+    QLabel * urlLabel;
+    QLabel * printCounterLabel;
     void attach();
-    QTimer * printTimer;
+    QTimer * mainTimer;
+    void timerSetup();
+    void counterSetup();
+    int intervalPrint;
+
+private slots:
+    void timerTimeout();
 
 public slots:
-    void startPrintTimer();
     void setProgress(int);
     void finishLoading(bool);
     void adjustTitle();

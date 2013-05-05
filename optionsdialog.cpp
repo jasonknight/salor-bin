@@ -33,10 +33,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
      }
 
 #endif
-#ifdef LINUX
 
-
-#endif
 #ifdef WIN32
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
     for (int i = 0; i < printer_list.length(); i++) {
@@ -71,11 +68,12 @@ OptionsDialog::~OptionsDialog()
 void OptionsDialog::setupPrinterCombos() {
     signalMapper = new QSignalMapper(this);
 
-    // populate combo box for local printers
+#ifdef LINUX
     QStringList filters;
     filters << "ttyS*" << "ttyUSB*" << "usb";
     QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
     (*devs).setNameFilters(filters);
+#endif
 
     QStringList groups = (*settings).childGroups();
     QStringList remoteprinters;
@@ -87,6 +85,7 @@ void OptionsDialog::setupPrinterCombos() {
             remoteprinters << group;
         }
     }
+
 
     QString labeltext;
     QString localprintername;
@@ -124,7 +123,7 @@ void OptionsDialog::setupPrinterCombos() {
 
 void OptionsDialog::localPrinterInputWidgetChanged(QString remoteprinter) {
     QString localprinter = localPrinterInputWidgetMap[remoteprinter]->currentText();
-    qDebug() << "QComboBox changed:" << remoteprinter << localprinter;
+    //qDebug() << "QComboBox changed:" << remoteprinter << localprinter;
     settings->beginGroup(remoteprinter);
     settings->setValue("localprinter", localprinter);
     settings->endGroup();
@@ -151,21 +150,11 @@ void OptionsDialog::on_updateSettingsButton_clicked()
 {
     qDebug() << "update button clicked";
 
-    //int childWidgets = ui->printerGrid->count() - 1;
-    //qDebug() << "CHILD" << childWidgets;
     QLayoutItem * child;
     while ((child = ui->printerGrid->takeAt(0)) != 0) {
-        qDebug() << "DELETING";
+        // this works because the remaining children will be re-enumerated
         delete child->widget();
     }
-
-
-    //another way to delete:
-    /*QMap<QString, QComboBox *>::iterator i;
-    for (i = localPrinterInputWidgetMap.begin(); i != localPrinterInputWidgetMap.end(); ++i) {
-        delete i.value();
-        qDebug() << "DELETING" << i.key();
-    }*/
 
     settings->beginGroup("printing");
     QString url = settings->value("url").toString();
@@ -175,10 +164,8 @@ void OptionsDialog::on_updateSettingsButton_clicked()
     QNetworkRequest request(QUrl::fromUserInput(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
     networkManagerSettings = new QNetworkAccessManager(this);
-    connect(networkManagerSettings,
-              SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-              this,
-              SLOT(on_authenticationRequired(QNetworkReply*, QAuthenticator*))
+    connect(networkManagerSettings, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+            this, SLOT(on_authenticationRequired(QNetworkReply*, QAuthenticator*))
     );
     QByteArray data;
     QUrl params;
@@ -241,9 +228,8 @@ void OptionsDialog::on_printInfoFetched(QNetworkReply *rep) {
         }
     }
     setupPrinterCombos();
-    //qDebug() << "Setting up timer";
-    //emit startPrintTimer();
-    /*settings->beginGroup("printer-info");
+    /*
+    settings->beginGroup("printer-info");
         timer->stop();
         int interval = settings->value("interval").toInt();
         if (interval) {

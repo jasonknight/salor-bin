@@ -30,7 +30,7 @@ signals:
     void navigateToUrl(QString);
     void clearCache();
     void sendJS(QString &js);
-    void startPrintTimer();
+    void printTimerStart();
 
 
 

@@ -27,14 +27,10 @@ SalorCookieJar::~SalorCookieJar()
 
 bool SalorCookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url)
 {
-     qDebug() << "SalorCookieJar::setCookiesFromUrl()";
+    //qDebug() << "SalorCookieJar::setCookiesFromUrl()";
     bool status = QNetworkCookieJar::setCookiesFromUrl(cookieList, url);
-    if (status && m_storageEnabled) {
+    if (status && m_storageEnabled)
         scheduleSaveToDisk();
-
-    } else {
-        qDebug() << "hello";
-    }
     return status;
 }
 
