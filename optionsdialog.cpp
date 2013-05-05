@@ -267,3 +267,16 @@ void OptionsDialog::on_printUsernameInput_textChanged(const QString &arg1)
     settings->setValue("username", arg1);
     settings->endGroup();
 }
+
+
+void OptionsDialog::on_printNowButton_clicked()
+{
+    emit resetPrinterCounter(3);
+}
+
+void OptionsDialog::on_printTestButton_clicked()
+{
+    SalorPrinter * sp = new SalorPrinter;
+    //sp->printURL("/dev/ttyUSB0", "http://red-e.eu/testprint.txt");
+    sp->print("/dev/ttyUSB0", "OK\n\n\n");
+}

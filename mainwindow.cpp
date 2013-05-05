@@ -253,6 +253,10 @@ void MainWindow::showOptionsDialog() {
             d, SIGNAL(clearCache()),
             webView->page()->networkAccessManager()->cache(), SLOT(clear())
             );
+    connect(
+            d, SIGNAL(resetPrinterCounter(int)),
+            this, SLOT(resetPrinterCounter(int))
+            );
     d->show();
 }
 
@@ -303,4 +307,8 @@ void MainWindow::timerTimeout() {
     connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(on_printoutFetched(QNetworkReply*)));
     manager->get(request);
     settings->endGroup();*/
+}
+
+void MainWindow::resetPrinterCounter(int value){
+    counterPrint = value;
 }

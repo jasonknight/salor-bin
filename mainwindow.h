@@ -45,6 +45,7 @@ private slots:
     void timerTimeout();
 
 public slots:
+    void resetPrinterCounter(int);
     void setProgress(int);
     void finishLoading(bool);
     void adjustTitle();

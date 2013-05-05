@@ -31,6 +31,7 @@ signals:
     void clearCache();
     void sendJS(QString &js);
     void printTimerStart();
+    void resetPrinterCounter(int value);
 
 
 
@@ -47,6 +48,8 @@ private slots:
     void on_printUrlInput_textChanged(const QString &arg1);
     void on_printUsernameInput_textChanged(const QString &arg1);
     void localPrinterInputWidgetChanged(QString text);
+    void on_printNowButton_clicked();
+    void on_printTestButton_clicked();
 };
 
 #endif // OPTIONSDIALOG_H
