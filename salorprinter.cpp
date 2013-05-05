@@ -84,14 +84,14 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
     }
 #endif
 #ifdef WIN32
-    BOOL     bStatus = FALSE;
+    BOOL       bStatus = FALSE;
     DOC_INFO_1 DocInfo;
     DWORD      dwJob = 0L;
     DWORD      dwBytesWritten = 0L;
     HANDLE     hPrinter;
     wchar_t * name = new wchar_t[this->m_printer_path.length()+1];
-    this->m_printer_path.toWCharArray(name);
-    name[this->m_printer_path.length() + 1] = 0;
+    m_printer_path.toWCharArray(name);
+    name[m_printer_path.length()] = 0;
     // TODO: LD ERROR
     bStatus = OpenPrinter(name,&hPrinter, NULL);
 
@@ -105,6 +105,7 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
             if (bStatus) {
                 bStatus = WritePrinter(hPrinter, printdata.data(), printdata.length(),&dwBytesWritten);
                 EndPagePrinter(hPrinter);
+                qDebug() << " Page Ended";
             } else {
                 qDebug() << "could not start printer";
             }
@@ -114,10 +115,18 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         }
         ClosePrinter(hPrinter);
     } else {
+        DWORD dw = GetLastError();
         qDebug() << "Could not open printer";
+        qDebug() << QString::number(dw);
+        display_last_error(dw);
     }
     if (dwBytesWritten != printdata.length()) {
+        DWORD dw = GetLastError();
         qDebug() << "Wrong number of bytes";
+        qDebug() << QString::number(dw);
+        display_last_error(dw);
+    } else {
+        qDebug() << " Bytes were written";
     }
 #endif
 }

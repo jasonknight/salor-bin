@@ -6,6 +6,10 @@
 #include "salorprinter.h"
 #include "common_includes.h"
 
+#ifdef WIN32
+extern void display_last_error(DWORD dw);
+#endif
+
 namespace Ui {
 class MainWindow;
 }
