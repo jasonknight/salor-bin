@@ -6,6 +6,7 @@ DrawerObserverThread::DrawerObserverThread(QObject *parent, QString path) :
     QThread(parent)
 {
     mPath = path;
+    mFiledescriptor == -1;
 }
 
 void DrawerObserverThread::open() {
@@ -23,6 +24,9 @@ void DrawerObserverThread::open() {
          options.c_cflag |= (CLOCAL | CREAD); // Enable the receiver and set local mode...
          tcsetattr(mFiledescriptor, TCSANOW, &options); // Set the new options for the port...
      }
+#endif
+#ifdef WIN32
+    // TODO: How to read from system printer???
 #endif
 }
 
@@ -45,9 +49,8 @@ void DrawerObserverThread::run() {
     qDebug() << "Called DrawerObserverThread::run()";
 
     open();
-    if (mFiledescriptor == -1) {
-        return;
-    }
+    if (mFiledescriptor == -1) return;
+
 
     count = write(mFiledescriptor, "\x1B\x40", 2);
     qDebug() << "Wrote "  << count << " bytes to initialize printer.";

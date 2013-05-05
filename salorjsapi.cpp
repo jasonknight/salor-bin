@@ -16,9 +16,14 @@ void SalorJsApi::echo(QString msg) {
 }
 
 void SalorJsApi::playSound(QString name) {
+#ifdef LINUX
     SalorProcess *sp = new SalorProcess(this);
     sp->run("aplay", QStringList() << "/usr/share/salor-bin/sounds/" + name + ".wav",3000);
-     delete sp;
+    delete sp;
+#endif
+#ifdef WIN32
+    QSound::play("sounds/" + name + ".wav");
+#endif
 }
 
 /* shows printer dialog */

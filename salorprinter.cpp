@@ -162,7 +162,6 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
     wchar_t * name = new wchar_t[this->m_printer_path.length()+1];
     m_printer_path.toWCharArray(name);
     name[m_printer_path.length()] = 0;
-    // TODO: LD ERROR
     bStatus = OpenPrinter(name,&hPrinter, NULL);
 
     if (bStatus) {
