@@ -2,6 +2,7 @@
 #define OPTIONSDIALOG_H
 
 #include <QDialog>
+#include "salorprinter.h"
 #include <common_includes.h>
 
 namespace Ui {
@@ -15,32 +16,28 @@ class OptionsDialog : public QDialog
 public:
     explicit OptionsDialog(QWidget *parent = 0);
     ~OptionsDialog();
-    bool _ready;
     
 private:
     Ui::OptionsDialog *ui;
-    QSettings *settings;
     bool auth_tried;
     QNetworkAccessManager * networkManagerSettings;
     QSignalMapper *signalMapper;
     QMap<QString, QComboBox *> localPrinterInputWidgetMap;
     void setupPrinterCombos();
+    SalorPrinter *sp;
 
 signals:
     void navigateToUrl(QString);
     void clearCache();
     void sendJS(QString &js);
     void printTimerStart();
-    void resetPrinterCounter(int value);
-
-
+    void setPrinterCounter(int value);
 
 public slots:
     void on_goButton_clicked();
     void on_clearCacheButton_clicked();
     void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
     void on_printInfoFetched(QNetworkReply * rep);
-    void on_printoutFetched(QNetworkReply * rep);
 
 private slots:
     void on_urlEditInput_textChanged(QString value);

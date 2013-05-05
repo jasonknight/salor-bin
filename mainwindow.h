@@ -6,10 +6,6 @@
 #include "salorprinter.h"
 #include "common_includes.h"
 
-#ifdef WIN32
-extern void display_last_error(DWORD dw);
-#endif
-
 namespace Ui {
 class MainWindow;
 }
@@ -49,7 +45,7 @@ private slots:
     void timerTimeout();
 
 public slots:
-    void resetPrinterCounter(int);
+    void setPrinterCounter(int);
     void setProgress(int);
     void finishLoading(bool);
     void adjustTitle();

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //setWindowFlags(Qt::FramelessWindowHint);
 }
 
 MainWindow::~MainWindow()
@@ -24,24 +25,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    this->shown = false;
+    shown = false;
     progress = 0;
+
     QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
     webView = new QWebView();
-    this->page = new SalorPage(this);
-    this->page->main = this;
-    this->page->setForwardUnsupportedContent(true);
-    webView->setPage(this->page);
-
-    //signals and slots
-    connect(this->page,SIGNAL(unsupportedContent(QNetworkReply*)),this->page,SLOT(downloadFile(QNetworkReply*)));
-    connect(this->page,SIGNAL(addWidget(QWidget*)),this,SLOT(addStatusBarWidget(QWidget*)));
-    connect(this->page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
-    connect(this->page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
+    page = new SalorPage(this);
+    page->main = this;
+    page->setForwardUnsupportedContent(true);
+    webView->setPage(page);
 
     //networmanager
     Network* net = new Network(this);
@@ -52,11 +48,11 @@ void MainWindow::init()
     webView->page()->networkAccessManager()->setCookieJar(jar);
 
     //salorprinter
-    this->sp = new SalorPrinter(this);
+    sp = new SalorPrinter(this);
 
     //salorjsapi
-    this->js = new SalorJsApi(this);
-    this->js->webView = this->webView;
+    js = new SalorJsApi(this);
+    js->webView = webView;
 
     //diskcache
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
@@ -66,7 +62,7 @@ void MainWindow::init()
     //statusbar
     statusBar = new QStatusBar(this);
     statusBar->setMaximumHeight(20);
-    this->setStatusBar(statusBar);
+    setStatusBar(statusBar);
     progressBar = new QProgressBar();
     progressBar->setMinimum(0);
     progressBar->setMaximum(100);
@@ -79,21 +75,27 @@ void MainWindow::init()
 
     setCentralWidget(webView);
     webView->show();
-    webView->load(this->to_url);
+    webView->load(to_url);
     connectSlots();
     timerSetup();
     counterSetup();
+    sp->setPrinterNames();
 }
 
 void MainWindow::connectSlots() {
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
-    connect(this->page->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this->page,SLOT(resetJsErrors()));
     connect(webView, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
     connect(webView, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
+    connect(page->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),page,SLOT(resetJsErrors()));
+    connect(page,SIGNAL(unsupportedContent(QNetworkReply*)),page,SLOT(downloadFile(QNetworkReply*)));
+    connect(page,SIGNAL(addWidget(QWidget*)),this,SLOT(addStatusBarWidget(QWidget*)));
+    connect(page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
+    connect(page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
+    connect(this,SIGNAL(setPrinterNames()), sp, SLOT(setPrinterNames()));
 
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P), this);
-    connect( shortcut, SIGNAL(activated()), this->js, SLOT(printPage()));
+    QShortcut *showPrint = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P), this);
+    connect( showPrint, SIGNAL(activated()), js, SLOT(printPage()));
 
     QShortcut *f2 = new QShortcut(QKeySequence(Qt::Key_F2), this);
     connect( f2, SIGNAL(activated()), this, SLOT(lastFiveOrders()));
@@ -130,40 +132,37 @@ void MainWindow::connectSlots() {
         connect( showOptions, SIGNAL(activated()), this, SLOT(showOptionsDialog()));
     #endif
 
-    QSettings settings("JolieRouge", "Salor");
-    qreal z = settings.value("zoomFactor").toReal();
+    qreal z = settings->value("zoomFactor").toReal();
     if (z) {
-      this->webView->page()->mainFrame()->setZoomFactor(z);
+      webView->page()->mainFrame()->setZoomFactor(z);
     }
 }
 
 QWebView* MainWindow::getWebView() {
-    return this->webView;
+    return webView;
 }
 
 void MainWindow::incZoom() {
-  QSettings settings("JolieRouge", "Salor");
-  qreal z = this->webView->page()->mainFrame()->zoomFactor();
+  qreal z = webView->page()->mainFrame()->zoomFactor();
   z = z + 0.05;
-  this->webView->page()->mainFrame()->setZoomFactor(z);
-  settings.setValue("zoomFactor",z);
+  webView->page()->mainFrame()->setZoomFactor(z);
+  settings->setValue("zoomFactor",z);
 }
 
 void MainWindow::decZoom() {
-  QSettings settings("JolieRouge", "Salor");
-  qreal z = this->webView->page()->mainFrame()->zoomFactor();
+  qreal z = webView->page()->mainFrame()->zoomFactor();
   z = z - 0.05;
-  this->webView->page()->mainFrame()->setZoomFactor(z);
-  settings.setValue("zoomFactor",z);
+  webView->page()->mainFrame()->setZoomFactor(z);
+  settings->setValue("zoomFactor",z);
 }
 
 void MainWindow::addStatusBarWidget(QWidget *w) {
     qDebug() << "Adding widget";
-    this->statusBar->addWidget(w);
+    statusBar->addWidget(w);
 }
 
 void MainWindow::removeStatusBarWidget(QWidget *w) {
-    this->statusBar->removeWidget(w);
+    statusBar->removeWidget(w);
 }
 
 void MainWindow::setProgress(int p) {
@@ -186,45 +185,45 @@ void MainWindow::adjustTitle() {
          setWindowTitle(webView->title());
      else
          setWindowTitle(QString("%1 (%2%)").arg(webView->title()).arg(progress));
-     this->progressBar->setValue(progress);
-     this->urlLabel->setText(this->webView->url().encodedHost());
+     progressBar->setValue(progress);
+     urlLabel->setText(webView->url().encodedHost());
 }
 
 void MainWindow::navigateToUrl(QString url) {
-    this->webView->load(QUrl(url));
+    webView->load(QUrl(url));
 }
 
 void MainWindow::customersIndex() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("window.location = '/customers';");
+    webView->page()->mainFrame()->evaluateJavaScript("window.location = '/customers';");
 }
 
 void MainWindow::endDayReport() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("window.location = '/orders/report_day';");
+    webView->page()->mainFrame()->evaluateJavaScript("window.location = '/orders/report_day';");
 }
 
 void MainWindow::editLastAddedItem() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("editLastAddedItem();");
+    webView->page()->mainFrame()->evaluateJavaScript("editLastAddedItem();");
 }
 
 void MainWindow::lastFiveOrders() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("onF2Key();");
+    webView->page()->mainFrame()->evaluateJavaScript("onF2Key();");
 }
 
 void MainWindow::completeOrder() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("onEndKey();");
+    webView->page()->mainFrame()->evaluateJavaScript("onEndKey();");
 }
 
 void MainWindow::showSearch() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("showSearch();");
+    webView->page()->mainFrame()->evaluateJavaScript("showSearch();");
 }
 
 void MainWindow::showCashDrop() {
-    this->webView->page()->mainFrame()->evaluateJavaScript("show_cash_drop();");
+    webView->page()->mainFrame()->evaluateJavaScript("show_cash_drop();");
 }
 
 void MainWindow::addJavascriptObjects() {
-    if (!this->shown) {
-       this->shown = true; // i.e. this is ready
+    if (!shown) {
+       shown = true; // i.e. this is ready
     }
     attach();
 }
@@ -234,9 +233,9 @@ void MainWindow::repaintViews() {
 }
 
 void MainWindow::attach(){
-    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", this->sp);
-    this->webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", this->js);
-    this->page->resetJsErrors();
+    webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", sp);
+    webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", js);
+    page->resetJsErrors();
 }
 
 void MainWindow::windowCloseRequested() {
@@ -254,8 +253,8 @@ void MainWindow::showOptionsDialog() {
             webView->page()->networkAccessManager()->cache(), SLOT(clear())
             );
     connect(
-            d, SIGNAL(resetPrinterCounter(int)),
-            this, SLOT(resetPrinterCounter(int))
+            d, SIGNAL(setPrinterCounter(int)),
+            this, SLOT(setPrinterCounter(int))
             );
     d->show();
 }
@@ -273,7 +272,6 @@ void MainWindow::timerSetup() {
 
 void MainWindow::counterSetup() {
     qDebug() << "MainWindow::counterSetup()";
-    QSettings * settings = new QSettings(PathSettings, QSettings::IniFormat);
     settings->beginGroup("printing");
     intervalPrint = settings->value("interval").toInt();
     settings->endGroup();
@@ -287,28 +285,15 @@ void MainWindow::timerTimeout() {
     counterPrint--;
     if (counterPrint == 0) {
         counterPrint = intervalPrint;
-        qDebug() << "counter print 0";
+        foreach(QString remoteprinter, remotePrinterNames) {
+            settings->beginGroup(remoteprinter);
+            sp->printURL(settings->value("localprinter").toString(), settings->value("url").toString());
+            settings->endGroup();
+        }
     }
     printCounterLabel->setText(QString::number(counterPrint));
-    /*
-    settings->beginGroup("printer-info");
-    QNetworkRequest request(QUrl::fromUserInput(settings->value("url").toString()));
-    QNetworkAccessManager * manager = new QNetworkAccessManager(this);
-    connect(manager,
-            SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
-            this,
-            SLOT(on_authenticationRequired(QNetworkReply*,QAuthenticator*))
-    );
-
-    QSslConfiguration c = request.sslConfiguration();
-    c.setPeerVerifyMode(QSslSocket::VerifyNone);
-    request.setSslConfiguration(c);
-
-    connect(manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(on_printoutFetched(QNetworkReply*)));
-    manager->get(request);
-    settings->endGroup();*/
 }
 
-void MainWindow::resetPrinterCounter(int value){
+void MainWindow::setPrinterCounter(int value){
     counterPrint = value;
 }

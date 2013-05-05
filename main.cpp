@@ -16,10 +16,16 @@ size_t __size;
     extern const QString PathWorking = getcwd(__path,__size);
 #endif
 
-extern const QString PathCookies = PathWorking + "/cookiejar";
-extern const QString PathCache = PathWorking + "/cache";
-extern const QString PathSettings = PathWorking + "/salor-bin.ini";
-extern const QString PathDownloads = PathWorking + "/downloads";
+
+// these global variables must be included in a C file once, otherwise "ld error: undefined reference to"
+const QString PathCookies = PathWorking + "/cookiejar";
+const QString PathCache = PathWorking + "/cache";
+const QString PathSettings = PathWorking + "/salor-bin.ini";
+const QString PathDownloads = PathWorking + "/downloads";
+QStringList remotePrinterNames;
+QStringList localPrinterNames;
+QSettings *settings = new QSettings(PathSettings, QSettings::IniFormat);
+
 
 void help() {
     std::cout << "Usage:\n";
@@ -47,7 +53,7 @@ int main(int argc, char *argv[])
     if (url.isNull() != true && url.toString() != "") {
         w.to_url = url.toString();
     } else {
-        w.to_url = QString("http://documentation.red-e.eu");
+        w.to_url = "http://documentation.red-e.eu";
     }
 
     for (int i = 1; i < argc; i++) {
@@ -62,7 +68,7 @@ int main(int argc, char *argv[])
          } else if (arg == "-h") {
              help();
          } else if (arg == "-w") {
-             fullscreen = false;
+             fullscreen = true;
          }
       }
     }

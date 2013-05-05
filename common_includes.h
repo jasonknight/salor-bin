@@ -100,29 +100,24 @@ extern const QString PathSettings;
 extern const QString PathDownloads;
 extern const QString PathCookies;
 
+extern QStringList remotePrinterNames;
+extern QStringList localPrinterNames;
+extern QSettings *settings;
 
 static QVariant _get(QString key) {
-    QSettings settings(PathSettings,QSettings::IniFormat);
-    QVariant val = settings.value(key);
+    qDebug() << "getting" << key;
+    QVariant val = settings->value(key);
     return val;
-    /*if (!val.isNull()) {
-        return val;
-    } else {
-        return QVariant();
-    }*/
 }
 
 static void _set(QString key, QString &value) {
-    QSettings settings(PathSettings,QSettings::IniFormat);
-    settings.setValue(key,value);
+    settings->setValue(key,value);
 }
 static void _set(QString key, int value) {
-    QSettings settings(PathSettings,QSettings::IniFormat);
-    settings.setValue(key,value);
+    settings->setValue(key,value);
 }
 static void _set(QString key, qreal value) {
-    QSettings settings(PathSettings,QSettings::IniFormat);
-    settings.setValue(key,value);
+    settings->setValue(key,value);
 }
 
 

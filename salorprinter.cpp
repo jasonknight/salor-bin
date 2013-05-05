@@ -7,21 +7,91 @@
 SalorPrinter::SalorPrinter(QObject *parent) :
     QObject(parent)
 {
+    auth_tried = false;
+}
+
+void SalorPrinter::setPrinterNames() {
+    remotePrinterNames.clear();
+    localPrinterNames.clear();
+    qDebug() << "SalorPrinter::setPrinterNames()";
+    QStringList groups = (*settings).childGroups();
+
+    // filter out all setting groups that are not printer definitions
+    for (int i = 0; i < groups.size(); i++) {
+        QString group = groups[i];
+        if (group.indexOf("printer") != -1) {
+            remotePrinterNames << group;
+        }
+    }
+#ifdef LINUX
+    QStringList filters;
+    filters << "ttyS*" << "ttyUSB*" << "usb";
+    QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
+    (*devs).setNameFilters(filters);
+    localPrinterNames = devs->entryList();
+#endif
+#ifdef WIN32
+    QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
+    for (int i = 0; i < printer_list.length(); i++) {
+        QPrinterInfo info = printer_list.at(i);
+        localPrinterNames << info.printerName();
+     }
+#endif
+#ifdef MAC
+    int i;
+    cups_dest_t *dests, *dest;
+    int num_dests = cupsGetDests(&dests);
+    for (i = num_dests, dest = dests; i > 0; i--, dest++) {
+        localPrinterNames << dest->name;
+     }
+#endif
 }
 
 void SalorPrinter::printURL(QString printer, QString url, QString confirm_url) {
     qDebug() << "Fetching: " << url << " and sending it to path " << printer;
+
+    QNetworkRequest request(QUrl::fromUserInput(url));
+
+    QSslConfiguration c = request.sslConfiguration();
+    c.setPeerVerifyMode(QSslSocket::VerifyNone);
+    request.setSslConfiguration(c);
+
     m_manager = new QNetworkAccessManager(this);
+    connect(m_manager, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
+            this, SLOT(on_authenticationRequired(QNetworkReply*,QAuthenticator*))
+    );
     connect(m_manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(printDataReady(QNetworkReply*))
             );
     m_printer_path = printer;
-    m_manager->get(QNetworkRequest(QUrl(url)));
+    m_manager->get(request);
     confirmation_url = confirm_url;
 }
 
+void SalorPrinter::on_authenticationRequired(QNetworkReply *reply, QAuthenticator *auth) {
+    qDebug() << "Authentication required";
+    auth->setUser("blah");
+    auth->setPassword("blah");
+    if(auth_tried == true) {
+      // problem with the authenticationRequired signal is that it will cache wrong auth username/password, which leads to an endless loop with the server is immediately asking again for authentication. so, we kill it at the second attempt.
+      delete m_manager;
+    }
+    auth_tried = true;
+}
+
 void SalorPrinter::printDataReady(QNetworkReply *reply) {
-    QByteArray printdata = reply->readAll();
+    //qDebug() << "SalorPrinter::printDataReady";
+
+    QVariant statusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute );
+    int status = statusCode.toInt();
+    QByteArray printdata;
+    if (status != 200) {
+        printdata.append(reply->errorString());
+        printdata.append("\n\n\n\n");
+      qDebug() << "ERROR" << QString::number(status) << reply->errorString();
+    } else {
+      printdata = reply->readAll();
+    }
     print(m_printer_path, printdata);
 }
 
@@ -118,13 +188,13 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         DWORD dw = GetLastError();
         qDebug() << "Could not open printer";
         qDebug() << QString::number(dw);
-        display_last_error(dw);
+        //display_last_error(dw);
     }
     if (dwBytesWritten != printdata.length()) {
         DWORD dw = GetLastError();
         qDebug() << "Wrong number of bytes";
         qDebug() << QString::number(dw);
-        display_last_error(dw);
+        //display_last_error(dw);
     } else {
         qDebug() << " Bytes were written";
     }

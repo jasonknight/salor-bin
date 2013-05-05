@@ -1,6 +1,7 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 #include "mainwindow.h"
+#include "salorprinter.h"
 #include "common_includes.h"
 #include <QPrinterInfo>
 #include <QList>
@@ -10,54 +11,15 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     ui(new Ui::OptionsDialog)
 {
     ui->setupUi(this);
-    settings = new QSettings(PathSettings, QSettings::IniFormat);
     auth_tried = false;
 
-    ui->urlEditInput->setText(_get(QString("url")).toString());
+    ui->urlEditInput->setText(settings->value("url").toString());
     settings->beginGroup("printing");
     ui->printUrlInput->setText(settings->value("url").toString());
     ui->printUsernameInput->setText(settings->value("username").toString());
     settings->endGroup();
-
+    sp = new SalorPrinter;
     setupPrinterCombos();
-
-    _ready = false;
-#ifdef MAC
-    int i;
-    cups_dest_t *dests, *dest;
-    int num_dests = cupsGetDests(&dests);
-    for (i = num_dests, dest = dests; i > 0; i--, dest++) {
-        //qDebug() << "Adding" << list.at(i).printerName();
-        QString name = dest->name;
-        ui->printerComboBox->addItem(name,QVariant(name));
-     }
-
-#endif
-
-#ifdef WIN32
-    QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
-    for (int i = 0; i < printer_list.length(); i++) {
-        QPrinterInfo info = printer_list.at(i);
-        QString name = info.printerName();
-        qDebug() << "Adding " << name << " to combo box";
-        ui->localPrinters1Combo->addItem(name,QVariant(name));
-    }
-    /*LPBYTE pPrinterEnum;
-    DWORD pcbNeeded, pcbReturned;
-    PRINTER_INFO_2 *piTwo = NULL;
-    EnumPrinters(PRINTER_ENUM_LOCAL,NULL,2,NULL,0,&pcbNeeded,&pcbReturned);
-    pPrinterEnum = new BYTE[pcbNeeded];
-    if (!EnumPrinters(PRINTER_ENUM_LOCAL,NULL,2,pPrinterEnum,pcbNeeded,&pcbNeeded,&pcbReturned)) {
-        bug(could not enumerate printers);
-    } else {
-        piTwo = ((PRINTER_INFO_2*)pPrinterEnum);
-        for (int i = 0; i < pcbReturned; i++) {
-            QString name = QString::fromWCharArray(piTwo[i].pPrinterName);
-            ui->printerComboBox->addItem(name,QVariant(name));
-        }
-    }*/
-#endif
-    _ready = true;
 }
 
 OptionsDialog::~OptionsDialog()
@@ -66,31 +28,13 @@ OptionsDialog::~OptionsDialog()
 }
 
 void OptionsDialog::setupPrinterCombos() {
+    sp->setPrinterNames();
     signalMapper = new QSignalMapper(this);
-
-#ifdef LINUX
-    QStringList filters;
-    filters << "ttyS*" << "ttyUSB*" << "usb";
-    QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
-    (*devs).setNameFilters(filters);
-#endif
-
-    QStringList groups = (*settings).childGroups();
-    QStringList remoteprinters;
-
-    // filter out all setting groups that are not printer definitions
-    for (int i = 0; i < groups.size(); i++) {
-        QString group = groups[i];
-        if (group.indexOf("printer") != -1) {
-            remoteprinters << group;
-        }
-    }
-
 
     QString labeltext;
     QString localprintername;
     int i = 0;
-    foreach(QString remoteprinter, remoteprinters) {
+    foreach(QString remoteprinter, remotePrinterNames) {
       qDebug() << "Dynamically setting up combobox for printer" << remoteprinter;
       QComboBox * combobox = new QComboBox();
       settings->beginGroup(remoteprinter);
@@ -99,7 +43,7 @@ void OptionsDialog::setupPrinterCombos() {
       qDebug() << labeltext;
       QLabel * label = new QLabel(labeltext);
       settings->endGroup();
-      combobox->addItems(devs->entryList());
+      combobox->addItems(localPrinterNames);
       connect(combobox, SIGNAL(currentIndexChanged(const QString &)), signalMapper, SLOT(map()));
       signalMapper->setMapping(combobox, remoteprinter);
 
@@ -123,7 +67,7 @@ void OptionsDialog::setupPrinterCombos() {
 
 void OptionsDialog::localPrinterInputWidgetChanged(QString remoteprinter) {
     QString localprinter = localPrinterInputWidgetMap[remoteprinter]->currentText();
-    //qDebug() << "QComboBox changed:" << remoteprinter << localprinter;
+    qDebug() << "QComboBox changed:" << remoteprinter << localprinter;
     settings->beginGroup(remoteprinter);
     settings->setValue("localprinter", localprinter);
     settings->endGroup();
@@ -167,15 +111,19 @@ void OptionsDialog::on_updateSettingsButton_clicked()
     connect(networkManagerSettings, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
             this, SLOT(on_authenticationRequired(QNetworkReply*, QAuthenticator*))
     );
-    QByteArray data;
+    connect(networkManagerSettings,SIGNAL(finished(QNetworkReply*)),
+            this,SLOT(on_printInfoFetched(QNetworkReply*)));
+
     QUrl params;
+    params.addQueryItem("id",username);
+
+    QByteArray data;
+    data = params.encodedQuery();
+
     QSslConfiguration c = request.sslConfiguration();
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
     request.setSslConfiguration(c);
-    params.addQueryItem("id",username);
-    data = params.encodedQuery();
-    connect(networkManagerSettings,SIGNAL(finished(QNetworkReply*)),
-            this,SLOT(on_printInfoFetched(QNetworkReply*)));
+
     networkManagerSettings->post(request,data);
 }
 
@@ -192,6 +140,7 @@ void OptionsDialog::on_authenticationRequired(QNetworkReply *reply, QAuthenticat
     auth_tried = true;
 }
 
+// this just writes stuff to the .ini file
 void OptionsDialog::on_printInfoFetched(QNetworkReply *rep) {
     auth_tried = false;
     qDebug() << "Attempting to read reply";
@@ -228,30 +177,6 @@ void OptionsDialog::on_printInfoFetched(QNetworkReply *rep) {
         }
     }
     setupPrinterCombos();
-    /*
-    settings->beginGroup("printer-info");
-        timer->stop();
-        int interval = settings->value("interval").toInt();
-        if (interval) {
-             qDebug() << "Printer Info Interval is " << interval;
-            timer->start(interval * 1000);
-        } else {
-            qDebug() << "interval is not good " << interval;
-        }
-    settings->endGroup();*/
-
-}
-
-void OptionsDialog::on_printoutFetched(QNetworkReply *rep) {
-    qDebug() << "Printout Fetched";
-    QByteArray ba = rep->readAll();
-    qDebug() << ba;
-    QString path = settings->value("printer-name").toString();
-    if (ba.length() > 1) {
-        qDebug() << "PRINTING";
-        //SalorPrinter::printURL(QString path, QString url, QString confirm_url)
-        //this->print(path,ba);
-    }
 }
 
 void OptionsDialog::on_printUrlInput_textChanged(const QString &arg1)
@@ -271,12 +196,14 @@ void OptionsDialog::on_printUsernameInput_textChanged(const QString &arg1)
 
 void OptionsDialog::on_printNowButton_clicked()
 {
-    emit resetPrinterCounter(3);
+    emit setPrinterCounter(1);
 }
 
 void OptionsDialog::on_printTestButton_clicked()
 {
-    SalorPrinter * sp = new SalorPrinter;
-    //sp->printURL("/dev/ttyUSB0", "http://red-e.eu/testprint.txt");
-    sp->print("/dev/ttyUSB0", "OK\n\n\n");
+    foreach(QString remoteprinter, remotePrinterNames) {
+        settings->beginGroup(remoteprinter);
+        sp->print(settings->value("localprinter").toString(), "OK\n\n\n");
+        settings->endGroup();
+    }
 }
