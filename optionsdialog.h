@@ -47,6 +47,7 @@ private slots:
     void localPrinterInputWidgetChanged(QString text);
     void on_printNowButton_clicked();
     void on_printTestButton_clicked();
+    void on_kioskCheckBox_clicked(bool checked);
 };
 
 #endif // OPTIONSDIALOG_H

@@ -14,8 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
+    if (settings->value("kiosk").toString() == "true")
+        setWindowFlags(Qt::FramelessWindowHint);
     ui->setupUi(this);
-    //setWindowFlags(Qt::FramelessWindowHint);
 }
 
 MainWindow::~MainWindow()
@@ -66,12 +68,15 @@ void MainWindow::init()
     progressBar = new QProgressBar();
     progressBar->setMinimum(0);
     progressBar->setMaximum(100);
-    progressBar->setMaximumWidth(50);
+    progressBar->setMaximumWidth(70);
     urlLabel = new QLabel("Location");
     printCounterLabel = new QLabel();
+    closeButton = new QPushButton();
+    closeButton->setText("X");
     statusBar->addPermanentWidget(urlLabel);
     statusBar->addPermanentWidget(progressBar);
     statusBar->addPermanentWidget(printCounterLabel);
+    statusBar->addPermanentWidget(closeButton);
 
     setCentralWidget(webView);
     webView->show();
@@ -80,6 +85,15 @@ void MainWindow::init()
     timerSetup();
     counterSetup();
     sp->setPrinterNames();
+}
+
+void MainWindow::shutdown() {
+    int pid = getpid();
+    qDebug() << "Shutdown called.";
+    QApplication::closeAllWindows();
+#ifdef LINUX
+    kill(pid,SIGKILL); // to make really sure
+#endif
 }
 
 void MainWindow::connectSlots() {
@@ -93,30 +107,31 @@ void MainWindow::connectSlots() {
     connect(page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
     connect(page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
     connect(this,SIGNAL(setPrinterNames()), sp, SLOT(setPrinterNames()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(shutdown()));
 
     QShortcut *showPrint = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P), this);
     connect( showPrint, SIGNAL(activated()), js, SLOT(printPage()));
 
-    QShortcut *f2 = new QShortcut(QKeySequence(Qt::Key_F2), this);
-    connect( f2, SIGNAL(activated()), this, SLOT(lastFiveOrders()));
+    QShortcut *f1 = new QShortcut(QKeySequence(Qt::Key_F1), this);
+    connect( f1, SIGNAL(activated()), this, SLOT(f1Pressed()));
 
-    QShortcut *ctrlf2 = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_F2), this);
-    connect( ctrlf2, SIGNAL(activated()), this, SLOT(customersIndex()));
+    QShortcut *f2 = new QShortcut(QKeySequence(Qt::Key_F2), this);
+    connect( f2, SIGNAL(activated()), this, SLOT(f2Pressed()));
 
     QShortcut *f3 = new QShortcut(QKeySequence(Qt::Key_F3), this);
-    connect( f3, SIGNAL(activated()), this, SLOT(showSearch()));
+    connect( f3, SIGNAL(activated()), this, SLOT(f3Pressed()));
 
     QShortcut *f4 = new QShortcut(QKeySequence(Qt::Key_F4), this);
-    connect( f4, SIGNAL(activated()), this, SLOT(showCashDrop()));
+    connect( f4, SIGNAL(activated()), this, SLOT(f4Pressed()));
 
     QShortcut *f5 = new QShortcut(QKeySequence(Qt::Key_F5), this);
-    connect( f5, SIGNAL(activated()), this, SLOT(endDayReport()));
-
-    QShortcut *ctrlins = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Insert), this);
-    connect( ctrlins, SIGNAL(activated()), this, SLOT(editLastAddedItem()));
+    connect( f5, SIGNAL(activated()), this, SLOT(f5Pressed()));
 
     QShortcut *endk = new QShortcut(QKeySequence(Qt::Key_End), this);
-    connect( endk, SIGNAL(activated()), this, SLOT(completeOrder()));
+    connect( endk, SIGNAL(activated()), this, SLOT(endPressed()));
+
+    QShortcut *ctrlins = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Insert), this);
+    connect( ctrlins, SIGNAL(activated()), this, SLOT(ctrlinsPressed()));
 
     QShortcut *zoomin = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Plus), this);
     connect( zoomin, SIGNAL(activated()), this, SLOT(incZoom()));
@@ -193,32 +208,33 @@ void MainWindow::navigateToUrl(QString url) {
     webView->load(QUrl(url));
 }
 
-void MainWindow::customersIndex() {
-    webView->page()->mainFrame()->evaluateJavaScript("window.location = '/customers';");
+
+void MainWindow::f1Pressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("f1Pressed();");
 }
 
-void MainWindow::endDayReport() {
-    webView->page()->mainFrame()->evaluateJavaScript("window.location = '/orders/report_day';");
+void MainWindow::f2Pressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("f2Pressed();");
 }
 
-void MainWindow::editLastAddedItem() {
-    webView->page()->mainFrame()->evaluateJavaScript("editLastAddedItem();");
+void MainWindow::f3Pressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("f3Pressed();");
 }
 
-void MainWindow::lastFiveOrders() {
-    webView->page()->mainFrame()->evaluateJavaScript("onF2Key();");
+void MainWindow::f4Pressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("f4Pressed();");
 }
 
-void MainWindow::completeOrder() {
-    webView->page()->mainFrame()->evaluateJavaScript("onEndKey();");
+void MainWindow::f5Pressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("f5Pressed();");
 }
 
-void MainWindow::showSearch() {
-    webView->page()->mainFrame()->evaluateJavaScript("showSearch();");
+void MainWindow::endPressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("endPressed();");
 }
 
-void MainWindow::showCashDrop() {
-    webView->page()->mainFrame()->evaluateJavaScript("show_cash_drop();");
+void MainWindow::ctrlinsPressed() {
+    webView->page()->mainFrame()->evaluateJavaScript("ctrlinsPressed();");
 }
 
 void MainWindow::addJavascriptObjects() {

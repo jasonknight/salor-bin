@@ -18,6 +18,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     ui->printUrlInput->setText(settings->value("url").toString());
     ui->printUsernameInput->setText(settings->value("username").toString());
     settings->endGroup();
+    ui->kioskCheckBox->setChecked(settings->value("kiosk").toString() == "true");
     sp = new SalorPrinter;
     setupPrinterCombos();
 }
@@ -206,4 +207,9 @@ void OptionsDialog::on_printTestButton_clicked()
         sp->print(settings->value("localprinter").toString(), "OK\n\n\n");
         settings->endGroup();
     }
+}
+
+void OptionsDialog::on_kioskCheckBox_clicked(bool checked)
+{
+    settings->setValue("kiosk", checked);
 }

@@ -15,7 +15,6 @@ void SalorPrinter::setPrinterNames() {
     localPrinterNames.clear();
     qDebug() << "SalorPrinter::setPrinterNames()";
     QStringList groups = (*settings).childGroups();
-
     // filter out all setting groups that are not printer definitions
     for (int i = 0; i < groups.size(); i++) {
         QString group = groups[i];
@@ -28,7 +27,11 @@ void SalorPrinter::setPrinterNames() {
     filters << "ttyS*" << "ttyUSB*" << "usb";
     QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
     (*devs).setNameFilters(filters);
-    localPrinterNames = devs->entryList();
+    QStringList nodes;
+    nodes = devs->entryList();
+    foreach (QString node, nodes) {
+        localPrinterNames << "/dev/" + node;
+    }
 #endif
 #ifdef WIN32
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
@@ -102,8 +105,6 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
     m_printer_path = printer;
     qDebug() << "SalorPrinter::print(): Printer is" << printer << "Buffer is" << printdata;
 #ifdef LINUX
-    QString appendedPath;
-    appendedPath = "/dev/" + m_printer_path;
     QFile f(m_printer_path);
 
     if (false && f.exists() && f.open(QIODevice::WriteOnly)) {
@@ -117,12 +118,12 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         qDebug() << "SalorPrinter::print(): Printing to a serial port.";
         int fd;
         struct termios options;
-        char * port = appendedPath.toAscii().data();
+        char * port = m_printer_path.toAscii().data();
 
         fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
 
         if (fd == -1) {
-          qDebug() << "SalorPrinter::print(): Unable to open" << appendedPath;
+          qDebug() << "SalorPrinter::print(): Unable to open" << m_printer_path;
         } else {
           tcgetattr(fd, &options); // Get the current options for the port...
           cfsetispeed(&options, B9600); // Set the baud rates
@@ -134,7 +135,7 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
           printed();
         }
     } else {
-        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << appendedPath;
+        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer_path;
         //emit printerDoesNotExist();
     }
 #endif

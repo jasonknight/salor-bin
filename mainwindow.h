@@ -30,13 +30,14 @@ private:
     QWebView *webView;
     SalorJsApi *js;
     SalorPrinter *sp;
-    QBoxLayout * layout;
+    QBoxLayout *layout;
     int progress;
-    QProgressBar * progressBar;
-    QLabel * urlLabel;
-    QLabel * printCounterLabel;
+    QProgressBar *progressBar;
+    QPushButton *closeButton;
+    QLabel *urlLabel;
+    QLabel *printCounterLabel;
     void attach();
-    QTimer * mainTimer;
+    QTimer *mainTimer;
     void timerSetup();
     void counterSetup();
     int intervalPrint;
@@ -52,20 +53,24 @@ public slots:
     void repaintViews();
     void addJavascriptObjects();
     void windowCloseRequested();
-    void lastFiveOrders();
-    void completeOrder();
-    void showSearch();
-    void showCashDrop();
+
+    void f1Pressed();
+    void f2Pressed();
+    void f3Pressed();
+    void f4Pressed();
+    void f5Pressed();
+    void endPressed();
+    void ctrlinsPressed();
+
     void incZoom();
     void decZoom();
-    void customersIndex();
-    void editLastAddedItem();
-    void endDayReport();
+
     void showOptionsDialog();
     void navigateToUrl(QString url);
     void executeJS(QString &js);
     void addStatusBarWidget(QWidget * w);
     void removeStatusBarWidget(QWidget * w);
+    void shutdown();
     QWebView* getWebView();
 };
 
