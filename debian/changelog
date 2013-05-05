@@ -1,3 +1,20 @@
+salor-bin (2.4.0-1wheezy) wheezy; urgency=low
+
+  * compiles in Qt for Windows 4.8.4
+  * more
+  * more
+  * more
+  * more
+  * more
+  * more
+  * more
+  * more
+  * more
+  * more
+  * enabling sounds for windows
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sun, 05 May 2013 13:45:32 +0200
+
 salor-bin (2.3.11-3wheezy) wheezy; urgency=low
 
   * wheezy
