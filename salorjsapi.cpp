@@ -2,12 +2,22 @@
 #include "common_includes.h"
 #include "drawerobserver.h"
 #include "customerscreen.h"
+#include "salorprinter.h"
 #include "scale.h"
 
-SalorJsApi::SalorJsApi(QObject *parent) :
+SalorJsApi::SalorJsApi(QObject *parent, QNetworkAccessManager *nm) :
     QObject(parent)
 {
-    SalorJsApi::drawer_thread = NULL;
+    //drawerThread = 0;
+    networkManager = nm;
+    //drawerObserver = 0;
+    drawerObserver = new DrawerObserver();
+    drawerThread = new QThread(this);
+    connect(drawerThread, SIGNAL(started()),
+            drawerObserver, SLOT(observe()));
+    connect(drawerThread, SIGNAL(finished()),
+            this, SLOT(cashDrawerClosed()));
+    drawerObserver->moveToThread(drawerThread);
 }
 
 void SalorJsApi::echo(QString msg) {
@@ -35,7 +45,7 @@ void SalorJsApi::printPage() {
     printer.setColorMode(QPrinter::Color);
     QPrintDialog* dialog = new QPrintDialog(&printer, 0);
     if (dialog->exec() == QDialog::Accepted) {
-        this->webView->page()->mainFrame()->print(&printer);
+        webView->page()->mainFrame()->print(&printer);
         if (printer.outputFileName().indexOf(".pdf") != -1) {
             chmod(printer.outputFileName().toLatin1().data(),0666);
         }
@@ -60,29 +70,36 @@ void SalorJsApi::newOpenCashDrawer(QString addy) {
 }
 
 void SalorJsApi::startDrawerObserver(QString path) {
-  if (drawer_thread == NULL) {
-    qDebug() << "Called SalorJSApi::startDrawerObserver. Creating, remembering and starting new thread.";
-    drawer_thread = new DrawerObserverThread(this, path);
-    connect(drawer_thread,SIGNAL(cashDrawerClosed()),this,SLOT(_cashDrawerClosed()));
-    drawer_thread->start();
+  qDebug() << "SalorJSApi::startDrawerObserver.";
+  if (drawerThread->isRunning() == false) {
+      qDebug() << "    drawerThread->start()";
+      drawerObserver->mPath = path;
+      drawerThread->start();
   } else {
-    qDebug() << "Called SalorJSApi::startDrawerObserver. Apparently a thread is already running, so doing nothing.";
+      qDebug() << "    drawerThread is already running. Doing nothing.";
   }
 }
 
 void SalorJsApi::stopDrawerObserver() {
-  if (drawer_thread) {
-      qDebug() << "SalorJSApi::stopDrawerObserver(): Stopping thread...";
-      drawer_thread->stop_drawer_thread = true;
+    qDebug() << "SalorJSApi::stopDrawerObserver";
+    if (drawerThread->isRunning() == true) {
+      qDebug() << "    Quitting running thread";
+      drawerThread->quit(); // this will quit the thread AFTER observe() has finished
+      drawerObserver->doStop = true; // halt the loop to finish observe() immediately
   } else {
-      qDebug() << "SalorJSApi::stopDrawerObserver(). No thread running, doing nothing.";
+      qDebug() << "    No thread running. Doing nothing.";
   }
 }
 
-void SalorJsApi::_cashDrawerClosed() {
-    qDebug() << "SalorJsApi::_cashDrawerClosed(): Thread ended. Setting thread to NULL. Calling complete_order_hide();.\n";
-    drawer_thread = NULL;
-    this->webView->page()->mainFrame()->evaluateJavaScript("complete_order_hide();");
+void SalorJsApi::cashDrawerClosed() {
+    qDebug() << "SalorJsApi::cashDrawerClosed()";
+    webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
+}
+
+void SalorJsApi::printURL(QString printer, QString url, QString confirm_url) {
+    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer);
+    salorprinter->printURL(url);
+    salorprinter->deleteLater();
 }
 
 QStringList SalorJsApi::ls(QString path,QStringList filters) {
@@ -118,7 +135,7 @@ void SalorJsApi::mimoImage(QString imagepath) {
 }
 
 QString SalorJsApi::weigh(QString addy, int protocol) {
-  char * weight;
+  char *weight;
   Scale *sc = new Scale(addy, protocol);
   weight = sc->read();
   return weight;

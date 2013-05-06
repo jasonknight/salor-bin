@@ -2,18 +2,19 @@
 #include "salorjsapi.h"
 #include "common_includes.h"
 
-DrawerObserverThread::DrawerObserverThread(QObject *parent, QString path) :
-    QThread(parent)
+DrawerObserver::DrawerObserver() :
+    QObject()
 {
-    mPath = path;
+    mPath = "";
     mFiledescriptor == -1;
+    doStop = false;
 }
 
-void DrawerObserverThread::open() {
+void DrawerObserver::openDevice() {
 #ifdef LINUX
      struct termios options;
 
-     mFiledescriptor = ::open(mPath.toLatin1().data(), O_RDWR | O_NOCTTY | O_NDELAY);
+     mFiledescriptor = open(mPath.toLatin1().data(), O_RDWR | O_NOCTTY | O_NDELAY);
      if (mFiledescriptor == -1) {
          qDebug() << "DrawerObserverThread::open(): Unable to open port for drawer" << mPath;
      } else {
@@ -30,12 +31,12 @@ void DrawerObserverThread::open() {
 #endif
 }
 
-void DrawerObserverThread::close() {
-    ::close(mFiledescriptor);
+void DrawerObserver::closeDevice() {
+    close(mFiledescriptor);
 }
 
-void DrawerObserverThread::run() {
-    stop_drawer_thread = false;
+void DrawerObserver::observe() {
+    doStop = false;
 
     int count = 0;
     int i = 0;
@@ -48,9 +49,8 @@ void DrawerObserverThread::run() {
 
     qDebug() << "Called DrawerObserverThread::run()";
 
-    open();
+    openDevice();
     if (mFiledescriptor == -1) return;
-
 
     count = write(mFiledescriptor, "\x1B\x40", 2);
     qDebug() << "Wrote "  << count << " bytes to initialize printer.";
@@ -59,7 +59,7 @@ void DrawerObserverThread::run() {
     qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
 
     int j = 0;
-    while (i < (2 * close_after_seconds) && !stop_drawer_thread) {
+    while (i < (2 * close_after_seconds) && !doStop) {
       i += 1;
       for (j = 0; j < 8; j++) {
         buf[j] = '\0'; // initialize
@@ -94,19 +94,18 @@ void DrawerObserverThread::run() {
         for (j = 0; j < 7; j++) {
             if (buf[j] == 0x14) {
                 // score, the drawer is open
-                stop_drawer_thread = true;
+                doStop = true;
                 qDebug() << "Closed Drawer detected. Halting thread.";
                 break;
             }
         }
       }
-      if (stop_drawer_thread) {
-        break;
+      if (doStop) {
+          break;
       }
-
       usleep(500000);
     }
-    close();
-    cashDrawerClosed(); // emit signal
+    closeDevice();
+    doStop = false;
     return;
 }

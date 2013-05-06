@@ -1,27 +1,24 @@
 #ifndef DRAWEROBSERVER_H
 #define DRAWEROBSERVER_H
 
-#include <QThread>
 #include "common_includes.h"
 
-class DrawerObserverThread : public QThread
+class DrawerObserver : public QObject
 {
     Q_OBJECT
+
 public:
-    explicit DrawerObserverThread(QObject *parent = 0, QString path = "");
-    bool  stop_drawer_thread;
-    void run();
+    explicit DrawerObserver();
+    bool doStop;
     QString mPath;
     int mFiledescriptor;
 
 protected:
-    void open();
-    void close();
-    
-signals:
-    void cashDrawerClosed();
+    void openDevice();
+    void closeDevice();
     
 public slots:
+    void observe();
     
 };
 

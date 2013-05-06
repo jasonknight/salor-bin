@@ -9,27 +9,35 @@
 class SalorJsApi : public QObject
 {
     Q_OBJECT
+
 public:
-    explicit SalorJsApi(QObject *parent = 0);
+    explicit SalorJsApi(QObject *parent = 0, QNetworkAccessManager *nm = 0);
     QWebView *webView;
-    DrawerObserverThread * drawer_thread;
+    QThread *drawerThread;
+    DrawerObserver *drawerObserver;
+
+private:
+    QNetworkAccessManager *networkManager;
 
 signals:
     void cuteDataRead(QString);
     void _cuteWriteData(QString);
+
+private slots:
+    void cashDrawerClosed();
     
 public slots:
     void poleDancer(QString path, QString message);
     void newOpenCashDrawer(QString addy);
     void startDrawerObserver(QString addy);
     void stopDrawerObserver();
-    void _cashDrawerClosed();
     void printPage();
     void playSound(QString name);
     void echo(QString msg);
     void mimoRefresh(QString path,int h, int w);
     void mimoImage(QString imagepath);
     QStringList ls(QString path,QStringList filters);
+    void printURL(QString printer, QString url, QString confirm_url);
     void shutdown();
     void cuteWriteData(QString);
     void _cuteBubbleDataRead(QString data);

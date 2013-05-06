@@ -6,21 +6,12 @@
 #include <QPrinterInfo>
 #include <QList>
 
-OptionsDialog::OptionsDialog(QWidget *parent) :
+OptionsDialog::OptionsDialog(QWidget *parent, QNetworkAccessManager *nm) :
     QDialog(parent),
     ui(new Ui::OptionsDialog)
 {
+    networkManager = nm;
     ui->setupUi(this);
-    auth_tried = false;
-
-    ui->urlEditInput->setText(settings->value("url").toString());
-    settings->beginGroup("printing");
-    ui->printUrlInput->setText(settings->value("url").toString());
-    ui->printUsernameInput->setText(settings->value("username").toString());
-    settings->endGroup();
-    ui->kioskCheckBox->setChecked(settings->value("kiosk").toString() == "true");
-    sp = new SalorPrinter;
-    setupPrinterCombos();
 }
 
 OptionsDialog::~OptionsDialog()
@@ -28,8 +19,19 @@ OptionsDialog::~OptionsDialog()
     delete ui;
 }
 
+void OptionsDialog::init() {
+    auth_tried = false;
+    ui->urlEditInput->setText(settings->value("url").toString());
+    settings->beginGroup("printing");
+    ui->printUrlInput->setText(settings->value("url").toString());
+    ui->printUsernameInput->setText(settings->value("username").toString());
+    settings->endGroup();
+    ui->kioskCheckBox->setChecked(settings->value("kiosk").toString() == "true");
+    setupPrinterCombos();
+}
+
 void OptionsDialog::setupPrinterCombos() {
-    sp->setPrinterNames();
+    emit setPrinterNames();
     signalMapper = new QSignalMapper(this);
 
     QString labeltext;
@@ -108,11 +110,11 @@ void OptionsDialog::on_updateSettingsButton_clicked()
 
     QNetworkRequest request(QUrl::fromUserInput(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-    networkManagerSettings = new QNetworkAccessManager(this);
-    connect(networkManagerSettings, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+
+    connect(networkManager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
             this, SLOT(on_authenticationRequired(QNetworkReply*, QAuthenticator*))
     );
-    connect(networkManagerSettings,SIGNAL(finished(QNetworkReply*)),
+    connect(networkManager,SIGNAL(finished(QNetworkReply*)),
             this,SLOT(on_printInfoFetched(QNetworkReply*)));
 
     QUrl params;
@@ -125,7 +127,7 @@ void OptionsDialog::on_updateSettingsButton_clicked()
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
     request.setSslConfiguration(c);
 
-    networkManagerSettings->post(request,data);
+    networkManager->post(request,data);
 }
 
 void OptionsDialog::on_authenticationRequired(QNetworkReply *reply, QAuthenticator *auth) {
@@ -136,7 +138,7 @@ void OptionsDialog::on_authenticationRequired(QNetworkReply *reply, QAuthenticat
     auth->setPassword("password222");
     if(auth_tried == true) {
       // problem with the authenticationRequired signal is that it will cache wrong auth username/password, which leads to an endless loop with the server is immediately asking again for authentication. so, we kill it at the second attempt.
-      delete networkManagerSettings;
+      //delete networkManagerSettings;
     }
     auth_tried = true;
 }
@@ -204,7 +206,8 @@ void OptionsDialog::on_printTestButton_clicked()
 {
     foreach(QString remoteprinter, remotePrinterNames) {
         settings->beginGroup(remoteprinter);
-        sp->print(settings->value("localprinter").toString(), "OK\n\n\n");
+        SalorPrinter *printer = new SalorPrinter(this, networkManager, settings->value("localprinter").toString());
+        printer->print("OK\n\n\n");
         settings->endGroup();
     }
 }

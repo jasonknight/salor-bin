@@ -8,7 +8,7 @@ salor_bin_SOURCES = \
 	downloader.cpp \
 	main.cpp\
 	mainwindow.cpp \
-	network.cpp \
+	salornetwork.cpp \
 	optionsdialog.cpp \
 	customerscreen.cpp \
 	salorpage.cpp \
@@ -26,7 +26,7 @@ nodist_salor_bin_SOURCES = \
 	moc_cutecredit.cpp \
 	moc_downloader.cpp \
 	moc_mainwindow.cpp \
-	moc_network.cpp \
+	moc_salornetwork.cpp \
 	moc_optionsdialog.cpp \
 	moc_customerscreen.cpp \
 	moc_salorpage.cpp \

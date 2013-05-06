@@ -14,13 +14,14 @@ class OptionsDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit OptionsDialog(QWidget *parent = 0);
+    explicit OptionsDialog(QWidget *parent = 0, QNetworkAccessManager *nm = 0);
     ~OptionsDialog();
+    void init();
     
 private:
     Ui::OptionsDialog *ui;
     bool auth_tried;
-    QNetworkAccessManager * networkManagerSettings;
+    QNetworkAccessManager *networkManager;
     QSignalMapper *signalMapper;
     QMap<QString, QComboBox *> localPrinterInputWidgetMap;
     void setupPrinterCombos();
@@ -32,6 +33,7 @@ signals:
     void sendJS(QString &js);
     void printTimerStart();
     void setPrinterCounter(int value);
+    void setPrinterNames();
 
 public slots:
     void on_goButton_clicked();

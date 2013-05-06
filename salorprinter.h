@@ -12,19 +12,18 @@ class SalorPrinter : public QObject
     Q_OBJECT
 
 public:
-    explicit SalorPrinter(QObject *parent = 0);
-    void print(QString printer, QByteArray printdata);
-    void setPrinterNames();
+    explicit SalorPrinter(QObject *parent = 0, QNetworkAccessManager *nm = 0, QString printer = "");
 
 private:
-    QNetworkAccessManager * m_manager;
-    QString m_printer_path;
-    QString confirmation_url;
+    QNetworkAccessManager *m_manager;
+    QString m_printer;
     void printed();
     bool auth_tried;
+    QNetworkRequest *m_request;
 
 public slots:
-    void printURL(QString printer, QString url, QString confirm_url = "");
+    void printURL(QString url);
+    void print(QByteArray printdata);
 
 private slots:
     void printDataReady(QNetworkReply * reply);
