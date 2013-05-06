@@ -18,7 +18,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     salorpage.cpp \
-    network.cpp \
+    salornetwork.cpp \
     salorjsapi.cpp \
     salorprocess.cpp \
     salorprinter.cpp \
@@ -33,7 +33,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     salorpage.h \
-    network.h \
+    salornetwork.h \
     common_includes.h \
     salorjsapi.h \
     salorprocess.h \

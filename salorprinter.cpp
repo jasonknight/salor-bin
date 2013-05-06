@@ -4,72 +4,29 @@
 #include "winspool.h"
 #endif
 
-SalorPrinter::SalorPrinter(QObject *parent) :
+SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString printer) :
     QObject(parent)
 {
     auth_tried = false;
+    m_printer = printer;
+    m_manager = nm;
 }
 
-void SalorPrinter::setPrinterNames() {
-    remotePrinterNames.clear();
-    localPrinterNames.clear();
-    qDebug() << "SalorPrinter::setPrinterNames()";
-    QStringList groups = (*settings).childGroups();
-    // filter out all setting groups that are not printer definitions
-    for (int i = 0; i < groups.size(); i++) {
-        QString group = groups[i];
-        if (group.indexOf("printer") != -1) {
-            remotePrinterNames << group;
-        }
-    }
-#ifdef LINUX
-    QStringList filters;
-    filters << "ttyS*" << "ttyUSB*" << "usb";
-    QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
-    (*devs).setNameFilters(filters);
-    QStringList nodes;
-    nodes = devs->entryList();
-    foreach (QString node, nodes) {
-        localPrinterNames << "/dev/" + node;
-    }
-#endif
-#ifdef WIN32
-    QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
-    for (int i = 0; i < printer_list.length(); i++) {
-        QPrinterInfo info = printer_list.at(i);
-        localPrinterNames << info.printerName();
-     }
-#endif
-#ifdef MAC
-    int i;
-    cups_dest_t *dests, *dest;
-    int num_dests = cupsGetDests(&dests);
-    for (i = num_dests, dest = dests; i > 0; i--, dest++) {
-        localPrinterNames << dest->name;
-     }
-#endif
-}
-
-void SalorPrinter::printURL(QString printer, QString url, QString confirm_url) {
-    qDebug() << "Fetching: " << url << " and sending it to path " << printer;
+void SalorPrinter::printURL(QString url) {
+    qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
 
     QNetworkRequest request = QNetworkRequest(QUrl(url));
-
     QSslConfiguration c = request.sslConfiguration();
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
     request.setSslConfiguration(c);
 
-    m_manager = new QNetworkAccessManager(this);
     connect(m_manager, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
             this, SLOT(on_authenticationRequired(QNetworkReply*,QAuthenticator*))
     );
     connect(m_manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(printDataReady(QNetworkReply*))
             );
-
-    m_printer_path = printer;
     m_manager->get(request);
-    confirmation_url = confirm_url;
 }
 
 void SalorPrinter::on_authenticationRequired(QNetworkReply *reply, QAuthenticator *auth) {
@@ -77,15 +34,14 @@ void SalorPrinter::on_authenticationRequired(QNetworkReply *reply, QAuthenticato
     auth->setUser("blah");
     auth->setPassword("blah");
     if(auth_tried == true) {
-      // problem with the authenticationRequired signal is that it will cache wrong auth username/password, which leads to an endless loop with the server is immediately asking again for authentication. so, we kill it at the second attempt.
-      delete m_manager;
+      // problem with the authenticationRequired signal is that it will cache wrong auth username/password, which leads to an endless loop with the server is immediately asking again for authentication.
+      //m_manager->deleteLater();
     }
     auth_tried = true;
 }
 
 void SalorPrinter::printDataReady(QNetworkReply *reply) {
     //qDebug() << "SalorPrinter::printDataReady";
-
     QVariant statusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute );
     int status = statusCode.toInt();
     QByteArray printdata;
@@ -100,13 +56,12 @@ void SalorPrinter::printDataReady(QNetworkReply *reply) {
     reply->deleteLater(); // good practice according to the Qt documentation of QNetworkAccessManager
 }
 
-void SalorPrinter::print(QString printer, QByteArray printdata) {
+void SalorPrinter::print(QByteArray printdata) {
     //QString buffer;
     //buffer = new QString(*printdata);
-    m_printer_path = printer;
-    qDebug() << "SalorPrinter::print(): Printer is" << printer << "Buffer is" << printdata;
+    qDebug() << "SalorPrinter::print(): Printer is" << m_printer << "Buffer is" << printdata;
 #ifdef LINUX
-    QFile f(m_printer_path);
+    QFile f(m_printer);
 
     if (f.exists() && f.open(QIODevice::WriteOnly)) {
         qDebug() << "SalorPrinter::print(): Printing to everything that QFile supports.";
@@ -114,16 +69,16 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         out << printdata;
         f.close();
 
-    } else if (m_printer_path.indexOf("tty") != -1) {
+    } else if (m_printer.indexOf("tty") != -1) {
         qDebug() << "SalorPrinter::print(): Printing to a serial port.";
         int fd;
         struct termios options;
-        char * port = m_printer_path.toAscii().data();
+        char * port = m_printer.toAscii().data();
 
         fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
 
         if (fd == -1) {
-          qDebug() << "SalorPrinter::print(): Unable to open" << m_printer_path;
+          qDebug() << "SalorPrinter::print(): Unable to open" << m_printer;
         } else {
           tcgetattr(fd, &options); // Get the current options for the port...
           cfsetispeed(&options, B9600); // Set the baud rates
@@ -134,12 +89,12 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
           qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
         }
     } else {
-        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer_path;
+        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer;
         //emit printerDoesNotExist();
     }
 #endif
 #ifdef MAC
-    QString printer_name = m_printer_path;
+    QString printer_name = m_printer;
     QString file_path = QDir::tempPath() + "/" + printer_name;
     qDebug() << "Path is: " << file_path;
     QFile f(file_path);
@@ -161,9 +116,9 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
     DWORD      dwJob = 0L;
     DWORD      dwBytesWritten = 0L;
     HANDLE     hPrinter;
-    wchar_t * name = new wchar_t[m_printer_path.length()+1];
-    m_printer_path.toWCharArray(name);
-    name[m_printer_path.length()] = 0;
+    wchar_t * name = new wchar_t[m_printer.length()+1];
+    m_printer.toWCharArray(name);
+    name[m_printer.length()] = 0;
     bStatus = OpenPrinter(name,&hPrinter, NULL);
 
     if (bStatus) {
@@ -210,5 +165,6 @@ void SalorPrinter::printed() {
         QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
         qDebug() << "Sending print confirmation to " << confirmation_url;
         confirmator->get(QNetworkRequest(QUrl(confirmation_url)));
-    }*/
+    }
+    */
 }

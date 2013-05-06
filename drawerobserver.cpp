@@ -2,20 +2,20 @@
 #include "salorjsapi.h"
 #include "common_includes.h"
 
-DrawerObserverThread::DrawerObserverThread(QObject *parent, QString path) :
-    QThread(parent)
+DrawerObserver::DrawerObserver() :
+    QObject()
 {
-    mPath = path;
+    mPath = "";
     mFiledescriptor == -1;
     doStop = false;
     drawerClosed = false;
 }
 
-void DrawerObserverThread::open() {
+void DrawerObserver::openDevice() {
 #ifdef LINUX
      struct termios options;
 
-     mFiledescriptor = ::open(mPath.toLatin1().data(), O_RDWR | O_NOCTTY | O_NDELAY);
+     mFiledescriptor = open(mPath.toLatin1().data(), O_RDWR | O_NOCTTY | O_NDELAY);
      if (mFiledescriptor == -1) {
          qDebug() << "DrawerObserverThread::open(): Unable to open port for drawer" << mPath;
      } else {
@@ -32,8 +32,8 @@ void DrawerObserverThread::open() {
 #endif
 }
 
-void DrawerObserverThread::close() {
-    ::close(mFiledescriptor);
+void DrawerObserver::closeDevice() {
+    close(mFiledescriptor);
 }
 
 void DrawerObserver::observe() {
@@ -51,9 +51,8 @@ void DrawerObserver::observe() {
 
     qDebug() << "Called DrawerObserverThread::run()";
 
-    open();
+    openDevice();
     if (mFiledescriptor == -1) return;
-
 
     count = write(mFiledescriptor, "\x1B\x40", 2);
     qDebug() << "Wrote "  << count << " bytes to initialize printer.";
@@ -62,7 +61,7 @@ void DrawerObserver::observe() {
     qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
 
     int j = 0;
-    while (i < (2 * close_after_seconds) && !stop_drawer_thread) {
+    while (i < (2 * close_after_seconds) && !doStop) {
       i += 1;
       for (j = 0; j < 8; j++) {
         buf[j] = '\0'; // initialize
@@ -106,7 +105,6 @@ void DrawerObserver::observe() {
       if (doStop || drawerClosed) {
           break;
       }
-
       usleep(500000);
     }
     closeDevice();

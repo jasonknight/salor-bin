@@ -3,8 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "salorpage.h"
-#include "network.h"
-#include "salorprinter.h"
+#include "salornetwork.h"
 #include "optionsdialog.h"
 #include "salorcookiejar.h"
 #include "downloader.h"
@@ -17,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     if (settings->value("kiosk").toString() == "true")
         setWindowFlags(Qt::FramelessWindowHint);
+
+    //networkManager = new QNetworkAccessManager(this);
+    networkManager = new SalorNetwork(this);
     ui->setupUi(this);
 }
 
@@ -42,15 +44,12 @@ void MainWindow::init()
     webView->setPage(page);
 
     //networmanager
-    Network* net = new Network(this);
-    webView->page()->setNetworkAccessManager(net);
+    //SalorNetwork* net = new SalorNetwork(this, networkManager);
+    webView->page()->setNetworkAccessManager(networkManager);
 
     //cookiejar
     SalorCookieJar * jar = new SalorCookieJar(this);
     webView->page()->networkAccessManager()->setCookieJar(jar);
-
-    //salorprinter
-    sp = new SalorPrinter(this);
 
     //salorjsapi
     js = new SalorJsApi(this, networkManager);
@@ -60,6 +59,25 @@ void MainWindow::init()
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
     diskCache->setCacheDirectory(PathCache);
     webView->page()->networkAccessManager()->setCache(diskCache);
+
+    //optionsdialog
+    optionsDialog = new OptionsDialog(this, networkManager);
+    connect(
+            optionsDialog, SIGNAL(navigateToUrl(QString)),
+            this, SLOT(navigateToUrl(QString))
+            );
+    connect(
+            optionsDialog, SIGNAL(clearCache()),
+            webView->page()->networkAccessManager()->cache(), SLOT(clear())
+            );
+    connect(
+            optionsDialog, SIGNAL(setPrinterCounter(int)),
+            this, SLOT(setPrinterCounter(int))
+            );
+    connect(
+            optionsDialog, SIGNAL(setPrinterNames()),
+            this, SLOT(setPrinterNames())
+            );
 
     //statusbar
     statusBar = new QStatusBar(this);
@@ -82,9 +100,50 @@ void MainWindow::init()
     webView->show();
     webView->load(to_url);
     connectSlots();
-    timerSetup();
     counterSetup();
-    sp->setPrinterNames();
+    timerSetup();
+    setPrinterNames();
+}
+
+void MainWindow::setPrinterNames() {
+    remotePrinterNames.clear();
+    localPrinterNames.clear();
+    qDebug() << "MainWindow::setPrinterNames()";
+    QStringList groups = (*settings).childGroups();
+    // filter out all setting groups that are not printer definitions
+    for (int i = 0; i < groups.size(); i++) {
+        QString group = groups[i];
+        if (group.indexOf("printer") != -1) {
+            remotePrinterNames << group;
+        }
+    }
+#ifdef LINUX
+    QStringList filters;
+    filters << "ttyS*" << "ttyUSB*" << "usb";
+    QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
+    (*devs).setNameFilters(filters);
+    QStringList nodes;
+    nodes = devs->entryList();
+    foreach (QString node, nodes) {
+        localPrinterNames << "/dev/" + node;
+    }
+#endif
+#ifdef WIN32
+    QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
+    for (int i = 0; i < printer_list.length(); i++) {
+        QPrinterInfo info = printer_list.at(i);
+        localPrinterNames << info.printerName();
+     }
+#endif
+#ifdef MAC
+    int i;
+    cups_dest_t *dests, *dest;
+    int num_dests = cupsGetDests(&dests);
+    for (i = num_dests, dest = dests; i > 0; i--, dest++) {
+        localPrinterNames << dest->name;
+     }
+#endif
+    qDebug() << "MainWindow::setPrinterNames():" << localPrinterNames;
 }
 
 void MainWindow::shutdown() {
@@ -249,7 +308,7 @@ void MainWindow::repaintViews() {
 }
 
 void MainWindow::attach(){
-    webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", sp);
+    //webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", sp);
     webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", js);
     page->resetJsErrors();
 }
@@ -259,20 +318,8 @@ void MainWindow::windowCloseRequested() {
 }
 
 void MainWindow::showOptionsDialog() {
-    OptionsDialog* d = new OptionsDialog(this);
-    connect(
-            d, SIGNAL(navigateToUrl(QString)),
-            this, SLOT(navigateToUrl(QString))
-            );
-    connect(
-            d, SIGNAL(clearCache()),
-            webView->page()->networkAccessManager()->cache(), SLOT(clear())
-            );
-    connect(
-            d, SIGNAL(setPrinterCounter(int)),
-            this, SLOT(setPrinterCounter(int))
-            );
-    d->show();
+    optionsDialog->show();
+    optionsDialog->init();
 }
 
 void MainWindow::timerSetup() {
@@ -297,7 +344,7 @@ void MainWindow::counterSetup() {
 }
 
 void MainWindow::timerTimeout() {
-    //qDebug() << "MainWindow::timerTimeout()";
+    //qDebug() << "MainWindow::timerTimeout(): intervalPrint is " << intervalPrint;
     counterPrint--;
     if (counterPrint == 0) {
         counterPrint = intervalPrint;

@@ -2,12 +2,15 @@
 #include "common_includes.h"
 #include "drawerobserver.h"
 #include "customerscreen.h"
+#include "salorprinter.h"
 #include "scale.h"
 
-SalorJsApi::SalorJsApi(QObject *parent) :
+SalorJsApi::SalorJsApi(QObject *parent, QNetworkAccessManager *nm) :
     QObject(parent)
 {
+    //drawerThread = 0;
     networkManager = nm;
+    //drawerObserver = 0;
     drawerObserver = new DrawerObserver();
     drawerThread = new QThread(this);
     connect(drawerThread, SIGNAL(started()),
@@ -42,7 +45,7 @@ void SalorJsApi::printPage() {
     printer.setColorMode(QPrinter::Color);
     QPrintDialog* dialog = new QPrintDialog(&printer, 0);
     if (dialog->exec() == QDialog::Accepted) {
-        this->webView->page()->mainFrame()->print(&printer);
+        webView->page()->mainFrame()->print(&printer);
         if (printer.outputFileName().indexOf(".pdf") != -1) {
             chmod(printer.outputFileName().toLatin1().data(),0666);
         }
@@ -74,7 +77,7 @@ void SalorJsApi::startDrawerObserver(QString path) {
       drawerThread->start();
       drawerThread->quit(); // this will quit the thread AFTER observe() has finished
   } else {
-    qDebug() << "Called SalorJSApi::startDrawerObserver. Apparently a thread is already running, so doing nothing.";
+      qDebug() << "    drawerThread is already running. Doing nothing.";
   }
 }
 
@@ -144,7 +147,7 @@ void SalorJsApi::mimoImage(QString imagepath) {
 }
 
 QString SalorJsApi::weigh(QString addy, int protocol) {
-  char * weight;
+  char *weight;
   Scale *sc = new Scale(addy, protocol);
   weight = sc->read();
   return weight;

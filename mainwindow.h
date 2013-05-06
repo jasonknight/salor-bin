@@ -4,6 +4,7 @@
 #include "salorpage.h"
 #include "salorjsapi.h"
 #include "salorprinter.h"
+#include "optionsdialog.h"
 #include "common_includes.h"
 
 namespace Ui {
@@ -41,12 +42,15 @@ private:
     void timerSetup();
     void counterSetup();
     int intervalPrint;
+    QNetworkAccessManager *networkManager;
+    OptionsDialog *optionsDialog;
 
 private slots:
     void timerTimeout();
 
 public slots:
     void setPrinterCounter(int);
+    void setPrinterNames();
     void setProgress(int);
     void finishLoading(bool);
     void adjustTitle();
