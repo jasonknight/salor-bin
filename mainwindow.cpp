@@ -52,7 +52,7 @@ void MainWindow::init()
     webView->page()->networkAccessManager()->setCookieJar(jar);
 
     //salorjsapi
-    js = new SalorJsApi(this);
+    js = new SalorJsApi(this, networkManager);
     js->webView = webView;
 
     //diskcache
@@ -165,7 +165,6 @@ void MainWindow::connectSlots() {
     connect(page,SIGNAL(addWidget(QWidget*)),this,SLOT(addStatusBarWidget(QWidget*)));
     connect(page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
     connect(page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
-    connect(this,SIGNAL(setPrinterNames()), sp, SLOT(setPrinterNames()));
     connect(closeButton, SIGNAL(clicked()), this, SLOT(shutdown()));
 
     QShortcut *showPrint = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P), this);
@@ -350,8 +349,9 @@ void MainWindow::timerTimeout() {
         counterPrint = intervalPrint;
         foreach(QString remoteprinter, remotePrinterNames) {
             settings->beginGroup(remoteprinter);
-            sp = new SalorPrinter(this, networkManager, settings->value("localprinter").toString());
-            sp->printURL(settings->value("url").toString());
+            SalorPrinter *printer = new SalorPrinter(this, networkManager, settings->value("localprinter").toString());
+            printer->printURL(settings->value("url").toString());
+            // printer instance will delete itself after printing. we cannot do it here since long running network requests are involved.
             settings->endGroup();
         }
     }

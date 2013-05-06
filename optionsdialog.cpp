@@ -208,6 +208,7 @@ void OptionsDialog::on_printTestButton_clicked()
         settings->beginGroup(remoteprinter);
         SalorPrinter *printer = new SalorPrinter(this, networkManager, settings->value("localprinter").toString());
         printer->print("OK\n\n\n");
+        // sp will delete itself after printing
         settings->endGroup();
     }
 }

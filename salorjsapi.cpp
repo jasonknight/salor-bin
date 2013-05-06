@@ -16,7 +16,7 @@ SalorJsApi::SalorJsApi(QObject *parent, QNetworkAccessManager *nm) :
     connect(drawerThread, SIGNAL(started()),
             drawerObserver, SLOT(observe()));
     connect(drawerThread, SIGNAL(finished()),
-            this, SLOT(cashDrawerClosed()));
+            this, SLOT(cashDrawerThreadFinished()));
     drawerObserver->moveToThread(drawerThread);
 }
 
@@ -70,11 +70,12 @@ void SalorJsApi::newOpenCashDrawer(QString addy) {
 }
 
 void SalorJsApi::startDrawerObserver(QString path) {
-  qDebug() << "SalorJSApi::startDrawerObserver.";
+  qDebug() << "SalorJSApi::startDrawerObserver on" << path;
   if (drawerThread->isRunning() == false) {
       qDebug() << "    drawerThread->start()";
       drawerObserver->mPath = path;
       drawerThread->start();
+      drawerThread->quit(); // this will quit the thread AFTER observe() has finished
   } else {
       qDebug() << "    drawerThread is already running. Doing nothing.";
   }
@@ -82,24 +83,35 @@ void SalorJsApi::startDrawerObserver(QString path) {
 
 void SalorJsApi::stopDrawerObserver() {
     qDebug() << "SalorJSApi::stopDrawerObserver";
-    if (drawerThread->isRunning() == true) {
-      qDebug() << "    Quitting running thread";
-      drawerThread->quit(); // this will quit the thread AFTER observe() has finished
-      drawerObserver->doStop = true; // halt the loop to finish observe() immediately
-  } else {
-      qDebug() << "    No thread running. Doing nothing.";
-  }
+    drawerObserver->doStop = true;
 }
 
-void SalorJsApi::cashDrawerClosed() {
+void SalorJsApi::cashDrawerThreadFinished() {
     qDebug() << "SalorJsApi::cashDrawerClosed()";
-    webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
+    if (drawerObserver->doStop == true) {
+        qDebug() << "    drawerObserver was interrupted. Not calling JS.";
+        drawerObserver->doStop = false;
+    }
+    if (drawerObserver->drawerClosed == true) {
+        webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
+        drawerObserver->drawerClosed = false;
+    }
+
 }
 
 void SalorJsApi::printURL(QString printer, QString url, QString confirm_url) {
     SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer);
     salorprinter->printURL(url);
-    salorprinter->deleteLater();
+    // printer will delete itself later
+}
+
+void SalorJsApi::printText(QString printer, QString text) {
+    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer);
+    QByteArray bytes;
+    bytes = QByteArray();
+    bytes.append(text);
+    salorprinter->print(bytes);
+    // salorprinter will delete itself later
 }
 
 QStringList SalorJsApi::ls(QString path,QStringList filters) {

@@ -12,6 +12,7 @@ public:
     bool doStop;
     QString mPath;
     int mFiledescriptor;
+    bool drawerClosed;
 
 protected:
     void openDevice();

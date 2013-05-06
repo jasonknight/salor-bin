@@ -1,57 +1,149 @@
 <html>
 <head>
+<style>
+  span.button {
+    display: inline-block;
+    padding: 2px 10px;
+    border: 2px solid gray;
+    background-color: #DDD;
+    cursor: pointer;
+  };
+</style>
 </head>
 <body>
 
-  <h1>salor_bin <span id='version'></span></h1>
-  <div onclick="Salor.poleDancer('/dev/ttyUSB0','Test');">Test Pole Dancer on /dev/ttyUSB0</div>
-  <div onclick="open_drawer();">Test Open Cash Drawer on /dev/usb/lp0</div>
-  <div onclick="start_drawer_observer();">Start Drawer Observer on /dev/usb/lp0</div>
-  <div id='drawerstatus'></div>
-  <div onclick="stop_drawer_observer();">Stop Drawer Observer</div>
-  <div onclick="Salor.printPage();">Test Print Dialog</div>
-  <div onclick="Salor.mimoRefresh('http://red-e.eu',800,400);">Test Mimo Screenshot of http://red-e.eu</div>
-  <div onclick="Salor.mimoImage('/usr/share/poledancer/startup.bmp',800,400);">Test Mimo BMP Image copy from poledancer</div>
-  <div onclick="Salor.playSound('beep1');">Test sound playing beep1</div>
-  <div onclick="Salor.playSound('big_warning');">Test sound playing big_warning</div>
-  <div onclick="Salor.playSound('complete');">Test sound playing complete</div>
-  <div onclick="Salor.playSound('drop1');">Test sound playing drop1</div>
-  <div onclick="Salor.playSound('drop2');">Test sound playing drop2</div>
-  <div onclick="Salor.playSound('drop3');">Test sound playing drop3</div>
-  <div onclick="Salor.playSound('medium_warning');">Test sound playing medium_warning</div>
-  <div onclick="Salor.playSound('notice');">Test sound playing notice</div>
-  <div onclick="weigh();">Test weighing on /dev/ttyUSB0</div>
-  <div id='weight'></div>
-  <div onclick="SalorPrinter.printURL('/dev/ttyUSB0', '/usr/share/salor-bin/test.escpos', 'http://localhost:3000/print_confirmed');">Test Printing on /dev/usb/lp0 (Escper logo)</div>
-  <div onclick="Salor.shutdown();">Shutdown</div>
+  <h1>salor_bin Tests<span id='version'></span></h1>
+
+
+  
+  <hr />
+  <h2>Print functions</h2>
+  <div>
+    <label for="printerPath">Printer</label>
+    <input id='printerPath' value="/dev/ttyUSB0"></input>
+  </div>
+  
+  <div>
+    <label for="printURL">URL</label>
+    <input id='printURL' value="http://red-e.eu/testprint.txt"></input>
+    <span class="button" onclick="printurl();">Test Printing URL</span>
+  </div>
+  
+  
+  <div>
+    <label for="printText">Text</label>
+    <input id='printText' value="Print me!"></input>
+    <span class="button" onclick="printtext();">Test Printing Text</span>
+  </div>
+  
+  
+  <span class="button" onclick="Salor.printPage();">Test Print Dialog</span>
+  
+  <h3>Drawer functions</h3>
+  <span class="button" onclick="open_drawer();">Open Drawer</span>
+  <span class="button" onclick="open_drawer_observe();">Open Drawer w Close Detection</span>
+  <span class="button" onclick="start_drawer_observer();">Start DrawerObserver</span>
+  <span class="button" onclick="stop_drawer_observer();">Stop DrawerObserver</span>
+  <div><b>Drawer Status:</b> <span id='drawerstatus'>&nbsp;</span></div>
+  
+
+  
+  <hr />
+  <h2>Customer Display functions (Linux only)</h2>
+  <div>
+    <label for="polePath">poleDisplay</label>
+    <input id='polePath' value="/dev/ttyUSB0"></input>
+  </div>
+  <span class="button" onclick="test_poledancer()">ASCII Pole Display</span>
+  <span class="button" onclick="Salor.mimoRefresh('http://red-e.eu',800,400);">Screenshot of http://red-e.eu</span>
+  <span class="button" onclick="Salor.mimoImage('/usr/share/poledancer/startup.bmp',800,400);">Test Mimo BMP Image copy from poledancer</span>
+  
+
+
+  
+  <hr />
+  <h2>Sounds (Windows and Linux)</h2>
+  <span class="button" onclick="Salor.playSound('beep1');">beep1</span>
+  <span class="button" onclick="Salor.playSound('big_warning');">big_warning</span>
+  <span class="button" onclick="Salor.playSound('complete');">playing complete</span>
+  <span class="button" onclick="Salor.playSound('drop1');">drop1</span>
+  <span class="button" onclick="Salor.playSound('drop2');">drop2</span>
+  <span class="button" onclick="Salor.playSound('drop3');">drop3</span>
+  <span class="button" onclick="Salor.playSound('medium_warning');">medium_warning</span>
+  <span class="button" onclick="Salor.playSound('notice');">notice</span>
+  
+  <hr />
+  <h2>Scale functions (Linux only)</h2>
+  <p><label for="scalePath">Scale</label><input id='scalePath' value="/dev/ttyUSB0"></input></p>
+  <span class="button" onclick="weigh();">Weigh!</span>
+  <div><b>Weight:</b> <span id='weight'>&nbsp;</span></div>
+  
+  <hr />
+  <h2>Other (Windows and Linux)</h2>
+  <span class="button" onclick="Salor.shutdown();">Shutdown</span>
 
 
   <script type="text/javascript">
+  
+    var printer_path = "";
+    
+    function set_printer_path() {
+      printer_path = document.getElementById("printerPath").value;
+    }
+    
+    function printtext() {
+      set_printer_path();
+      var text = document.getElementById("printText").value + "\n";
+      Salor.printText(printer_path, text);
+    }
+    
+    function printurl() {
+      set_printer_path();
+      var text = document.getElementById("printerPath").value;
+      var url = document.getElementById("printURL").value;
+      Salor.printURL(printer_path, url, 'confirmation URL deprecated');
+    }
+  
+    function test_poledancer() {
+      var path = document.getElementById("polePath").value;
+      Salor.poleDancer(path,'Test');
+    }
+    
     function call_poledancer() {
       alert("PoleDancer called");
     }
-    function complete_order_hide() {
+    function onCashDrawerClose() {
       document.getElementById('drawerstatus').innerHTML = 'DRAWER CLOSING TRIGGERED';
-      alert("Complete Order PopUp hidden");
     }
+    
     function start_drawer_observer() {
-      Salor.startDrawerObserver('/dev/ttyUSB0');
-      document.getElementById('drawerstatus').innerHTML = '';
+      set_printer_path();
+      Salor.startDrawerObserver(printer_path);
+      document.getElementById('drawerstatus').innerHTML = '&nbsp;';
     }
+    
     function stop_drawer_observer() {
       Salor.stopDrawerObserver();
-      document.getElementById('drawerstatus').innerHTML = '';
+      document.getElementById('drawerstatus').innerHTML = '&nbsp;';
     }
+    
     function open_drawer() {
+      set_printer_path();
+      Salor.newOpenCashDrawer(printer_path);
+    }
+    
+    function open_drawer_observe() {
+      set_printer_path();
       Salor.stopDrawerObserver();
-      Salor.newOpenCashDrawer('/dev/ttyUSB0');
-      Salor.startDrawerObserver('/dev/ttyUSB0');
-      document.getElementById('drawerstatus').innerHTML = '';
+      Salor.newOpenCashDrawer(printer_path);
+      Salor.startDrawerObserver(printer_path);
+      document.getElementById('drawerstatus').innerHTML = '&nbsp;';
     }
     
     function weigh() {
-      var weight = parseFloat(Salor.weigh('/dev/ttyUSB0', 0));
-      document.getElementById('weight').innerHTML = Salor.weigh('/dev/ttyUSB0', 0) + " " + typeof weight;
+      var path = document.getElementById("polePath").value;
+      var weight = parseFloat(Salor.weigh(path, 0));
+      document.getElementById('weight').innerHTML = weight + " " + typeof weight;
     }
   </script>
 
