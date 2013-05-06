@@ -53,7 +53,7 @@ void MainWindow::init()
     sp = new SalorPrinter(this);
 
     //salorjsapi
-    js = new SalorJsApi(this);
+    js = new SalorJsApi(this, networkManager);
     js->webView = webView;
 
     //diskcache
@@ -303,7 +303,9 @@ void MainWindow::timerTimeout() {
         counterPrint = intervalPrint;
         foreach(QString remoteprinter, remotePrinterNames) {
             settings->beginGroup(remoteprinter);
-            sp->printURL(settings->value("localprinter").toString(), settings->value("url").toString());
+            SalorPrinter *printer = new SalorPrinter(this, networkManager, settings->value("localprinter").toString());
+            printer->printURL(settings->value("url").toString());
+            // printer instance will delete itself after printing. we cannot do it here since long running network requests are involved.
             settings->endGroup();
         }
     }

@@ -17,6 +17,11 @@ public:
 signals:
     void cuteDataRead(QString);
     void _cuteWriteData(QString);
+
+
+private slots:
+    void cashDrawerThreadFinished();
+
     
 public slots:
     void poleDancer(QString path, QString message);
@@ -27,9 +32,11 @@ public slots:
     void printPage();
     void playSound(QString name);
     void echo(QString msg);
-    void mimoRefresh(QString path,int h, int w);
+    void mimoRefresh(QString path, int h, int w);
     void mimoImage(QString imagepath);
     QStringList ls(QString path,QStringList filters);
+    void printURL(QString printer, QString url, QString confirm_url);
+    void printText(QString printer, QString text);
     void shutdown();
     void cuteWriteData(QString);
     void _cuteBubbleDataRead(QString data);

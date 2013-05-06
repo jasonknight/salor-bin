@@ -96,7 +96,8 @@ void SalorPrinter::printDataReady(QNetworkReply *reply) {
     } else {
       printdata = reply->readAll();
     }
-    print(m_printer_path, printdata);
+    print(printdata);
+    reply->deleteLater(); // good practice according to the Qt documentation of QNetworkAccessManager
 }
 
 void SalorPrinter::print(QString printer, QByteArray printdata) {
@@ -112,7 +113,6 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         QDataStream out(&f);
         out << printdata;
         f.close();
-        printed();
 
     } else if (m_printer_path.indexOf("tty") != -1) {
         qDebug() << "SalorPrinter::print(): Printing to a serial port.";
@@ -132,7 +132,6 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
           int r = write(fd, printdata, printdata.size());
           close(fd);
           qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
-          printed();
         }
     } else {
         qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer_path;
@@ -152,7 +151,6 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         SalorProcess * p = new SalorProcess(this);
         p->run("lp", QStringList() << "-d" << printer_name << file_path,100000);
         delete sp;
-        printed();
     } else {
         qDebug() << "file could not be written" << printer_name;
     }
@@ -202,12 +200,15 @@ void SalorPrinter::print(QString printer, QByteArray printdata) {
         qDebug() << " Bytes were written";
     }
 #endif
+    printed();
 }
 
 void SalorPrinter::printed() {
+    deleteLater();
+    /*
     if(confirmation_url.length() > 0) {
         QNetworkAccessManager *confirmator = new QNetworkAccessManager(this);
         qDebug() << "Sending print confirmation to " << confirmation_url;
         confirmator->get(QNetworkRequest(QUrl(confirmation_url)));
-    }
+    }*/
 }

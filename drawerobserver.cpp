@@ -7,6 +7,8 @@ DrawerObserverThread::DrawerObserverThread(QObject *parent, QString path) :
 {
     mPath = path;
     mFiledescriptor == -1;
+    doStop = false;
+    drawerClosed = false;
 }
 
 void DrawerObserverThread::open() {
@@ -34,8 +36,9 @@ void DrawerObserverThread::close() {
     ::close(mFiledescriptor);
 }
 
-void DrawerObserverThread::run() {
-    stop_drawer_thread = false;
+void DrawerObserver::observe() {
+    doStop = false;
+    drawerClosed = false;
 
     int count = 0;
     int i = 0;
@@ -94,19 +97,19 @@ void DrawerObserverThread::run() {
         for (j = 0; j < 7; j++) {
             if (buf[j] == 0x14) {
                 // score, the drawer is open
-                stop_drawer_thread = true;
+                drawerClosed = true;
                 qDebug() << "Closed Drawer detected. Halting thread.";
                 break;
             }
         }
       }
-      if (stop_drawer_thread) {
-        break;
+      if (doStop || drawerClosed) {
+          break;
       }
 
       usleep(500000);
     }
-    close();
-    cashDrawerClosed(); // emit signal
+    closeDevice();
+    // variables doStop and drawerClosed will be inspected by the caller, so we leave them alone
     return;
 }

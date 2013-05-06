@@ -13,6 +13,7 @@ public:
     void run();
     QString mPath;
     int mFiledescriptor;
+    bool drawerClosed;
 
 protected:
     void open();

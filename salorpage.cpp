@@ -6,14 +6,14 @@
 SalorPage::SalorPage(QObject *parent) :
     QWebPage(parent)
 {
-    qDebug() << "SalorPage initializer";
-    this->js_error_count = 0;
+    //mwindow = parent;
+    js_error_count = 0;
 }
 
 
 void SalorPage::resetJsErrors() {
     //qDebug() << "resetting js errors";
-    this->js_error_count = 0;
+    js_error_count = 0;
 }
 
 void SalorPage::updateFileProgress(qint64 read,qint64 total) {
@@ -34,9 +34,11 @@ void SalorPage::downloadFile(QNetworkRequest request) {
 
 }
 void SalorPage::downloadFile(QNetworkReply *reply) {
-    qDebug() << "Download called" << reply->url().toString();
+    qDebug() << "SalorPage::downloadFile:" << reply->url().toString();
     QString default_file_name = QFileInfo(reply->url().toString()).fileName();
-    QString file_name = QFileDialog::getSaveFileName(0,tr("Save File"),default_file_name);
+    qDebug() << "    " << default_file_name;
+    QString file_name = QFileDialog::getSaveFileName(0, tr("Save File"),default_file_name);
+    qDebug() << "    " << file_name;
     if (file_name.isEmpty())
         return;
     Downloader * d = new Downloader;
@@ -45,9 +47,9 @@ void SalorPage::downloadFile(QNetworkReply *reply) {
     connect(d,SIGNAL(finished()),d,SLOT(deleteLater()));
     connect(d,SIGNAL(addWidget(QWidget*)),this,SLOT(bubbleAddWidget(QWidget*)));
     connect(d,SIGNAL(removeWidget(QWidget*)),this,SLOT(bubbleRemoveWidget(QWidget*)));
+    qDebug() << "    Calling setReply";
     d->setReply(reply);
     connect(reply,SIGNAL(downloadProgress(qint64,qint64)),d,SLOT(updateFileProgress(qint64,qint64)));
-
     d->main = this->main;
 }
 
