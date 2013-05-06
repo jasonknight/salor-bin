@@ -1,3 +1,13 @@
+salor-bin (2.4.3-1wheezy) wheezy; urgency=low
+
+  * refactored drawerThread
+  * more
+  * lots of refactoring to prevent leaks
+  * more
+  * more
+
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 06 May 2013 14:24:06 +0200
+
 salor-bin (2.4.2-1wheezy) wheezy; urgency=low
 
   * fix
