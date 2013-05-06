@@ -165,7 +165,6 @@ void MainWindow::connectSlots() {
     connect(page,SIGNAL(addWidget(QWidget*)),this,SLOT(addStatusBarWidget(QWidget*)));
     connect(page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
     connect(page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
-    connect(this,SIGNAL(setPrinterNames()), sp, SLOT(setPrinterNames()));
     connect(closeButton, SIGNAL(clicked()), this, SLOT(shutdown()));
 
     QShortcut *showPrint = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P), this);

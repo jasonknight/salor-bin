@@ -38,8 +38,6 @@ signals:
 public slots:
     void on_goButton_clicked();
     void on_clearCacheButton_clicked();
-    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
-    void on_printInfoFetched(QNetworkReply * rep);
 
 private slots:
     void on_urlEditInput_textChanged(QString value);
@@ -50,6 +48,8 @@ private slots:
     void on_printNowButton_clicked();
     void on_printTestButton_clicked();
     void on_kioskCheckBox_clicked(bool checked);
+    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
+    void on_printInfoFetched(QNetworkReply * rep);
 };
 
 #endif // OPTIONSDIALOG_H

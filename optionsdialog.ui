@@ -238,7 +238,7 @@
    <sender>goButton</sender>
    <signal>clicked()</signal>
    <receiver>OptionsDialog</receiver>
-   <slot>on_pushButton_clicked()</slot>
+   <slot>on_goButton_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>319</x>
@@ -254,7 +254,7 @@
    <sender>clearCacheButton</sender>
    <signal>clicked()</signal>
    <receiver>OptionsDialog</receiver>
-   <slot>on_ClearCacheButton_clicked()</slot>
+   <slot>on_clearCacheButton_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>106</x>
@@ -270,7 +270,7 @@
    <sender>urlEditInput</sender>
    <signal>textChanged(QString)</signal>
    <receiver>OptionsDialog</receiver>
-   <slot>on_URLEdit_textChanged(QString)</slot>
+   <slot>on_urlEditInput_textChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>158</x>
