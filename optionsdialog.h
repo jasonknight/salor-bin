@@ -48,8 +48,8 @@ private slots:
     void on_printNowButton_clicked();
     void on_printTestButton_clicked();
     void on_kioskCheckBox_clicked(bool checked);
-    void on_authenticationRequired(QNetworkReply * reply, QAuthenticator * auth);
-    void on_printInfoFetched(QNetworkReply * rep);
+    void onError(QNetworkReply::NetworkError error);
+    void onPrintInfoFetched();
 };
 
 #endif // OPTIONSDIALOG_H

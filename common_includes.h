@@ -63,6 +63,7 @@
 #include <QNetworkReply>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <QTcpSocket>
 
 #include <QSize>
 #include <QFont>

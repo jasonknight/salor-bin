@@ -20,28 +20,22 @@ void SalorPrinter::printURL(QString url) {
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
     request.setSslConfiguration(c);
 
-    connect(m_manager, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
-            this, SLOT(on_authenticationRequired(QNetworkReply*,QAuthenticator*))
+    QNetworkReply *reply = m_manager->get(request);
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+            this, SLOT(onError(QNetworkReply::NetworkError))
     );
-    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(printDataReady(QNetworkReply*))
-            );
-    m_manager->get(request);
+    connect(reply, SIGNAL(finished()),
+            this, SLOT(printDataReady())
+    );
 }
 
-void SalorPrinter::on_authenticationRequired(QNetworkReply *reply, QAuthenticator *auth) {
-    qDebug() << "Authentication required";
-    auth->setUser("blah");
-    auth->setPassword("blah");
-    if(auth_tried == true) {
-      // problem with the authenticationRequired signal is that it will cache wrong auth username/password, which leads to an endless loop with the server is immediately asking again for authentication.
-      //m_manager->deleteLater();
-    }
-    auth_tried = true;
+void SalorPrinter::onError(QNetworkReply::NetworkError error) {
+    qDebug() << "SalorPrinter::onError(): Error during request";
 }
 
-void SalorPrinter::printDataReady(QNetworkReply *reply) {
+void SalorPrinter::printDataReady() {
     //qDebug() << "SalorPrinter::printDataReady";
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     QVariant statusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute );
     int status = statusCode.toInt();
     QByteArray printdata;
@@ -59,7 +53,7 @@ void SalorPrinter::printDataReady(QNetworkReply *reply) {
 void SalorPrinter::print(QByteArray printdata) {
     //QString buffer;
     //buffer = new QString(*printdata);
-    qDebug() << "SalorPrinter::print(): Printer is" << m_printer << "Buffer is" << printdata;
+    //qDebug() << "SalorPrinter::print(): Printer is" << m_printer << "Buffer is" << printdata;
 #ifdef LINUX
     QFile f(m_printer);
 
@@ -86,7 +80,7 @@ void SalorPrinter::print(QByteArray printdata) {
           tcsetattr(fd, TCSANOW, &options); // Set the new options for the port...
           int r = write(fd, printdata, printdata.size());
           close(fd);
-          qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
+          //qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
         }
     } else {
         qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer;
@@ -131,7 +125,7 @@ void SalorPrinter::print(QByteArray printdata) {
             if (bStatus) {
                 bStatus = WritePrinter(hPrinter, printdata.data(), printdata.length(),&dwBytesWritten);
                 EndPagePrinter(hPrinter);
-                qDebug() << " Page Ended";
+                //qDebug() << "Page Ended";
             } else {
                 qDebug() << "could not start printer";
             }
@@ -152,7 +146,7 @@ void SalorPrinter::print(QByteArray printdata) {
         qDebug() << QString::number(dw);
         //display_last_error(dw);
     } else {
-        qDebug() << " Bytes were written";
+        //qDebug() << " Bytes were written";
     }
 #endif
     printed();

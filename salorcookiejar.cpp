@@ -4,7 +4,6 @@
 SalorCookieJar::SalorCookieJar(QObject *parent) :
     QNetworkCookieJar(parent)
 {
-    qDebug() << "SalorCookieJar() initializer";
     m_timer.setInterval(10);
     m_timer.setSingleShot(true);
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(saveToDisk()));
@@ -15,13 +14,11 @@ SalorCookieJar::SalorCookieJar(QObject *parent) :
 
 SalorCookieJar::~SalorCookieJar()
 {
-    qDebug() << "~SalorCookieJar()";
     if (m_storageEnabled) {
-        qDebug() << "Dumping Cookies to disk";
         extractRawCookies();
         saveToDisk();
     } else {
-        qDebug() << "Not writing Cookies to disk";
+        qDebug() << "~SalorCookieJar(): Not writing Cookies to disk";
     }
 }
 
