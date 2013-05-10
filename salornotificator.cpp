@@ -41,9 +41,10 @@ void SalorNotificator::slotSocketRead(){
     } else if (msg.indexOf("printer") != -1) {
         //qDebug() << "Server push notification for printing";
         msg.replace("\n", "");
+        QString url_firstpart = settings->value("url").toString();
         settings->beginGroup(msg);
         QString localprinter = settings->value("localprinter").toString();
-        QString url = settings->value("url").toString();
+        QString url = url_firstpart + settings->value("url").toString();
         settings->endGroup();
         if (localprinter == "") {
             //qDebug() << "Not fetching anything for local printer" << msg;
