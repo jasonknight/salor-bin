@@ -13,12 +13,12 @@ SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString p
 }
 
 void SalorPrinter::printURL(QString url) {
-    //qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
+    qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
 
     QNetworkRequest request = QNetworkRequest(QUrl(url));
-    QSslConfiguration c = request.sslConfiguration();
-    c.setPeerVerifyMode(QSslSocket::VerifyNone);
-    request.setSslConfiguration(c);
+    //QSslConfiguration c = request.sslConfiguration();
+    //c.setPeerVerifyMode(QSslSocket::VerifyNone);
+    //request.setSslConfiguration(c);
 
     QNetworkReply *reply = m_manager->get(request);
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),

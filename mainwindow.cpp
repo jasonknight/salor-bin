@@ -362,16 +362,19 @@ void MainWindow::counterSetup() {
 void MainWindow::timerTimeout() {
     QString localprinter;
     QString url;
+    QString url_firstpart;
     //qDebug() << "MainWindow::timerTimeout(): intervalPrint is " << intervalPrint;
     counterPrint--;
     counterTcp--;
 
     if (counterPrint == 0) {
         counterPrint = intervalPrint;
+
+        url_firstpart = settings->value("url").toString();
         foreach(QString remoteprinter, remotePrinterNames) {
             settings->beginGroup(remoteprinter);
             localprinter = settings->value("localprinter").toString();
-            url = settings->value("url").toString();
+            url = url_firstpart + settings->value("url").toString();
             settings->endGroup();
 
             if (localprinter == "") {

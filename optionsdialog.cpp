@@ -103,11 +103,13 @@ void OptionsDialog::on_updateSettingsButton_clicked()
         delete child->widget();
     }
 
+    QString url_firstpart = settings->value("url").toString();
     settings->beginGroup("printing");
-    QString url = settings->value("url").toString();
+    QString url = url_firstpart + settings->value("url").toString();
     QString username = settings->value("username").toString();
     settings->endGroup();
 
+    qDebug() << "Starting request to " << url;
     QNetworkRequest request(QUrl::fromUserInput(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
 
@@ -117,9 +119,9 @@ void OptionsDialog::on_updateSettingsButton_clicked()
     QByteArray data;
     data = params.encodedQuery();
 
-    QSslConfiguration c = request.sslConfiguration();
-    c.setPeerVerifyMode(QSslSocket::VerifyNone);
-    request.setSslConfiguration(c);
+    //QSslConfiguration c = request.sslConfiguration();
+    //c.setPeerVerifyMode(QSslSocket::VerifyNone);
+    //request.setSslConfiguration(c);
 
     QNetworkReply *reply = networkManager->post(request,data);
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -145,7 +147,6 @@ void OptionsDialog::onError(QNetworkReply::NetworkError error) {
 
 // this just writes stuff to the .ini file
 void OptionsDialog::onPrintInfoFetched() {
-    qDebug() << "xxxxxxxxxxxxxprint info fetched";
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     auth_tried = false;
 
@@ -155,38 +156,41 @@ void OptionsDialog::onPrintInfoFetched() {
 
     QStringList groupsAfter;
 
-    //qDebug() << "Attempting to read reply";
+    qDebug() << "Attempting to read reply";
     QString body = reply->readAll();
-    //qDebug() << "Reply is: " << body;
-    QStringList lines = body.split("\n");
-    QRegExp rx("([\\w\-]+)\\:(.+)");
-    foreach(QString line,lines) {
-        //qDebug() << "line is" << line;
-        int pos = 0;
-        while( ( pos = rx.indexIn(line,pos) ) != -1 ) {
-            QString key = rx.cap(1);
-            QString val = rx.cap(2);
-            qDebug() << "Key is: " << key << " value is: " << val;
-            if (key.indexOf("printerurl") != -1) {
-                QString printernumber = key.mid(10, 4);
-                QString printergroup = "printer" + printernumber;
-                groupsAfter << printergroup;
-                settings->beginGroup(printergroup);
-                settings->setValue("url", val);
-                settings->endGroup();
-            } else if (key.indexOf("printername") != -1) {
-                QString printernumber = key.mid(11, 4);
-                QString printergroup = "printer" + printernumber;
-                settings->beginGroup(printergroup);
-                settings->setValue("name", val);
-                settings->endGroup();
-            } else {
-                // other print settings
-                settings->beginGroup("printing");
-                settings->setValue(key,val);
-                settings->endGroup();
+    qDebug() << "Reply is: " << body;
+    if (body.indexOf("html") == -1) {
+        // don't parse html errors from the server
+        QStringList lines = body.split("\n");
+        QRegExp rx("([\\w\-]+)\\:(.+)");
+        foreach(QString line,lines) {
+            qDebug() << "line is" << line;
+            int pos = 0;
+            while( ( pos = rx.indexIn(line,pos) ) != -1 ) {
+                QString key = rx.cap(1);
+                QString val = rx.cap(2);
+                qDebug() << "Key is: " << key << " value is: " << val;
+                if (key.indexOf("printerurl") != -1) {
+                    QString printernumber = key.mid(10, 4);
+                    QString printergroup = "printer" + printernumber;
+                    groupsAfter << printergroup;
+                    settings->beginGroup(printergroup);
+                    settings->setValue("url", val);
+                    settings->endGroup();
+                } else if (key.indexOf("printername") != -1) {
+                    QString printernumber = key.mid(11, 4);
+                    QString printergroup = "printer" + printernumber;
+                    settings->beginGroup(printergroup);
+                    settings->setValue("name", val);
+                    settings->endGroup();
+                } else {
+                    // other print settings
+                    settings->beginGroup("printing");
+                    settings->setValue(key,val);
+                    settings->endGroup();
+                }
+                pos += rx.matchedLength();
             }
-            pos += rx.matchedLength();
         }
     }
 
