@@ -51,9 +51,9 @@ void OptionsDialog::setupPrinterCombos() {
       signalMapper->setMapping(combobox, remoteprinter);
 
       //select current value
-      qDebug() << "finding index for " << localprintername;
+      //qDebug() << "finding index for " << localprintername;
       int index = combobox->findText(localprintername);
-      qDebug() << "index is " << index;
+      //qDebug() << "index is " << index;
       if (index != -1) {
           combobox->setCurrentIndex(index);
       }

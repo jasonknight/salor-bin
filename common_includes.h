@@ -99,6 +99,7 @@ extern const QString PathWorking;
 extern const QString PathCache;
 extern const QString PathSettings;
 extern const QString PathDownloads;
+extern const QString PathLog;
 extern const QString PathCookies;
 
 extern QStringList remotePrinterNames;

@@ -13,7 +13,7 @@ SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString p
 }
 
 void SalorPrinter::printURL(QString url) {
-    qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
+    //qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
 
     QNetworkRequest request = QNetworkRequest(QUrl(url));
     QSslConfiguration c = request.sslConfiguration();
@@ -57,13 +57,8 @@ void SalorPrinter::print(QByteArray printdata) {
 #ifdef LINUX
     QFile f(m_printer);
 
-    if (f.exists() && f.open(QIODevice::WriteOnly)) {
-        qDebug() << "SalorPrinter::print(): Printing to everything that QFile supports.";
-        QDataStream out(&f);
-        out << printdata;
-        f.close();
-
-    } else if (m_printer.indexOf("tty") != -1) {
+    if (false && m_printer.indexOf("tty") != -1) {
+        // disabled for now since printing images is not working on Metapace T1 (Metapace T3 not tried)
         qDebug() << "SalorPrinter::print(): Printing to a serial port.";
         int fd;
         struct termios options;
@@ -82,7 +77,15 @@ void SalorPrinter::print(QByteArray printdata) {
           close(fd);
           //qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
         }
-    } else {
+
+    } else if (f.exists() && f.open(QIODevice::WriteOnly) && printdata.size() > 4) {
+        // limited to minimum of 4 characters, since QFile seems to write FF to /dev/ttyUSB0 every time it is opened, even when printdata is ""
+        //qDebug() << "SalorPrinter::print(): Printing to everything that QFile supports.";
+        QDataStream out(&f);
+        out << printdata;
+        f.close();
+
+    } else if (printdata.size() > 4) {
         qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer;
         //emit printerDoesNotExist();
     }

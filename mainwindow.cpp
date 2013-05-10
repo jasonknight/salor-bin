@@ -338,7 +338,7 @@ void MainWindow::timerSetup() {
 }
 
 void MainWindow::onTcpPrintNotified() {
-    qDebug() << "MainWindow::onTcpPrintNotified";
+    //qDebug() << "MainWindow::onTcpPrintNotified";
     //If Server has initiated printing, wait for another full printing polling interval
     counterPrint = intervalPrint;
 }
@@ -372,7 +372,7 @@ void MainWindow::timerTimeout() {
             settings->endGroup();
 
             if (localprinter == "") {
-                qDebug() << "Not fetching anything for local printer" << remoteprinter;
+                //qDebug() << "Not fetching anything for local printer" << remoteprinter;
                 // don't print when localprinter combo box has been left empty
             } else {
                 SalorPrinter *printer = new SalorPrinter(this, networkManager, localprinter);

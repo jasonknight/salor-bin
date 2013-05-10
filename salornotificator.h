@@ -9,7 +9,6 @@ class SalorNotificator : public QObject
 public:
     explicit SalorNotificator(QObject *parent = 0, QNetworkAccessManager *m_manager = 0);
     void start();
-    void writestuff(QString text);
     bool connected;
     int currentState;
 

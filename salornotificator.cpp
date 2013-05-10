@@ -23,32 +23,31 @@ SalorNotificator::SalorNotificator(QObject *parent, QNetworkAccessManager *nm) :
 
 void SalorNotificator::start()
 {
-    socket.connectToHost("localhost", 2000);
-}
-
-void SalorNotificator::writestuff(QString text) {
-    qDebug() << "SalorNotificator::writestuff()";
-    socket.write("text");
+    settings->beginGroup("printing");
+    QUrl url(settings->value("url").toString());
+    settings->endGroup();
+    //qDebug() << url.host();
+    socket.connectToHost(url.host(), 2000);
 }
 
 void SalorNotificator::slotSocketRead(){
     QByteArray msg;
     msg = socket.readAll();
-    qDebug() << "TCP read from server" << msg;
+    //qDebug() << "TCP read from server" << msg;
     if (msg.indexOf("ID") != -1) {
         qDebug() << "Server push notification to submit ID";
         settings->beginGroup("printing");
         socket.write(settings->value("username").toString().toAscii() + "\n");
         settings->endGroup();
     } else if (msg.indexOf("printer") != -1) {
-        qDebug() << "Server push notification for printing";
+        //qDebug() << "Server push notification for printing";
         msg.replace("\n", "");
         settings->beginGroup(msg);
         QString localprinter = settings->value("localprinter").toString();
         QString url = settings->value("url").toString();
         settings->endGroup();
         if (localprinter == "") {
-            qDebug() << "Not fetching anything for local printer" << msg;
+            //qDebug() << "Not fetching anything for local printer" << msg;
             // don't print when localprinter combo box has been left empty
         } else {
             SalorPrinter *printer = new SalorPrinter(this, m_manager, localprinter);
@@ -57,7 +56,7 @@ void SalorNotificator::slotSocketRead(){
         }
         emit onTcpPrintNotified();
     } else {
-        qDebug() << "Unknown server request" << msg;
+        //qDebug() << "Unknown server request" << msg;
     }
 }
 
@@ -73,5 +72,5 @@ void SalorNotificator::slotSocketDisconnected(){
 
 void SalorNotificator::slotSocketStateChanged(QAbstractSocket::SocketState state) {
     currentState = (int)state;
-    qDebug() << "SalorNotificator::slotSocketStateChange:" << QString::number(currentState);
+    //qDebug() << "SalorNotificator::slotSocketStateChange:" << QString::number(currentState);
 }
