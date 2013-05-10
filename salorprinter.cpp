@@ -40,11 +40,11 @@ void SalorPrinter::printDataReady() {
     int status = statusCode.toInt();
     QByteArray printdata;
     if (status != 200) {
-        printdata.append(reply->errorString());
-        printdata.append("\n\n\n\n");
-      qDebug() << "ERROR" << QString::number(status) << reply->errorString();
+        //printdata.append(reply->errorString());
+        //printdata.append("\n\n\n\n");
+        qDebug() << "SalorPrinter::printDataReady() ERROR" << QString::number(status) << reply->errorString();
     } else {
-      printdata = reply->readAll();
+        printdata = reply->readAll();
     }
     print(printdata);
     reply->deleteLater(); // good practice according to the Qt documentation of QNetworkAccessManager

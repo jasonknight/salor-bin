@@ -107,7 +107,7 @@ extern QStringList localPrinterNames;
 extern QSettings *settings;
 
 static QVariant _get(QString key) {
-    qDebug() << "getting" << key;
+    //qDebug() << "getting" << key;
     QVariant val = settings->value(key);
     return val;
 }

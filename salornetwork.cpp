@@ -24,6 +24,10 @@ QNetworkReply * SalorNetwork::createRequest(
     } else {
       //qDebug() << originalRequest.url().toString() << " : " << QDateTime::currentDateTime();
     }
+    QSslConfiguration c = request.sslConfiguration();
+    c.setPeerVerifyMode(QSslSocket::VerifyNone);
+    request.setSslConfiguration(c);
+
     return QNetworkAccessManager::createRequest(operation, request, device);
 }
 

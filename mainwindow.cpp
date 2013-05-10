@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //networkManager = new QNetworkAccessManager(this);
     networkManager = new SalorNetwork(this);
+
     salorNotificator = new SalorNotificator(this, networkManager);
     connect(salorNotificator, SIGNAL(onTcpPrintNotified()),
             this, SLOT(onTcpPrintNotified()));
@@ -269,7 +270,9 @@ void MainWindow::adjustTitle() {
 }
 
 void MainWindow::navigateToUrl(QString url) {
-    webView->load(QUrl(url));
+    QUrl qurl;
+    qurl = QUrl(url);
+    webView->load(qurl);
 }
 
 
