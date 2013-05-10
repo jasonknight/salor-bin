@@ -23,10 +23,9 @@ SalorNotificator::SalorNotificator(QObject *parent, QNetworkAccessManager *nm) :
 
 void SalorNotificator::start()
 {
-    settings->beginGroup("printing");
-    QUrl url(settings->value("url").toString());
-    settings->endGroup();
-    //qDebug() << url.host();
+    QUrl url;
+    url = QUrl(settings->value("url").toString());
+    qDebug() << "SalorNotificator::start(): connecting to " << url.host();
     socket.connectToHost(url.host(), 2000);
 }
 
