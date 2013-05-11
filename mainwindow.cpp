@@ -351,7 +351,7 @@ void MainWindow::counterSetup() {
     settings->beginGroup("printing");
     intervalPrint = settings->value("interval").toInt();
     settings->endGroup();
-    intervalTcp = 2;
+    intervalTcp = 10;
 
     if (intervalPrint < 10) intervalPrint = 10; // security measure
     counterPrint = intervalPrint;
@@ -390,10 +390,17 @@ void MainWindow::timerTimeout() {
 
     if (counterTcp == 0) {
         counterTcp = intervalTcp;
+
         if (salorNotificator->currentState == 0) {
             //QAbstractSocket::UnconnectedState
             salorNotificator->start();
             //salorNotificator->writestuff("text\n");// do nothing
+        }
+        if (salorNotificator->currentState == 3) {
+            settings->beginGroup("printing");
+            QString username = settings->value("username").toString();
+            settings->endGroup();
+            salorNotificator->writeToSocket("PING|" + username + "|" + QString::number(getpid()));
         }
     }
 

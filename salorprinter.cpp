@@ -13,7 +13,7 @@ SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString p
 }
 
 void SalorPrinter::printURL(QString url) {
-    qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
+    //qDebug() << "Fetching: " << url << " and sending it to path " << m_printer;
 
     QNetworkRequest request = QNetworkRequest(QUrl(url));
     QNetworkReply *reply = m_manager->get(request);
@@ -47,6 +47,8 @@ void SalorPrinter::printDataReady() {
 }
 
 void SalorPrinter::print(QByteArray printdata) {
+    if (m_printer == "")
+        return;
     //qDebug() << "SalorPrinter::print(): Printer is" << m_printer << "Buffer is" << printdata;
 #ifdef LINUX
     QFile f(m_printer);
@@ -72,15 +74,15 @@ void SalorPrinter::print(QByteArray printdata) {
           //qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
         }
 
-    } else if (f.exists() && f.open(QIODevice::WriteOnly) && printdata.size() > 4) {
+    } else if (f.exists() && f.open(QIODevice::WriteOnly) && printdata.size() > 10) {
         // limited to minimum of 4 characters, since QFile seems to write FF to /dev/ttyUSB0 every time it is opened, even when printdata is ""
         //qDebug() << "SalorPrinter::print(): Printing to everything that QFile supports.";
         QDataStream out(&f);
         out << printdata;
         f.close();
 
-    } else if (printdata.size() > 4) {
-        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer;
+    } else if (printdata.size() > 10) {
+        //qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer;
         //emit printerDoesNotExist();
     }
 #endif

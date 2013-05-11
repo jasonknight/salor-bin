@@ -232,7 +232,7 @@ void OptionsDialog::on_printTestButton_clicked()
     foreach(QString remoteprinter, remotePrinterNames) {
         settings->beginGroup(remoteprinter);
         SalorPrinter *printer = new SalorPrinter(this, networkManager, settings->value("localprinter").toString());
-        printer->print("OK\n\n\n");
+        printer->print("*** OK *** \n\n\n");
         // sp will delete itself after printing
         settings->endGroup();
     }

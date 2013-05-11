@@ -30,19 +30,25 @@ void SalorNotificator::start()
 }
 
 void SalorNotificator::slotSocketRead(){
-    QByteArray msg;
+    QString msg;
     msg = socket.readAll();
+    msg.replace("\n", "");
+    if (msg == "")
+        return;
+
     //qDebug() << "TCP read from server" << msg;
     if (msg.indexOf("ID") != -1) {
         qDebug() << "Server push notification to submit ID";
         settings->beginGroup("printing");
-        socket.write(settings->value("username").toString().toAscii() + "\n");
+        socket.write("ID|" + settings->value("username").toString().toAscii() + "\n");
         settings->endGroup();
-    } else if (msg.indexOf("printer") != -1) {
+    } else if (msg.indexOf("PING") != -1) {
+        //qDebug() << "Server sent PING";
+    } else if (msg.indexOf("PRINTEVENT") != -1) {
         //qDebug() << "Server push notification for printing";
-        msg.replace("\n", "");
+        QStringList parts = msg.split("|");
         QString url_firstpart = settings->value("url").toString();
-        settings->beginGroup(msg);
+        settings->beginGroup(parts[1]);
         QString localprinter = settings->value("localprinter").toString();
         QString url = url_firstpart + settings->value("url").toString();
         settings->endGroup();
@@ -56,9 +62,15 @@ void SalorNotificator::slotSocketRead(){
         }
         emit onTcpPrintNotified();
     } else {
-        //qDebug() << "Unknown server request" << msg;
+        qDebug() << "SalorNotificator::slotSocketRead(): Server sent something unsupported:" << msg;
     }
 }
+
+void SalorNotificator::writeToSocket(QString msg) {
+    //qDebug() << "SalorNotificator::writeToSocket:" << msg;
+    socket.write(msg.toAscii() + "\n");
+}
+
 
 void SalorNotificator::slotSocketConnected(){
     qDebug() << "SalorNotificator::slotSocketConnected()";
@@ -72,5 +84,5 @@ void SalorNotificator::slotSocketDisconnected(){
 
 void SalorNotificator::slotSocketStateChanged(QAbstractSocket::SocketState state) {
     currentState = (int)state;
-    //qDebug() << "SalorNotificator::slotSocketStateChange:" << QString::number(currentState);
+    qDebug() << "SalorNotificator::slotSocketStateChange:" << QString::number(currentState);
 }

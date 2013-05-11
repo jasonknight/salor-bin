@@ -11,6 +11,7 @@ public:
     void start();
     bool connected;
     int currentState;
+    void writeToSocket(QString msg);
 
 private:
     QTcpSocket socket;
