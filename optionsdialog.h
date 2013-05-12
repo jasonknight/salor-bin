@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "salorprinter.h"
+//#include "mainwindow.h"
 #include <common_includes.h>
 
 namespace Ui {
@@ -17,6 +18,7 @@ public:
     explicit OptionsDialog(QWidget *parent = 0, QNetworkAccessManager *nm = 0);
     ~OptionsDialog();
     void init();
+    //MainWindow *main;
     
 private:
     Ui::OptionsDialog *ui;
@@ -50,6 +52,7 @@ private slots:
     void on_kioskCheckBox_clicked(bool checked);
     void onError(QNetworkReply::NetworkError error);
     void onPrintInfoFetched();
+    void on_pushButton_clicked();
 };
 
 #endif // OPTIONSDIALOG_H

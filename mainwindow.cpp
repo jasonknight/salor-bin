@@ -68,6 +68,7 @@ void MainWindow::init()
 
     //optionsdialog
     optionsDialog = new OptionsDialog(this, networkManager);
+    //optionsDialog->main = this;
     connect(
             optionsDialog, SIGNAL(navigateToUrl(QString)),
             this, SLOT(navigateToUrl(QString))
@@ -87,7 +88,7 @@ void MainWindow::init()
 
     //statusbar
     statusBar = new QStatusBar(this);
-    statusBar->setMaximumHeight(20);
+    //statusBar->setMaximumHeight(20);
     setStatusBar(statusBar);
     progressBar = new QProgressBar();
     progressBar->setMinimum(0);

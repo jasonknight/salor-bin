@@ -2,6 +2,7 @@
 #include "ui_optionsdialog.h"
 #include "mainwindow.h"
 #include "salorprinter.h"
+#include "downloader.h"
 #include "common_includes.h"
 #include <QPrinterInfo>
 #include <QList>
@@ -10,7 +11,6 @@ OptionsDialog::OptionsDialog(QWidget *parent, QNetworkAccessManager *nm) :
     QDialog(parent),
     ui(new Ui::OptionsDialog)
 {
-    qDebug() << "construct";
     networkManager = nm;
     ui->setupUi(this);
 }
@@ -241,4 +241,20 @@ void OptionsDialog::on_printTestButton_clicked()
 void OptionsDialog::on_kioskCheckBox_clicked(bool checked)
 {
     settings->setValue("kiosk", checked);
+}
+
+void OptionsDialog::on_pushButton_clicked()
+{
+    Downloader * d = new Downloader;
+    d->file_name = PathWorking + "/salor-bin.exe";
+    //connect(d,SIGNAL(fileProgressUpdated(int)), main, SLOT(setProgress(int)));
+    connect(d,SIGNAL(finished()),d,SLOT(deleteLater()));
+    //connect(d,SIGNAL(addWidget(QWidget*)),this,SLOT(bubbleAddWidget(QWidget*)));
+    //connect(d,SIGNAL(removeWidget(QWidget*)),this,SLOT(bubbleRemoveWidget(QWidget*)));
+    qDebug() << "UPGRADING";
+    QNetworkRequest request = QNetworkRequest(QUrl("http://resources.red-e.eu/tools/salor-bin/salor-bin.exe"));
+    QNetworkReply *reply = networkManager->get(request);
+    d->setReply(reply);
+    connect(reply,SIGNAL(downloadProgress(qint64,qint64)),d,SLOT(updateFileProgress(qint64,qint64)));
+    //d->main = main;
 }

@@ -11,7 +11,7 @@ public:
     explicit Downloader(QObject *parent = 0);
     void setReply(QNetworkReply * rep);
     QString file_name;
-    MainWindow * main;
+    //MainWindow * main;
     QGroupBox * box;
     QProgressBar * bar;
 
