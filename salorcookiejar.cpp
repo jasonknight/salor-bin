@@ -4,7 +4,6 @@
 SalorCookieJar::SalorCookieJar(QObject *parent) :
     QNetworkCookieJar(parent)
 {
-    qDebug() << "SalorCookieJar() initializer";
     m_timer.setInterval(10);
     m_timer.setSingleShot(true);
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(saveToDisk()));
@@ -15,13 +14,11 @@ SalorCookieJar::SalorCookieJar(QObject *parent) :
 
 SalorCookieJar::~SalorCookieJar()
 {
-    qDebug() << "~SalorCookieJar()";
     if (m_storageEnabled) {
-        qDebug() << "Dumping Cookies to disk";
         extractRawCookies();
         saveToDisk();
     } else {
-        qDebug() << "Not writing Cookies to disk";
+        qDebug() << "~SalorCookieJar(): Not writing Cookies to disk";
     }
 }
 
@@ -36,7 +33,7 @@ bool SalorCookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, 
 
 void SalorCookieJar::setDiskStorageEnabled(bool enabled)
 {
-    qDebug() << "SalorCookieJar::setDiskStorageEnabled()";
+    //qDebug() << "SalorCookieJar::setDiskStorageEnabled()";
     m_storageEnabled = enabled;
 
     if (enabled && allCookies().isEmpty())
@@ -51,14 +48,14 @@ void SalorCookieJar::scheduleSaveToDisk()
 {
     // We extract the raw cookies here because the user may
     // enable/disable/clear cookies while the timer is running.
-     qDebug() << "SalorCookieJar::scheduleSaveToDisk()";
+    //qDebug() << "SalorCookieJar::scheduleSaveToDisk()";
     extractRawCookies();
     m_timer.start();
 }
 
 void SalorCookieJar::extractRawCookies()
 {
-     qDebug() << "SalorCookieJar::extractRawCookies()";
+    //qDebug() << "SalorCookieJar::extractRawCookies()";
     QList<QNetworkCookie> cookies = allCookies();
     m_rawCookies.clear();
 
@@ -70,7 +67,7 @@ void SalorCookieJar::extractRawCookies()
 void SalorCookieJar::saveToDisk()
 {
     m_timer.stop();
-     qDebug() << "SalorCookieJar::saveToDisk()";
+    //qDebug() << "SalorCookieJar::saveToDisk()";
 
     if (m_file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&m_file);
@@ -84,7 +81,7 @@ void SalorCookieJar::saveToDisk()
 
 void SalorCookieJar::loadFromDisk()
 {
-    qDebug() << "SalorCookieJar::loadFromDisk()";
+    //qDebug() << "SalorCookieJar::loadFromDisk()";
     if (!m_file.exists()) {
         qDebug() << "SalorCookieJar::loadFromDisk(): File does not exist.";
         return;
@@ -102,13 +99,13 @@ void SalorCookieJar::loadFromDisk()
     } else {
          qDebug() << "SalorCookieJar::loadFromDisk(): ERROR";
     }
-    qDebug() << "Setting cookies..." << QString::number(cookies.length());
+    //qDebug() << "Setting cookies..." << QString::number(cookies.length());
     setAllCookies(cookies);
 }
 
 void SalorCookieJar::reset()
 {
-     qDebug() << "SalorCookieJar::reset()";
+    //qDebug() << "SalorCookieJar::reset()";
     setAllCookies(QList<QNetworkCookie>());
     if (m_storageEnabled)
         scheduleSaveToDisk();

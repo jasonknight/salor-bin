@@ -5,6 +5,7 @@
 #include "salorjsapi.h"
 #include "salorprinter.h"
 #include "optionsdialog.h"
+#include "salornotificator.h"
 #include "common_includes.h"
 
 namespace Ui {
@@ -25,6 +26,7 @@ public:
     void connectSlots();
     bool shown;
     int counterPrint;
+    int counterTcp;
     
 private:
     Ui::MainWindow *ui;
@@ -42,11 +44,14 @@ private:
     void timerSetup();
     void counterSetup();
     int intervalPrint;
+    int intervalTcp;
     QNetworkAccessManager *networkManager;
     OptionsDialog *optionsDialog;
+    SalorNotificator *salorNotificator;
 
 private slots:
     void timerTimeout();
+    void onTcpPrintNotified();
 
 public slots:
     void setPrinterCounter(int);

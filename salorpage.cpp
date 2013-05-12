@@ -50,7 +50,7 @@ void SalorPage::downloadFile(QNetworkReply *reply) {
     qDebug() << "    Calling setReply";
     d->setReply(reply);
     connect(reply,SIGNAL(downloadProgress(qint64,qint64)),d,SLOT(updateFileProgress(qint64,qint64)));
-    d->main = this->main;
+    //d->main = this->main;
 }
 
 void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  ) {

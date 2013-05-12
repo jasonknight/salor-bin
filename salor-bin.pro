@@ -6,7 +6,7 @@
 
 QT       += core gui webkit network
 
-# Don't commit a change to the following line into a repository. If you want to compile for Linux, use make.
+# Don't commit a change to the following line into a repository.
 LIBS += -lwinspool
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     customerscreen.cpp \
     salorcapture.cpp \
     drawerobserver.cpp \
-    scale.cpp
+    scale.cpp \
+    salornotificator.cpp
 
 HEADERS  += mainwindow.h \
     salorpage.h \
@@ -45,7 +46,8 @@ HEADERS  += mainwindow.h \
     customerscreen.h \
     salorcapture.h \
     drawerobserver.h \
-    scale.h
+    scale.h \
+    salornotificator.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui

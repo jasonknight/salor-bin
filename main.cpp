@@ -21,6 +21,7 @@ size_t __size;
 const QString PathCookies = PathWorking + "/cookiejar";
 const QString PathCache = PathWorking + "/cache";
 const QString PathSettings = PathWorking + "/salor-bin.ini";
+const QString PathLog = PathWorking + "/salor-bin.log";
 const QString PathDownloads = PathWorking + "/downloads";
 QStringList remotePrinterNames;
 QStringList localPrinterNames;
@@ -38,8 +39,35 @@ void help() {
     return;
 }
 
+void myMessageOutput(QtMsgType type, const char *msg)
+ {
+    QFile f(PathLog);
+    f.open(QIODevice::Append);
+    QDataStream out(&f);
+    out << msg << "\n";
+    f.close();
+
+     //in this function, you can write the message to any stream!
+     switch (type) {
+     case QtDebugMsg:
+         fprintf(stderr, "Debug: %s\n", msg);
+         break;
+     case QtWarningMsg:
+         fprintf(stderr, "Warning: %s\n", msg);
+         break;
+     case QtCriticalMsg:
+         fprintf(stderr, "Critical: %s\n", msg);
+         break;
+     case QtFatalMsg:
+         fprintf(stderr, "Fatal: %s\n", msg);
+         abort();
+     }
+ }
+
+
 int main(int argc, char *argv[])
 {
+    qInstallMsgHandler(myMessageOutput);
     QApplication a(argc, argv);
     MainWindow w;
     QString arg;

@@ -15,6 +15,7 @@ salor_bin_SOURCES = \
 	salorcookiejar.cpp \
 	salorjsapi.cpp \
 	salorprinter.cpp \
+        salornotificator.cpp \
 	salorprocess.cpp
 
 
@@ -33,6 +34,7 @@ nodist_salor_bin_SOURCES = \
 	moc_salorcookiejar.cpp \
 	moc_salorjsapi.cpp \
 	moc_salorprinter.cpp \
+        moc_salornotificator.cpp \
 	moc_salorprocess.cpp
 
 

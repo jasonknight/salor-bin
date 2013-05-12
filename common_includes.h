@@ -63,6 +63,7 @@
 #include <QNetworkReply>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <QTcpSocket>
 
 #include <QSize>
 #include <QFont>
@@ -98,6 +99,7 @@ extern const QString PathWorking;
 extern const QString PathCache;
 extern const QString PathSettings;
 extern const QString PathDownloads;
+extern const QString PathLog;
 extern const QString PathCookies;
 
 extern QStringList remotePrinterNames;
@@ -105,7 +107,7 @@ extern QStringList localPrinterNames;
 extern QSettings *settings;
 
 static QVariant _get(QString key) {
-    qDebug() << "getting" << key;
+    //qDebug() << "getting" << key;
     QVariant val = settings->value(key);
     return val;
 }

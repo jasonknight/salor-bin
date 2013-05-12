@@ -26,8 +26,8 @@ public slots:
     void print(QByteArray printdata);
 
 private slots:
-    void printDataReady(QNetworkReply * reply);
-    void on_authenticationRequired(QNetworkReply *reply, QAuthenticator *auth);
+    void printDataReady();
+    void onError(QNetworkReply::NetworkError);
 
     
 };
