@@ -1,3 +1,20 @@
+salor-bin (2.4.6-1wheezy) wheezy; urgency=low
+
+  * added tcp server push notifications
+  * tcp push notifications working
+  * works for https and/or uber secure HHTPS digest authentication
+  * printing url now is only a path, domain and auth info is taken from the main url field
+  * cleanup
+  * notificator url fix
+  * notifificator url fix 2
+  * more
+  * salor-bin.exe downloader
+  * fixed makefile
+  * removed button
+  * more
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sun, 12 May 2013 21:09:31 +0200
+
 salor-bin (2.4.3-1wheezy) wheezy; urgency=low
 
   * refactored drawerThread
