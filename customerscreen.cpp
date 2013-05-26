@@ -30,6 +30,8 @@ void CustomerScreen::refresh(QString url,int w, int h) {
     qDebug() << "Setting up SalorPage Done";
 
     QString outputfile = PathWorking + "/salor_customer_screen.bmp";
+    qDebug() << "Outputfile is" << outputfile;
+    
     this->capt = new SalorCapture(page, outputfile, 0,"","");
 
     webView->setPage((QWebPage*)this->page);
