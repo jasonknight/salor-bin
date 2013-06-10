@@ -19,17 +19,21 @@ SalorNotificator::SalorNotificator(QObject *parent, QNetworkAccessManager *nm) :
             this, SLOT(slotSocketDisconnected()));
     connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
             this, SLOT(slotSocketStateChanged(QAbstractSocket::SocketState)));
+    qDebug() << "[SalorNotificator]" << "[Constructor] Ending.";
 }
 
 void SalorNotificator::start()
 {
+    qDebug() << "[SalorNotificator]" << "[start] Beginning.";
     QUrl url;
     url = QUrl(settings->value("url").toString());
     qDebug() << "SalorNotificator::start(): connecting to " << url.host();
     socket.connectToHost(url.host(), 2000);
+    qDebug() << "[SalorNotificator]" << "[start] Ending.";
 }
 
-void SalorNotificator::slotSocketRead(){
+void SalorNotificator::slotSocketRead() {
+    qDebug() << "[SalorNotificator]" << "[slotSocketRead] Beginning.";
     QString msg;
     msg = socket.readAll();
     msg.replace("\n", "");
@@ -64,11 +68,14 @@ void SalorNotificator::slotSocketRead(){
     } else {
         qDebug() << "SalorNotificator::slotSocketRead(): Server sent something unsupported:" << msg;
     }
+    qDebug() << "[SalorNotificator]" << "[slotSocketRead] Ending.";
 }
 
 void SalorNotificator::writeToSocket(QString msg) {
     //qDebug() << "SalorNotificator::writeToSocket:" << msg;
+    qDebug() << "[SalorNotificator]" << "[writeToSocket] Beginning.";
     socket.write(msg.toAscii() + "\n");
+    qDebug() << "[SalorNotificator]" << "[writeToSocket] Ending.";
 }
 
 

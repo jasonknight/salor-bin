@@ -36,6 +36,7 @@ void 	SalorProcess::readyReadStandardError () {
     this->proc->waitForFinished(100);
     qDebug() << "Terminating";
     this->proc->terminate();
+    qDebug() << "readyReadStandardError complete";
 }
 
 void 	SalorProcess::readyReadStandardOutput () {

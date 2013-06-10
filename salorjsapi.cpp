@@ -27,6 +27,7 @@ void SalorJsApi::echo(QString msg) {
 
 void SalorJsApi::playSound(QString name) {
 #ifdef LINUX
+    qDebug() << "[SalorJsApi]" << "[playSound] Beginning.";
     SalorProcess *sp = new SalorProcess(this);
     sp->run("aplay", QStringList() << "/usr/share/salor-bin/sounds/" + name + ".wav",3000);
     delete sp;
@@ -34,6 +35,7 @@ void SalorJsApi::playSound(QString name) {
 #ifdef WIN32
     QSound::play("sounds/" + name + ".wav");
 #endif
+    qDebug() << "[SalorJsApi]" << "[playSound] Ending.";
 }
 
 /* shows printer dialog */
@@ -79,6 +81,7 @@ void SalorJsApi::startDrawerObserver(QString path) {
   } else {
       qDebug() << "    drawerThread is already running. Doing nothing.";
   }
+  qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Ending.";
 }
 
 void SalorJsApi::stopDrawerObserver() {
@@ -103,6 +106,7 @@ void SalorJsApi::printURL(QString printer, QString url, QString confirm_url) {
     SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer);
     salorprinter->printURL(url);
     // printer will delete itself later
+    qDebug() << "[SalorJsApi]" << "[printURL] Ending.";
 }
 
 void SalorJsApi::printText(QString printer, QString text) {
@@ -112,6 +116,7 @@ void SalorJsApi::printText(QString printer, QString text) {
     bytes.append(text);
     salorprinter->print(bytes);
     // salorprinter will delete itself later
+    qDebug() << "[SalorJsApi]" << "[printText] Ending.";
 }
 
 QStringList SalorJsApi::ls(QString path,QStringList filters) {
@@ -129,6 +134,7 @@ void SalorJsApi::poleDancer(QString path, QString message) {
     qDebug() << "calling poledancer " << path << " " << message;
     sp->run("poledancer",QStringList() << "-p" << path << message, 2000);
     delete sp;
+    qDebug() << "[SalorJsApi]" << "[poleDancer] Ending.";
 }
 
 /* output screenshot of url */
@@ -136,6 +142,7 @@ void SalorJsApi::mimoRefresh(QString path,int h, int w) {
     qDebug() << "calling mimoRefresh";
     CustomerScreen *cs = new CustomerScreen(this);
     cs->refresh(path, h, w);
+    qDebug() << "[SalorJsApi]" << "[mimoRefresh] Ending.";
 }
 
 /* output image file */
@@ -144,6 +151,7 @@ void SalorJsApi::mimoImage(QString imagepath) {
     SalorProcess *sp = new SalorProcess(this);
     sp->run("poledancer",QStringList() << "-dlo" <<  imagepath, 3000);
     delete sp;
+    qDebug() << "[SalorJsApi]" << "[mimoImage] Ending.";
 }
 
 QString SalorJsApi::weigh(QString addy, int protocol) {
@@ -167,6 +175,7 @@ void SalorJsApi::shutdown() {
     qDebug() << "Shutdown called.";
     QApplication::closeAllWindows();
 #ifdef LINUX
+    qDebug() << "[SalorJsApi]" << "[shutdown] Calling kill for pid.";
     kill(pid,SIGKILL); // to make really sure
 #endif
 }
