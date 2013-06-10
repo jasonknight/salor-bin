@@ -362,8 +362,8 @@ void MainWindow::counterSetup() {
 
 void MainWindow::timerTimeout() {
     QString localprinter;
-    QString url;
-    QString url_firstpart;
+    QString printurl;
+    QString mainurl;
     //qDebug() << "MainWindow::timerTimeout(): intervalPrint is " << intervalPrint;
     counterPrint--;
     counterTcp--;
@@ -371,37 +371,44 @@ void MainWindow::timerTimeout() {
     if (counterPrint == 0) {
         counterPrint = intervalPrint;
 
-        url_firstpart = settings->value("url").toString();
-        foreach(QString remoteprinter, remotePrinterNames) {
-            settings->beginGroup(remoteprinter);
-            localprinter = settings->value("localprinter").toString();
-            url = url_firstpart + settings->value("url").toString();
-            settings->endGroup();
+        mainurl = settings->value("url").toString();
+        if (mainurl != "") {
 
-            if (localprinter == "") {
-                //qDebug() << "Not fetching anything for local printer" << remoteprinter;
-                // don't print when localprinter combo box has been left empty
-            } else {
-                SalorPrinter *printer = new SalorPrinter(this, networkManager, localprinter);
-                printer->printURL(url);
-                // printer instance will delete itself after printing. we cannot do it here since long running network requests are involved.
+            foreach(QString remoteprinter, remotePrinterNames) {
+                settings->beginGroup(remoteprinter);
+                localprinter = settings->value("localprinter").toString();
+                printurl = mainurl + settings->value("url").toString();
+                settings->endGroup();
+
+                if (localprinter == "") {
+                    //qDebug() << "Not fetching anything for local printer" << remoteprinter;
+                    // don't print when localprinter combo box has been left empty
+                } else {
+                    SalorPrinter *printer = new SalorPrinter(this, networkManager, localprinter);
+                    printer->printURL(printurl);
+                    // printer instance will delete itself after printing. we cannot do it here since long running network requests are involved.
+                }
             }
+
         }
     }
 
     if (counterTcp == 0) {
         counterTcp = intervalTcp;
 
-        if (salorNotificator->currentState == 0) {
-            //QAbstractSocket::UnconnectedState
-            salorNotificator->start();
-            //salorNotificator->writestuff("text\n");// do nothing
-        }
-        if (salorNotificator->currentState == 3) {
-            settings->beginGroup("printing");
-            QString username = settings->value("username").toString();
-            settings->endGroup();
-            salorNotificator->writeToSocket("PING|" + username + "|" + QString::number(getpid()));
+        mainurl = settings->value("url").toString();
+        if (mainurl != "") {
+            if (salorNotificator->currentState == 0) {
+                //QAbstractSocket::UnconnectedState
+                salorNotificator->start();
+                //salorNotificator->writestuff("text\n");// do nothing
+            }
+            if (salorNotificator->currentState == 3) {
+                settings->beginGroup("printing");
+                QString username = settings->value("username").toString();
+                settings->endGroup();
+                salorNotificator->writeToSocket("PING|" + username + "|" + QString::number(getpid()));
+            }
         }
     }
 
