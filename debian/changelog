@@ -1,3 +1,13 @@
+salor-bin (2.4.8-1wheezyubuntu1) UNRELEASED; urgency=low
+
+  [ Jason Knight ]
+  * adding debug messages evrayware
+
+  [ Michael Franzl ]
+  * added jquery for test.html
+
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 10 Jun 2013 21:52:55 +0200
+
 salor-bin (2.4.8-1wheezy) wheezy; urgency=low
 
   * no timer requests when url empty
