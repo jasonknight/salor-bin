@@ -1,3 +1,9 @@
+salor-bin (2.4.8-1wheezy) wheezy; urgency=low
+
+  * no timer requests when url empty
+
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 10 Jun 2013 10:53:34 +0200
+
 salor-bin (2.4.7-1wheezy) wheezy; urgency=low
 
   * path fix for bmp file
