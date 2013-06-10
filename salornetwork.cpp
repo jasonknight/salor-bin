@@ -13,7 +13,7 @@ QNetworkReply * SalorNetwork::createRequest(
         QIODevice * device)
 {
     QNetworkRequest request = originalRequest;
-
+    qDebug() << "[SalorNetwork]" << "[createRequest] Beginning.";
     if (
             (originalRequest.url().toString().indexOf(".css") != -1) ||
             (originalRequest.url().toString().indexOf(".png") != -1) ||
@@ -22,12 +22,12 @@ QNetworkReply * SalorNetwork::createRequest(
         request.setAttribute(QNetworkRequest::CacheLoadControlAttribute,
             QNetworkRequest::PreferCache);
     } else {
-      //qDebug() << originalRequest.url().toString() << " : " << QDateTime::currentDateTime();
+      qDebug() << originalRequest.url().toString() << " : " << QDateTime::currentDateTime();
     }
     QSslConfiguration c = request.sslConfiguration();
     c.setPeerVerifyMode(QSslSocket::VerifyNone);
     request.setSslConfiguration(c);
-
+    qDebug() << "[SalorNetwork]" << "[createRequest] setting of ssl crap complete. ";
     return QNetworkAccessManager::createRequest(operation, request, device);
 }
 

@@ -100,18 +100,22 @@ int main(int argc, char *argv[])
          }
       }
     }
-
+    qDebug() << "[main.cpp]" << " Initializing w.";
     w.init();
-
+    qDebug() << "[main.cpp]" << " Initialization complete.";
     if (fullscreen || settings->value("kiosk").toString() == "true") {
+        qDebug() << "[main.cpp]" << " Showing fullscreen.";
         w.showFullScreen();
     } else {
+        qDebug() << "[main.cpp]" << " Just showing.";
         w.show();
     }
+    qDebug() << "[main.cpp]" << " Display Complete.";
 
 #ifdef LINUX
     signal(SIGCHLD, SIG_IGN);
+    qDebug() << "[main.cpp]" << " Linux Signal Handler attached.";
 #endif
-    
+    qDebug() << "[main.cpp]" << " calling a.exec().";
     return a.exec();
 }

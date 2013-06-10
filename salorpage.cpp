@@ -12,6 +12,7 @@ SalorPage::SalorPage(QObject *parent) :
 
 
 void SalorPage::resetJsErrors() {
+    qDebug() << "[SalorPage]" << "[resetJsErrors] Begging.";
     //qDebug() << "resetting js errors";
     js_error_count = 0;
 }
@@ -54,6 +55,7 @@ void SalorPage::downloadFile(QNetworkReply *reply) {
 }
 
 void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID  ) {
+    qDebug() << "[SalorPage]" << "[javaScriptConsoleMessage] Beginning";
     //QMessageBox::critical(0, QObject::tr("Critical Script Error"), QString() + "A Javascript error Occurred: '" + message + "'\nat line " + QString::number(lineNumber) + "\nin " + sourceID);
     if (this->js_error_count >= 1000) {
         return;
@@ -77,6 +79,7 @@ void SalorPage::javaScriptConsoleMessage ( const QString & message, int lineNumb
 }
 
 QString SalorPage::chooseFile(QWebFrame* /*frame*/, const QString& /*suggestedFile*/) {
+  qDebug() << "[SalorPage]" << "[chooseFile] Beginning.";
   QString file_name = QFileDialog::getOpenFileName();
   if (!file_name.isEmpty()) {
     return file_name;

@@ -12,6 +12,7 @@ DrawerObserver::DrawerObserver() :
 }
 
 void DrawerObserver::openDevice() {
+    qDebug() << "[DrawerObserver]" << "[openDevice] Beginning.";
 #ifdef LINUX
      struct termios options;
 
@@ -30,13 +31,16 @@ void DrawerObserver::openDevice() {
 #ifdef WIN32
     // TODO: How to read from system printer???
 #endif
+     qDebug() << "[DrawerObserver]" << "[openDevice] Ending.";
 }
 
 void DrawerObserver::closeDevice() {
+    qDebug() << "[DrawerObserver]" << "[closeDevice] Beginning.";
     close(mFiledescriptor);
 }
 
 void DrawerObserver::observe() {
+    qDebug() << "[DrawerObserver]" << "[observe] Beginning.";
     doStop = false;
     drawerClosed = false;
 
@@ -109,5 +113,6 @@ void DrawerObserver::observe() {
     }
     closeDevice();
     // variables doStop and drawerClosed will be inspected by the caller, so we leave them alone
+    qDebug() << "[DrawerObserver]" << "[observe] Ending.";
     return;
 }

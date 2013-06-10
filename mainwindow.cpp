@@ -14,27 +14,38 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
-    if (settings->value("kiosk").toString() == "true")
+    qDebug() << "[MainWindow]" << "[Constructor] Contructing MainWindow Object.";
+    if (settings->value("kiosk").toString() == "true") {
         setWindowFlags(Qt::FramelessWindowHint);
+        qDebug() << "[MainWindow]" << "[Constructor] Setting Qt::FramelessWindowHint";
+    }
 
     //networkManager = new QNetworkAccessManager(this);
     networkManager = new SalorNetwork(this);
+    qDebug() << "[MainWindow]" << "[Constructor] SalorNetwork instantiated.";
 
     salorNotificator = new SalorNotificator(this, networkManager);
-    connect(salorNotificator, SIGNAL(onTcpPrintNotified()),
-            this, SLOT(onTcpPrintNotified()));
+    qDebug() << "[MainWindow]" << "[Constructor] SalorNotificator instantiated.";
+    connect( salorNotificator,
+             SIGNAL(onTcpPrintNotified()),
+             this,
+             SLOT(onTcpPrintNotified())
+    );
+    qDebug() << "[MainWindow]" << "[Constructor] onTcpPrintNotified connected.";
 
     ui->setupUi(this);
+    qDebug() << "[MainWindow]" << "[Constructor] UI Has been set up.";
 }
 
 MainWindow::~MainWindow()
 {
+    qDebug() << "[MainWindow]" << "[Destructor] deleting UI.";
     delete ui;
 }
 
 void MainWindow::init()
 {
+    qDebug() << "[MainWindow]" << "[init] Beginning.";
     shown = false;
     progress = 0;
 
@@ -42,24 +53,29 @@ void MainWindow::init()
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PrintElementBackgrounds, true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    qDebug() << "[MainWindow]" << "[init]  QWebSettings updated.";
 
     webView = new QWebView();
     page = new SalorPage(this);
     page->main = this;
     page->setForwardUnsupportedContent(true);
+    qDebug() << "[MainWindow]" << "[init] SalorPage instantiated and assigned.";
     webView->setPage(page);
 
     //networmanager
     //SalorNetwork* net = new SalorNetwork(this, networkManager);
     webView->page()->setNetworkAccessManager(networkManager);
+    qDebug() << "[MainWindow]" << "[init] NetworkAccessManager for SalorPage set.";
 
     //cookiejar
     SalorCookieJar * jar = new SalorCookieJar(this);
     webView->page()->networkAccessManager()->setCookieJar(jar);
+    qDebug() << "[MainWindow]" << "[init] SalorCookieJar instantiated and set.";
 
     //salorjsapi
     js = new SalorJsApi(this, networkManager);
     js->webView = webView;
+    qDebug() << "[MainWindow]" << "[init] SalorJsApi instantiated and injected with networkManager and webView.";
 
     //diskcache
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
@@ -85,7 +101,7 @@ void MainWindow::init()
             optionsDialog, SIGNAL(setPrinterNames()),
             this, SLOT(setPrinterNames())
             );
-
+    qDebug() << "[MainWindow]" << "[init] OptionsDialog instantiated and signals connected.";
     //statusbar
     statusBar = new QStatusBar(this);
     //statusBar->setMaximumHeight(20);
@@ -102,6 +118,7 @@ void MainWindow::init()
     statusBar->addPermanentWidget(progressBar);
     statusBar->addPermanentWidget(printCounterLabel);
     statusBar->addPermanentWidget(closeButton);
+    qDebug() << "[MainWindow]" << "[init] Status bar created, widgets added.";
 
     setCentralWidget(webView);
     webView->show();
@@ -110,9 +127,11 @@ void MainWindow::init()
     counterSetup();
     timerSetup();
     setPrinterNames();
+    qDebug() << "[MainWindow]" << "[init] Ending.";
 }
 
 void MainWindow::setPrinterNames() {
+    qDebug() << "[MainWindow]" << "[setPrinterNames] Beginning.";
     remotePrinterNames.clear();
     localPrinterNames.clear();
     localPrinterNames << ""; // entry for not fetching something from the server
@@ -126,6 +145,7 @@ void MainWindow::setPrinterNames() {
         }
     }
 #ifdef LINUX
+    qDebug() << "[MainWindow]" << "[setPrinterNames] LINUX is defined.";
     QStringList filters;
     filters << "ttyS*" << "ttyUSB*" << "usb";
     QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
@@ -137,6 +157,7 @@ void MainWindow::setPrinterNames() {
     }
 #endif
 #ifdef WIN32
+    qDebug() << "[MainWindow]" << "[setPrinterNames] WIN32 is defined.";
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
     for (int i = 0; i < printer_list.length(); i++) {
         QPrinterInfo info = printer_list.at(i);
@@ -144,6 +165,7 @@ void MainWindow::setPrinterNames() {
      }
 #endif
 #ifdef MAC
+    qDebug() << "[MainWindow]" << "[setPrinterNames] MAC is defined.";
     int i;
     cups_dest_t *dests, *dest;
     int num_dests = cupsGetDests(&dests);
@@ -151,7 +173,8 @@ void MainWindow::setPrinterNames() {
         localPrinterNames << dest->name;
      }
 #endif
-    //qDebug() << "MainWindow::setPrinterNames():" << localPrinterNames;
+    qDebug() << "MainWindow::setPrinterNames():" << localPrinterNames;
+    qDebug() << "[MainWindow]" << "[setPrinterNames] Ending.";
 }
 
 void MainWindow::shutdown() {
@@ -159,11 +182,13 @@ void MainWindow::shutdown() {
     qDebug() << "Shutdown called.";
     QApplication::closeAllWindows();
 #ifdef LINUX
+    qDebug() << "[MainWindow]" << "[shutdown] LINUX defined, so using kill().";
     kill(pid,SIGKILL); // to make really sure
 #endif
 }
 
 void MainWindow::connectSlots() {
+    qDebug() << "[MainWindow]" << "[connectSlots] Beginning";
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this,SLOT(addJavascriptObjects()));
     connect(webView->page(), SIGNAL(windowCloseRequested()), this,SLOT(windowCloseRequested()));
     connect(webView, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
@@ -174,6 +199,7 @@ void MainWindow::connectSlots() {
     connect(page,SIGNAL(removeWidget(QWidget*)),this,SLOT(removeStatusBarWidget(QWidget*)));
     connect(page,SIGNAL(fileProgressUpdated(int)),this,SLOT(setProgress(int)));
     connect(closeButton, SIGNAL(clicked()), this, SLOT(shutdown()));
+    qDebug() << "[MainWindow]" << "[connectSlots] main slots are now connected.";
 
     QShortcut *showPrint = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P), this);
     connect( showPrint, SIGNAL(activated()), js, SLOT(printPage()));
@@ -206,15 +232,17 @@ void MainWindow::connectSlots() {
     connect( zoomout, SIGNAL(activated()), this, SLOT(decZoom()));
 
     #ifdef MAC
+        qDebug() << "[MainWindow]" << "[connectSlots] MAC is defined, so using different modifier keys.";
         QShortcut *showOptions = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::Key_O), this);
         connect( showOptions, SIGNAL(activated()), this, SLOT(showOptionsDialog()));
     #else
         QShortcut *showOptions = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_O), this);
         connect( showOptions, SIGNAL(activated()), this, SLOT(showOptionsDialog()));
     #endif
-
+    qDebug() << "[MainWindow]" << "[connectSlots] Keyboard Shortcuts defined.";
     qreal z = settings->value("zoomFactor").toReal();
     if (z) {
+        qDebug() << "[MainWindow]" << "[connectSlots] z is set, setZoomFactor.";
       webView->page()->mainFrame()->setZoomFactor(z);
     }
 }
@@ -224,10 +252,12 @@ QWebView* MainWindow::getWebView() {
 }
 
 void MainWindow::incZoom() {
+  qDebug() << "[MainWindow]" << "[incZoom] Beginning";
   qreal z = webView->page()->mainFrame()->zoomFactor();
   z = z + 0.05;
   webView->page()->mainFrame()->setZoomFactor(z);
   settings->setValue("zoomFactor",z);
+  qDebug() << "[MainWindow]" << "[incZoom] Ending.";
 }
 
 void MainWindow::decZoom() {
@@ -235,15 +265,19 @@ void MainWindow::decZoom() {
   z = z - 0.05;
   webView->page()->mainFrame()->setZoomFactor(z);
   settings->setValue("zoomFactor",z);
+  qDebug() << "[MainWindow]" << "[decZomm] Ending.";
 }
 
 void MainWindow::addStatusBarWidget(QWidget *w) {
-    qDebug() << "Adding widget";
+    qDebug() << "[MainWindow]" << "[addStatusBarWidget] Beginning.";
     statusBar->addWidget(w);
+    qDebug() << "[MainWindow]" << "[addStatusBarWidget] Ending.";
 }
 
 void MainWindow::removeStatusBarWidget(QWidget *w) {
+    qDebug() << "[MainWindow]" << "[removeStatusBarWidget] Beginning";
     statusBar->removeWidget(w);
+    qDebug() << "[MainWindow]" << "[removeStatusBarWidget] Ending.";
 }
 
 void MainWindow::setProgress(int p) {
@@ -258,22 +292,28 @@ void MainWindow::finishLoading(bool) {
 }
 
 void MainWindow::executeJS(QString &js) {
+    qDebug() << "[MainWindow]" << "[executeJS]  executing: " << js;
     webView->page()->mainFrame()->evaluateJavaScript(js);
 }
 
 void MainWindow::adjustTitle() {
+    qDebug() << "[MainWindow]" << "[adjustTitle] Beginning";
      if (progress <= 0 || progress >= 100)
          setWindowTitle(webView->title());
      else
          setWindowTitle(QString("%1 (%2%)").arg(webView->title()).arg(progress));
      progressBar->setValue(progress);
      urlLabel->setText(webView->url().encodedHost());
+
+     qDebug() << "[MainWindow]" << "[adjustTitle] Ending.";
 }
 
 void MainWindow::navigateToUrl(QString url) {
+    qDebug() << "[MainWindow]" << "[navigateToUrl] Beginning.";
     QUrl qurl;
     qurl = QUrl(url);
     webView->load(qurl);
+    qDebug() << "[MainWindow]" << "[navigateToUrl] Ending.";
 }
 
 
@@ -306,49 +346,60 @@ void MainWindow::ctrlinsPressed() {
 }
 
 void MainWindow::addJavascriptObjects() {
+    qDebug() << "[MainWindow]" << "[addJavascriptObjects] Beginning";
     if (!shown) {
        shown = true; // i.e. this is ready
     }
     attach();
+    qDebug() << "[MainWindow]" << "[addJavascriptObjects] Ending.";
 }
 
 void MainWindow::repaintViews() {
+    qDebug() << "[MainWindow]" << "[repaintViews] Beginning.";
     webView->update();
+    qDebug() << "[MainWindow]" << "[repaintViews] Ending.";
 }
 
 void MainWindow::attach(){
     //webView->page()->mainFrame()->addToJavaScriptWindowObject("SalorPrinter", sp);
+    qDebug() << "[MainWindow]" << "[attach] Attaching SalorJsApi to main window object.";
     webView->page()->mainFrame()->addToJavaScriptWindowObject("Salor", js);
     page->resetJsErrors();
+    qDebug() << "[MainWindow]" << "[attach] Ending.";
 }
 
 void MainWindow::windowCloseRequested() {
-  QApplication::closeAllWindows();
+    qDebug() << "[MainWindow]" << "[windowCloseRequested] Beginning.";
+    QApplication::closeAllWindows();
 }
 
 void MainWindow::showOptionsDialog() {
+    qDebug() << "[MainWindow]" << "[showOptionsDialog] Beginning.";
     optionsDialog->show();
     optionsDialog->init();
+    qDebug() << "[MainWindow]" << "[showOptionsDialog] Ending.";
 }
 
 void MainWindow::timerSetup() {
-    qDebug() << "MainWindow::timerSetup()";
+    qDebug() << "[MainWindow]" << "[timerSetup] Beginning.";
     mainTimer = new QTimer(this);
     mainTimer->start(1000);
     connect(
         mainTimer, SIGNAL(timeout()),
         this, SLOT(timerTimeout())
     );
+    qDebug() << "[MainWindow]" << "[timerSetup] Ending.";
 }
 
 void MainWindow::onTcpPrintNotified() {
     //qDebug() << "MainWindow::onTcpPrintNotified";
     //If Server has initiated printing, wait for another full printing polling interval
+    qDebug() << "[MainWindow]" << "[onTcpPrintNotified] called.";
     counterPrint = intervalPrint;
 }
 
 void MainWindow::counterSetup() {
-    qDebug() << "MainWindow::counterSetup()";
+    qDebug() << "[MainWindow]" << "[counterSetup] Beginning.";
     settings->beginGroup("printing");
     intervalPrint = settings->value("interval").toInt();
     settings->endGroup();
@@ -358,9 +409,11 @@ void MainWindow::counterSetup() {
     counterPrint = intervalPrint;
 
     counterTcp = intervalTcp;
+    qDebug() << "[MainWindow]" << "[counterSetup] Ending.";
 }
 
 void MainWindow::timerTimeout() {
+    qDebug() << "[MainWindow]" << "[timerTimeout] Beginning.";
     QString localprinter;
     QString printurl;
     QString mainurl;
@@ -413,6 +466,7 @@ void MainWindow::timerTimeout() {
     }
 
     printCounterLabel->setText(QString::number(counterPrint));
+    qDebug() << "[MainWindow]" << "[timerTimeout] Ending.";
 }
 
 void MainWindow::setPrinterCounter(int value){
