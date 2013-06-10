@@ -1,4 +1,4 @@
-salor-bin (2.4.8-1wheezyubuntu1) precise; urgency=low
+salor-bin (2.4.9-1wheezy) wheezy; urgency=low
 
   [ Jason Knight ]
   * adding debug messages evrayware
@@ -6,8 +6,9 @@ salor-bin (2.4.8-1wheezyubuntu1) precise; urgency=low
   [ Michael Franzl ]
   * added jquery for test.html
   * build
+  * build
 
- -- Michael Franzl <office@michaelfranzl.com>  Mon, 10 Jun 2013 21:53:36 +0200
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 10 Jun 2013 21:54:10 +0200
 
 salor-bin (2.4.8-1wheezy) wheezy; urgency=low
 
