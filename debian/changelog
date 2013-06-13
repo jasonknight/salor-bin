@@ -1,3 +1,9 @@
+salor-bin (2.5.1-1wheezy) wheezy; urgency=low
+
+  * path fix, less debug
+
+ -- Michael Franzl <office@michaelfranzl.com>  Thu, 13 Jun 2013 14:24:32 +0200
+
 salor-bin (2.5.0-2wheezy) wheezy; urgency=low
 
   * added postinst for changing /var/log and /etc/ permissions
