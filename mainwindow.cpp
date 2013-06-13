@@ -413,7 +413,7 @@ void MainWindow::counterSetup() {
 }
 
 void MainWindow::timerTimeout() {
-    qDebug() << "[MainWindow]" << "[timerTimeout] Beginning.";
+    //qDebug() << "[MainWindow]" << "[timerTimeout] Beginning.";
     QString localprinter;
     QString printurl;
     QString mainurl;
@@ -468,7 +468,7 @@ void MainWindow::timerTimeout() {
     }
 
     printCounterLabel->setText(QString::number(counterPrint));
-    qDebug() << "[MainWindow]" << "[timerTimeout] Ending.";
+    //qDebug() << "[MainWindow]" << "[timerTimeout] Ending.";
 }
 
 void MainWindow::setPrinterCounter(int value){
