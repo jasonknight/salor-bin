@@ -424,7 +424,9 @@ void MainWindow::timerTimeout() {
     if (counterPrint == 0) {
         counterPrint = intervalPrint;
 
+        settings->beginGroup("printing");
         mainurl = settings->value("url").toString();
+        settings->endGroup();
         if (mainurl != "") {
 
             foreach(QString remoteprinter, remotePrinterNames) {
