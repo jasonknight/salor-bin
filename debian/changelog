@@ -1,3 +1,12 @@
+salor-bin (2.5.0-1wheezy) wheezy; urgency=low
+
+  * printer paths should not rely on the main browsing url
+  * cron job for clearing logfile
+  * standard log path and config path for linux
+  * added cronjob for log file purge
+
+ -- Michael Franzl <office@michaelfranzl.com>  Thu, 13 Jun 2013 13:43:40 +0200
+
 salor-bin (2.4.9-1wheezy) wheezy; urgency=low
 
   [ Jason Knight ]
