@@ -103,9 +103,8 @@ void OptionsDialog::on_updateSettingsButton_clicked()
         delete child->widget();
     }
 
-    QString url_firstpart = settings->value("url").toString();
     settings->beginGroup("printing");
-    QString url = url_firstpart + settings->value("url").toString();
+    QString url = settings->value("url").toString();
     QString username = settings->value("username").toString();
     settings->endGroup();
 

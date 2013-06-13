@@ -22,7 +22,7 @@ const QString PathCookies = PathWorking + "/cookiejar";
 const QString PathCache = PathWorking + "/cache";
 #ifdef LINUX
 const QString PathSettings = "/etc/salor-bin/salor-bin.ini";
-const QString PathLog = PathWorking + "/var/log/salor-bin/salor-bin.log";
+const QString PathLog = "/var/log/salor-bin/salor-bin.log";
 #endif
 #ifdef WIN32
 const QString PathSettings = PathWorking + "/salor-bin.ini";
