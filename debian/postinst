@@ -20,6 +20,8 @@ set -e
 
 case "$1" in
     configure)
+      chmod -R 777 /var/log/salor-bin
+      chmod -R 777 /etc/salor-bin
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
