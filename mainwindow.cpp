@@ -147,7 +147,7 @@ void MainWindow::setPrinterNames() {
 #ifdef LINUX
     qDebug() << "[MainWindow]" << "[setPrinterNames] LINUX is defined.";
     QStringList filters;
-    filters << "ttyS*" << "ttyUSB*" << "usb";
+    filters << "ttyS*" << "ttyUSB*" << "lp*";
     QDir * devs = new QDir("/dev", "*", QDir::Name, QDir::System);
     (*devs).setNameFilters(filters);
     QStringList nodes;
@@ -155,6 +155,14 @@ void MainWindow::setPrinterNames() {
     foreach (QString node, nodes) {
         localPrinterNames << "/dev/" + node;
     }
+
+    devs = new QDir("/dev/usb", "*", QDir::Name, QDir::System);
+    (*devs).setNameFilters(filters);
+    nodes = devs->entryList();
+    foreach (QString node, nodes) {
+        localPrinterNames << "/dev/usb/" + node;
+    }
+
 #endif
 #ifdef WIN32
     qDebug() << "[MainWindow]" << "[setPrinterNames] WIN32 is defined.";
@@ -427,6 +435,13 @@ void MainWindow::timerTimeout() {
         settings->beginGroup("printing");
         mainurl = settings->value("url").toString();
         settings->endGroup();
+
+        // strip basename
+        int pos = 0;
+        QRegExp rx("(htt.*\://.*)/");
+        pos = rx.indexIn(mainurl);
+        mainurl = rx.cap(1);
+
         if (mainurl != "") {
 
             foreach(QString remoteprinter, remotePrinterNames) {
