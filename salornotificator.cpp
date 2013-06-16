@@ -51,11 +51,22 @@ void SalorNotificator::slotSocketRead() {
     } else if (msg.indexOf("PRINTEVENT") != -1) {
         //qDebug() << "Server push notification for printing";
         QStringList parts = msg.split("|");
+
+        settings->beginGroup("printing");
         QString url_firstpart = settings->value("url").toString();
+        settings->endGroup();
+
+        // strip basename
+        int pos = 0;
+        QRegExp rx("(htt.*\://.*)/");
+        pos = rx.indexIn(url_firstpart);
+        url_firstpart = rx.cap(1);
+
         settings->beginGroup(parts[1]);
         QString localprinter = settings->value("localprinter").toString();
         QString url = url_firstpart + settings->value("url").toString();
         settings->endGroup();
+
         if (localprinter == "") {
             //qDebug() << "Not fetching anything for local printer" << msg;
             // don't print when localprinter combo box has been left empty
