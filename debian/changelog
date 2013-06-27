@@ -1,3 +1,10 @@
+salor-bin (2.5.3-1wheezy) wheezy; urgency=low
+
+  * tailof for customerscreen works
+  * less verbose debug
+
+ -- Michael Franzl <office@michaelfranzl.com>  Thu, 27 Jun 2013 19:51:41 +0200
+
 salor-bin (2.5.2-1wheezy) wheezy; urgency=low
 
   * strip basename from print url and add dev/usb paths
