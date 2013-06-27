@@ -27,6 +27,7 @@ public:
     bool shown;
     int counterPrint;
     int counterTcp;
+    QString customerScreenId;
     
 private:
     Ui::MainWindow *ui;

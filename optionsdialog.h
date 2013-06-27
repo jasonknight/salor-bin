@@ -17,6 +17,7 @@ class OptionsDialog : public QDialog
 public:
     explicit OptionsDialog(QWidget *parent = 0, QNetworkAccessManager *nm = 0);
     ~OptionsDialog();
+    QString customerScreenId;
     void init();
     //MainWindow *main;
     

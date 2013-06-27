@@ -161,38 +161,52 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="printUsernameInput"/>
      </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="QPushButton" name="updateSettingsButton">
        <property name="text">
         <string>Update Settings</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="0" colspan="2">
+     <item row="4" column="0" colspan="2">
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="6" column="1">
       <layout class="QGridLayout" name="printerGrid" rowminimumheight="0" columnminimumwidth="0">
        <property name="sizeConstraint">
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
       </layout>
      </item>
-     <item row="4" column="1">
+     <item row="5" column="1">
       <widget class="QPushButton" name="printNowButton">
        <property name="text">
         <string>Print now</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="5" column="0">
       <widget class="QPushButton" name="printTestButton">
        <property name="text">
         <string>Test</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="customerScreenIdLabel">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Customer Screen ID</string>
        </property>
       </widget>
      </item>

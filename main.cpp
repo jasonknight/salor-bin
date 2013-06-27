@@ -84,9 +84,7 @@ int main(int argc, char *argv[])
     bool fullscreen = false;
     QVariant url;
 
-    if (!QDir(PathWorking).exists()) {
-        QDir().mkdir(PathWorking);
-    }
+    // go to default URL if none specified in .ini file
     url = _get("url");
     if (url.isNull() != true && url.toString() != "") {
         w.to_url = url.toString();
@@ -95,31 +93,34 @@ int main(int argc, char *argv[])
     }
 
     for (int i = 1; i < argc; i++) {
-      arg = QString(argv[i]);
-      if (arg == "-h") {
-        help();
-      }
-      if (i + 1 != argc) { // Check that we haven't finished parsing already
-         if (arg == "-u") {
-           qDebug() << "Setting to_url to: " << argv[i + 1];
-             w.to_url = QString(argv[i + 1]);
-         } else if (arg == "-h") {
-             help();
-         } else if (arg == "-w") {
-             fullscreen = true;
-         }
-      }
+        arg = QString(argv[i]);
+
+        if (arg == "-u") {
+            qDebug() << "Setting to_url to: " << argv[i + 1];
+            w.to_url = QString(argv[i + 1]);
+        } else if (arg == "-h") {
+            help();
+        } else if (arg == "-w") {
+            qDebug() << "[main.cpp]" << " Setting fullscreen to true";
+            fullscreen = true;
+        } else if (arg == "--customerscreenid") {
+            // acts as a customer screen
+            w.customerScreenId = QString(argv[i + 1]);
+        }
     }
+
     qDebug() << "[main.cpp]" << " Initializing w.";
     w.init();
+
     qDebug() << "[main.cpp]" << " Initialization complete.";
-    if (fullscreen || settings->value("kiosk").toString() == "true") {
+    if (fullscreen == true || settings->value("kiosk").toString() == "true") {
         qDebug() << "[main.cpp]" << " Showing fullscreen.";
         w.showFullScreen();
     } else {
         qDebug() << "[main.cpp]" << " Just showing.";
         w.show();
     }
+
     qDebug() << "[main.cpp]" << " Display Complete.";
 
 #ifdef LINUX
