@@ -92,10 +92,9 @@ void SalorNotificator::slotSocketRead() {
 }
 
 void SalorNotificator::writeToSocket(QString msg) {
-    //qDebug() << "SalorNotificator::writeToSocket:" << msg;
-    qDebug() << "[SalorNotificator]" << "[writeToSocket] Beginning.";
+    //qDebug() << "[SalorNotificator]" << "[writeToSocket] Beginning.";
     socket.write(msg.toAscii() + "\n");
-    qDebug() << "[SalorNotificator]" << "[writeToSocket] Ending.";
+    //qDebug() << "[SalorNotificator]" << "[writeToSocket] Ending.";
 }
 
 
