@@ -26,7 +26,9 @@ void SalorNotificator::start()
 {
     qDebug() << "[SalorNotificator]" << "[start] Beginning.";
     QUrl url;
+    settings->beginGroup("printing");
     url = QUrl(settings->value("url").toString());
+    settings->endGroup();
     qDebug() << "SalorNotificator::start(): connecting to " << url.host();
     socket.connectToHost(url.host(), 2000);
     qDebug() << "[SalorNotificator]" << "[start] Ending.";
@@ -76,6 +78,13 @@ void SalorNotificator::slotSocketRead() {
             // printer instance will delete itself after printing. we cannot do it here since long running network requests are involved.
         }
         emit onTcpPrintNotified();
+
+    } else if (msg.indexOf("CUSTOMERSCREENEVENT") != -1) {
+        qDebug() << "Server push notification for customer screen refresh" << msg;
+        QStringList parts = msg.split("|");
+        if (parts[1] == customerScreenId) {
+            emit(navigateToUrl(parts[2]));
+        }
     } else {
         qDebug() << "SalorNotificator::slotSocketRead(): Server sent something unsupported:" << msg;
     }
@@ -83,10 +92,9 @@ void SalorNotificator::slotSocketRead() {
 }
 
 void SalorNotificator::writeToSocket(QString msg) {
-    //qDebug() << "SalorNotificator::writeToSocket:" << msg;
-    qDebug() << "[SalorNotificator]" << "[writeToSocket] Beginning.";
+    //qDebug() << "[SalorNotificator]" << "[writeToSocket] Beginning.";
     socket.write(msg.toAscii() + "\n");
-    qDebug() << "[SalorNotificator]" << "[writeToSocket] Ending.";
+    //qDebug() << "[SalorNotificator]" << "[writeToSocket] Ending.";
 }
 
 

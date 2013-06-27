@@ -12,6 +12,7 @@ public:
     bool connected;
     int currentState;
     void writeToSocket(QString msg);
+    QString customerScreenId;
 
 private:
     QTcpSocket socket;
@@ -20,6 +21,7 @@ private:
     
 signals:
     void onTcpPrintNotified();
+    void navigateToUrl(QString);
 
 private slots:
 

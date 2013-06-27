@@ -29,6 +29,7 @@ void OptionsDialog::init() {
     settings->endGroup();
     ui->kioskCheckBox->setChecked(settings->value("kiosk").toString() == "true");
     setupPrinterCombos();
+    ui->customerScreenIdLabel->setText(customerScreenId);
 }
 
 void OptionsDialog::setupPrinterCombos() {

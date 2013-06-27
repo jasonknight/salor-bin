@@ -24,15 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     networkManager = new SalorNetwork(this);
     qDebug() << "[MainWindow]" << "[Constructor] SalorNetwork instantiated.";
 
-    salorNotificator = new SalorNotificator(this, networkManager);
-    qDebug() << "[MainWindow]" << "[Constructor] SalorNotificator instantiated.";
-    connect( salorNotificator,
-             SIGNAL(onTcpPrintNotified()),
-             this,
-             SLOT(onTcpPrintNotified())
-    );
-    qDebug() << "[MainWindow]" << "[Constructor] onTcpPrintNotified connected.";
-
     ui->setupUi(this);
     qDebug() << "[MainWindow]" << "[Constructor] UI Has been set up.";
 }
@@ -84,11 +75,14 @@ void MainWindow::init()
 
     //optionsdialog
     optionsDialog = new OptionsDialog(this, networkManager);
-    //optionsDialog->main = this;
+    optionsDialog->customerScreenId = customerScreenId;
+
+    // when go button on options dialog is pressed
     connect(
             optionsDialog, SIGNAL(navigateToUrl(QString)),
             this, SLOT(navigateToUrl(QString))
             );
+    // when clear cache button on options dialog is pressed
     connect(
             optionsDialog, SIGNAL(clearCache()),
             webView->page()->networkAccessManager()->cache(), SLOT(clear())
@@ -102,6 +96,25 @@ void MainWindow::init()
             this, SLOT(setPrinterNames())
             );
     qDebug() << "[MainWindow]" << "[init] OptionsDialog instantiated and signals connected.";
+
+
+    // salorNotificator
+    salorNotificator = new SalorNotificator(this, networkManager);
+    qDebug() << "[MainWindow]" << "[Constructor] SalorNotificator instantiated.";
+    salorNotificator->customerScreenId = customerScreenId;
+    connect( salorNotificator,
+             SIGNAL(onTcpPrintNotified()),
+             this,
+             SLOT(onTcpPrintNotified())
+    );
+    // when customer screen event is sent
+    connect(
+            salorNotificator, SIGNAL(navigateToUrl(QString)),
+            this, SLOT(navigateToUrl(QString))
+            );
+    qDebug() << "[MainWindow]" << "[Constructor] onTcpPrintNotified connected.";
+
+
     //statusbar
     statusBar = new QStatusBar(this);
     //statusBar->setMaximumHeight(20);
