@@ -70,12 +70,12 @@ int main( int argc, char **argv )
 }
 EOF
 
-#AC_MSG_CHECKING(does moc work?)
-#bnv_try_1="/usr/bin/moc myqt.h -o moc_myqt.cpp"
-#AC_TRY_EVAL(bnv_try_1)
-#if test x"$ac_status" != x0; then
-#   AC_MSG_ERROR(moc doesn't work)
-#fi
+AC_MSG_CHECKING(does moc work?)
+bnv_try_1="/usr/bin/moc myqt.h -o moc_myqt.cpp"
+AC_TRY_EVAL(bnv_try_1)
+if test x"$ac_status" != x0; then
+   AC_MSG_ERROR(moc doesn't work)
+fi
 AC_MSG_RESULT(yes)
 AC_MSG_CHECKING(can I compile moc_myqt.cpp with compiler $CXX and flags $CXXFLAGS?)
 bnv_try_2="$CXX -c $CXXFLAGS -o moc_myqt.o moc_myqt.cpp"
