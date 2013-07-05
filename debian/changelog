@@ -1,9 +1,10 @@
-salor-bin (2.5.3-1wheezyubuntu1) UNRELEASED; urgency=low
+salor-bin (2.5.4-1wheezy) wheezy; urgency=low
 
   * fopen instead of open for enabling of printer feedback
   * build
+  * build
 
- -- Michael Franzl <office@michaelfranzl.com>  Fri, 05 Jul 2013 20:22:02 +0200
+ -- Michael Franzl <office@michaelfranzl.com>  Fri, 05 Jul 2013 20:23:03 +0200
 
 salor-bin (2.5.3-1wheezy) wheezy; urgency=low
 
