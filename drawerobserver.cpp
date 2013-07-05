@@ -12,7 +12,7 @@ DrawerObserver::DrawerObserver() :
 }
 
 void DrawerObserver::openDevice() {
-    qDebug() << "[DrawerObserver]" << "[openDevice] Beginning.";
+    qDebug() << "[DrawerObserver]" << "[openDevice] Attempting to open file descriptior with open() at " << mPath;
 #ifdef LINUX
      struct termios options;
 
@@ -39,6 +39,19 @@ void DrawerObserver::closeDevice() {
     close(mFiledescriptor);
 }
 
+void DrawerObserver::enablePrinterFeedback() {
+    int count;
+    qDebug() << "Attempting to open CashDrawer with fopen at " << mPath;
+    FILE * fd = fopen(mPath.toLatin1().data(), "w");
+    if (fd <= 0) {
+        qDebug() << "CashDrawer failed to open!";
+        return;
+    }
+    count = fwrite("\x1D\x61\x01", sizeof(char), 3, fd);
+    qDebug() << "Wrote "  << count << " bytes to CashDrawer.";
+    fclose(fd);
+}
+
 void DrawerObserver::observe() {
     qDebug() << "[DrawerObserver]" << "[observe] Beginning.";
     doStop = false;
@@ -55,14 +68,15 @@ void DrawerObserver::observe() {
 
     qDebug() << "Called DrawerObserverThread::run()";
 
+    enablePrinterFeedback();
     openDevice();
     if (mFiledescriptor == -1) return;
 
-    count = write(mFiledescriptor, "\x1B\x40", 2);
-    qDebug() << "Wrote "  << count << " bytes to initialize printer.";
-    usleep(5000); // 50ms
-    count = write(mFiledescriptor, "\x1D\x61\x01", 3);
-    qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
+    //count = write(mFiledescriptor, "\x1B\x40", 2);
+    //qDebug() << "Wrote "  << count << " bytes to initialize printer.";
+    //usleep(5000); // 50ms
+    //count = write(mFiledescriptor, "\x1D\x61\x01", 3);
+    //qDebug() << "Wrote "  << count << " bytes to enable printer feedback.";
 
     int j = 0;
     while (i < (2 * close_after_seconds) && !doStop) {
