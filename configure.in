@@ -28,7 +28,6 @@ AC_PATH_XTRA
 QTLIBS="-Wl,-rpath, -lQtCore -lQtGui -lQtWebKit -lQtNetwork $X_LIBS $X_EXTRA_LIBS -lpthread"
 QTINC="-DQT_WEBKIT -DQT_NO_DEBUG -DQT_WEBKIT_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_SHARED -I$QTDIR/include/QtCore -I$QTDIR/include/QtNetwork -I$QTDIR/include/QtGui -I$QTDIR/include/QtWebKit -I$QTDIR/include -I. $X_CFLAGS"
 QTBIN="$QTDIR/bin"
-;;
 
 LIBS="$LIBS $QTLIBS"
 INCLUDES="$INCLUDES $QTINC"
