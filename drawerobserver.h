@@ -17,6 +17,7 @@ public:
 protected:
     void openDevice();
     void closeDevice();
+    void enablePrinterFeedback();
     
 public slots:
     void observe();
