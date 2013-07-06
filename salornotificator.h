@@ -17,6 +17,7 @@ public:
 private:
     QTcpSocket socket;
     QNetworkAccessManager *m_manager;
+    QString getHostname();
 
     
 signals:

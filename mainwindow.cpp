@@ -60,6 +60,8 @@ void MainWindow::init()
 
     //cookiejar
     SalorCookieJar * jar = new SalorCookieJar(this);
+    jar->customerScreenId = customerScreenId;
+    jar->setup();
     webView->page()->networkAccessManager()->setCookieJar(jar);
     qDebug() << "[MainWindow]" << "[init] SalorCookieJar instantiated and set.";
 
@@ -204,7 +206,9 @@ void MainWindow::shutdown() {
     QApplication::closeAllWindows();
 #ifdef LINUX
     qDebug() << "[MainWindow]" << "[shutdown] LINUX defined, so using kill().";
-    kill(pid,SIGKILL); // to make really sure
+    //QApplication::closeAllWindows();
+    QCoreApplication::quit();
+    //kill(pid,SIGKILL); // to make really sure
 #endif
 }
 
