@@ -18,20 +18,25 @@ size_t __size;
 
 
 // these global variables must be included in a C file once, otherwise "ld error: undefined reference to"
-const QString PathCookies = PathWorking + "/cookiejar";
-const QString PathCache = PathWorking + "/cache";
 #ifdef LINUX
+const QString PathCookies = "/var/lib/salor-bin/cookiejar";
+const QString PathCache = "/var/cache/salor-bin";
 const QString PathSettings = "/etc/salor-bin/salor-bin.ini";
 const QString PathLog = "/var/log/salor-bin/salor-bin.log";
 #endif
 #ifdef WIN32
+const QString PathCookies = PathWorking + "/cookiejar";
+const QString PathCache = PathWorking + "/cache";
 const QString PathSettings = PathWorking + "/salor-bin.ini";
 const QString PathLog = PathWorking + "/salor-bin.log";
 #endif
 #ifdef MAC
+const QString PathCookies = PathWorking + "/cookiejar";
+const QString PathCache = PathWorking + "/cache";
 const QString PathSettings = PathWorking + "/salor-bin.ini";
 const QString PathLog = PathWorking + "/salor-bin.log";
 #endif
+
 const QString PathDownloads = PathWorking + "/downloads";
 QStringList remotePrinterNames;
 QStringList localPrinterNames;

@@ -11,18 +11,19 @@ public:
     virtual ~SalorCookieJar();
     virtual bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&);
     void setDiskStorageEnabled(bool);
+    QString customerScreenId;
+    bool m_readonlyMode;
+    void setup();
 
 private:
     void extractRawCookies();
     QList<QByteArray> m_rawCookies;
-    bool m_storageEnabled;
     QFile m_file;
     QTimer m_timer;
     
 signals:
     
 public slots:
-    void scheduleSaveToDisk();
     void loadFromDisk();
     void reset();
 
