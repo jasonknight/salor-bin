@@ -1,3 +1,10 @@
+salor-bin (2.5.5-1wheezy) wheezy; urgency=low
+
+  * optional cookie sharing between multiple salor-bin instances on the same host
+  * dirs
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sat, 06 Jul 2013 21:32:26 +0200
+
 salor-bin (2.5.4-1wheezy) wheezy; urgency=low
 
   * fopen instead of open for enabling of printer feedback
