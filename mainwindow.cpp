@@ -443,6 +443,7 @@ void MainWindow::timerTimeout() {
     QString printurl;
     QString mainurl;
     QDateTime datetime = QDateTime::currentDateTime();
+    //qDebug() << datetime.toString("yyyyMMddHHmmss");
     //qDebug() << "MainWindow::timerTimeout(): intervalPrint is " << intervalPrint;
     counterPrint--;
     counterTcp--;
@@ -465,7 +466,7 @@ void MainWindow::timerTimeout() {
             foreach(QString remoteprinter, remotePrinterNames) {
                 settings->beginGroup(remoteprinter);
                 localprinter = settings->value("localprinter").toString();
-                printurl = mainurl + settings->value("url").toString() + "?" + datetime.toString(Qt::ISODate);
+                printurl = mainurl + settings->value("url").toString() + "?" + datetime.toString("yyyyMMddHHmmss");
                 settings->endGroup();
 
                 if (localprinter == "") {
