@@ -69,6 +69,7 @@ void DrawerObserver::observe() {
     qDebug() << "Called DrawerObserverThread::run()";
 
     enablePrinterFeedback();
+    // TODO: sleep here for a bit
     openDevice();
     if (mFiledescriptor == -1) return;
 
