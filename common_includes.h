@@ -1,14 +1,23 @@
 #ifndef COMMON_INCLUDES_H
 #define COMMON_INCLUDES_H
 
+#include <iostream>
+using namespace std;
+
+#include <errno.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <sys/ioctl.h>
+#include <sys/termios.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/select.h>
+#include <fcntl.h>
+
 #include <stdlib.h>
 #include <string.h>  /* String function definitions */
-#include <unistd.h>  /* UNIX standard function definitions */
-#include <fcntl.h>   /* File control definitions */
-#include <errno.h>   /* Error number definitions */
 #include <stdio.h>   /* Standard input/output definitions */
-#include <iostream>
-#include <stdio.h>
+
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -64,6 +73,8 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QTcpSocket>
+
+#include <QSocketNotifier>
 
 #include <QSize>
 #include <QFont>

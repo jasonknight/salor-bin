@@ -9,18 +9,27 @@ class DrawerObserver : public QObject
 
 public:
     explicit DrawerObserver();
-    bool doStop;
     QString mPath;
+
+private:
     int mFiledescriptor;
-    bool drawerClosed;
+    bool mdrawerClosed;
+    bool mdrawerOpened;
+    QSocketNotifier *m_notifier;
 
 protected:
     void openDevice();
     void closeDevice();
-    void enablePrinterFeedback();
     
+private slots:
+    void readData(int);
+
 public slots:
-    void observe();
+    void start();
+    void stop();
+
+signals:
+    void drawerCloseDetected();
     
 };
 

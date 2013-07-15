@@ -10,14 +10,14 @@ SalorJsApi::SalorJsApi(QObject *parent, QNetworkAccessManager *nm) :
 {
     //drawerThread = 0;
     networkManager = nm;
-    //drawerObserver = 0;
-    drawerObserver = new DrawerObserver();
-    drawerThread = new QThread(this);
-    connect(drawerThread, SIGNAL(started()),
-            drawerObserver, SLOT(observe()));
-    connect(drawerThread, SIGNAL(finished()),
-            this, SLOT(cashDrawerThreadFinished()));
-    drawerObserver->moveToThread(drawerThread);
+    drawerObserver = 0;
+    //drawerObserver = new DrawerObserver();
+    //drawerThread = new QThread(this);
+    //connect(drawerThread, SIGNAL(started()),
+    //        drawerObserver, SLOT(observe()));
+    //connect(drawerThread, SIGNAL(finished()),
+    //        this, SLOT(cashDrawerThreadFinished()));
+    //drawerObserver->moveToThread(drawerThread);
 }
 
 void SalorJsApi::echo(QString msg) {
@@ -72,34 +72,33 @@ void SalorJsApi::newOpenCashDrawer(QString addy) {
 }
 
 void SalorJsApi::startDrawerObserver(QString path) {
-  qDebug() << "SalorJSApi::startDrawerObserver on" << path;
-  if (drawerThread->isRunning() == false) {
-      qDebug() << "    drawerThread->start()";
-      drawerObserver->mPath = path;
-      drawerThread->start();
-      drawerThread->quit(); // this will quit the thread AFTER observe() has finished
+  qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Beginning with path" << path;
+  if (drawerObserver) {
+      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] A drawerObserver was already instantiated. Doing nothing.";
+      return;
   } else {
-      qDebug() << "    drawerThread is already running. Doing nothing.";
+      drawerObserver = new DrawerObserver();
+      connect(drawerObserver, SIGNAL(drawerCloseDetected()), this, SLOT(drawerCloseDetected()));
+      drawerObserver->mPath = path;
+      drawerObserver->start();
+      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Instantiated a new drawerObserver which is now observing.";
   }
-  qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Ending.";
 }
 
 void SalorJsApi::stopDrawerObserver() {
-    qDebug() << "SalorJSApi::stopDrawerObserver";
-    drawerObserver->doStop = true;
+    if (drawerObserver) {
+        drawerObserver->stop();
+        drawerObserver->deleteLater();
+        drawerObserver = 0;
+        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver] Stopped and deleted it.";
+    } else {
+        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver] no drawerObserver instantiated. Doing nothing.";
+    }
 }
 
-void SalorJsApi::cashDrawerThreadFinished() {
-    qDebug() << "SalorJsApi::cashDrawerClosed()";
-    if (drawerObserver->doStop == true) {
-        qDebug() << "    drawerObserver was interrupted. Not calling JS.";
-        drawerObserver->doStop = false;
-    }
-    if (drawerObserver->drawerClosed == true) {
-        webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
-        drawerObserver->drawerClosed = false;
-    }
-
+void SalorJsApi::drawerCloseDetected() {
+    qDebug() << "SalorJsApi::cashDrawerCloseDetected()";
+    webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
 }
 
 void SalorJsApi::printURL(QString printer, QString url, QString confirm_url) {

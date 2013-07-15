@@ -13,7 +13,6 @@ class SalorJsApi : public QObject
 public:
     explicit SalorJsApi(QObject *parent = 0, QNetworkAccessManager *nm = 0);
     QWebView *webView;
-    QThread *drawerThread;
     DrawerObserver *drawerObserver;
 
 private:
@@ -22,9 +21,6 @@ private:
 signals:
     void cuteDataRead(QString);
     void _cuteWriteData(QString);
-
-private slots:
-    void cashDrawerThreadFinished();
     
 public slots:
     void poleDancer(QString path, QString message);
@@ -43,6 +39,7 @@ public slots:
     void cuteWriteData(QString);
     void _cuteBubbleDataRead(QString data);
     QString weigh(QString addy, int protocol);
+    void drawerCloseDetected();
     
 };
 
