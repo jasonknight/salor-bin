@@ -14,7 +14,8 @@ char * Scale::read() {
     char * weight;
     open();
     if(mFiledescriptor == -1) {
-        return("XXX");
+        qDebug() << "Scale::read(): Cannot read because file descriptor not open.";
+        return "0";
     }
     switch (mProtocol) {
       case 0:
@@ -24,7 +25,6 @@ char * Scale::read() {
         qDebug() << "Scale::read(): This protocol number is not implemented.";
     }
     close();
-    //return "10.3";
     return weight;
 }
 
@@ -57,8 +57,12 @@ char * Scale::doSamsungSpain() {
 
     qDebug() << "Scale::samsungSpain(): filedescriptor" << mFiledescriptor;
 
+    // write the character $ to cause the scale to submit the weight
     ::write(mFiledescriptor, "$", 1);
-    usleep(100000); // sleep 100ms until bytes are in the buffer. 50ms works too.
+
+    usleep(100000);
+
+
     count = ::read(mFiledescriptor, buffer, 7);
     qDebug() << "Scale::samsungSpain(): read" << QString(*buffer);
     //int i;
