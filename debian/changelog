@@ -1,3 +1,13 @@
+salor-bin (2.5.8-1wheezy) wheezy; urgency=low
+
+  * datetime query string for apache printing to prevent caching
+  * winspool
+  * restored configure.in
+  * added datetime query string
+  * improved drawer close detection
+
+ -- Michael Franzl <office@michaelfranzl.com>  Mon, 15 Jul 2013 17:44:07 +0200
+
 salor-bin (2.5.5-1wheezy) wheezy; urgency=low
 
   * optional cookie sharing between multiple salor-bin instances on the same host
