@@ -1,8 +1,11 @@
-salor-bin (2.5.9-1wheezy) wheezy; urgency=low
+salor-bin (2.5.10-1wheezy) wheezy; urgency=low
 
   * abstracted serial port out
+  * build
+  * added serialport to makefile
+  * added escpos test
 
- -- Michael Franzl <office@michaelfranzl.com>  Tue, 16 Jul 2013 11:49:47 +0200
+ -- Michael Franzl <office@michaelfranzl.com>  Tue, 16 Jul 2013 12:07:48 +0200
 
 salor-bin (2.5.8-1wheezy) wheezy; urgency=low
 
