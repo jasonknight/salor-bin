@@ -29,6 +29,12 @@
     <span class="button" onclick="printurl();">Test Printing URL</span>
   </div>
   
+  <div>
+    <label for="printURL">URL Image</label>
+    <input id='printURLimage' value="http://red-e.eu/test.escpos"></input>
+    <span class="button" onclick="printurlimage();">Test Printing URL image</span>
+  </div>
+  
   
   <div>
     <label for="printText">Text</label>
@@ -101,6 +107,13 @@
       set_printer_path();
       var text = document.getElementById("printerPath").value;
       var url = document.getElementById("printURL").value;
+      Salor.printURL(printer_path, url, 'confirmation URL deprecated');
+    }
+    
+    function printurlimage() {
+      set_printer_path();
+      var text = document.getElementById("printerPath").value;
+      var url = document.getElementById("printURLimage").value;
       Salor.printURL(printer_path, url, 'confirmation URL deprecated');
     }
   
