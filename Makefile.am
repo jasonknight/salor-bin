@@ -16,7 +16,8 @@ salor_bin_SOURCES = \
 	salorjsapi.cpp \
 	salorprinter.cpp \
         salornotificator.cpp \
-	salorprocess.cpp
+	salorprocess.cpp \
+	serialport.cpp
 
 
 nodist_salor_bin_SOURCES = \
@@ -35,7 +36,8 @@ nodist_salor_bin_SOURCES = \
 	moc_salorjsapi.cpp \
 	moc_salorprinter.cpp \
         moc_salornotificator.cpp \
-	moc_salorprocess.cpp
+	moc_salorprocess.cpp \
+	moc_serialport.cpp
 
 
 EXTRA_DIST = \
