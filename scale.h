@@ -2,21 +2,20 @@
 #define SCALE_H
 
 #include "common_includes.h"
+#include "serialport.h"
 
 class Scale
 {
 public:
     Scale(const QString path, int protocol);
-    char * read();
+    QString read();
 
 
 protected:
     QString mPath;
-    int mFiledescriptor;
     int mProtocol;
-    char *doSamsungSpain();
-    void open();
-    void close();
+    QString doSamsungSpain();
+    Serialport *mSerialport;
 };
 
 #endif // SCALE_H

@@ -7,7 +7,7 @@
 QT       += core gui webkit network
 
 # Don't commit a change to the following line into a repository.
-LIBS += -lwinspool
+#LIBS += -lwinspool
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     salorcapture.cpp \
     drawerobserver.cpp \
     scale.cpp \
-    salornotificator.cpp
+    salornotificator.cpp \
+    serialport.cpp
 
 HEADERS  += mainwindow.h \
     salorpage.h \
@@ -47,7 +48,8 @@ HEADERS  += mainwindow.h \
     salorcapture.h \
     drawerobserver.h \
     scale.h \
-    salornotificator.h
+    salornotificator.h \
+    serialport.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui
