@@ -1,3 +1,9 @@
+salor-bin (2.5.9-1wheezy) wheezy; urgency=low
+
+  * abstracted serial port out
+
+ -- Michael Franzl <office@michaelfranzl.com>  Tue, 16 Jul 2013 11:49:47 +0200
+
 salor-bin (2.5.8-1wheezy) wheezy; urgency=low
 
   * datetime query string for apache printing to prevent caching
