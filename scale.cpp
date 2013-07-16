@@ -1,71 +1,51 @@
 #include "scale.h"
 #include "common_includes.h"
+#include "serialport.h"
 #include <unistd.h>
 
 Scale::Scale(QString path, int protocol)
 {
     mPath = path;
     mProtocol = protocol;
-    mFiledescriptor = 5;
-    qDebug() << "Scale::Scale() initialize: path" << path << "protocol";
+    qDebug() << "[Scale]" << "[initializer]" << "initialize: path" << mPath << "protocol" << mProtocol;
 }
 
-char * Scale::read() {
-    char * weight;
-    open();
-    if(mFiledescriptor == -1) {
-        qDebug() << "Scale::read(): Cannot read because file descriptor not open.";
-        return "0";
+QString Scale::read() {
+    QString weight;
+    int fd;
+
+    mSerialport = new Serialport(mPath);
+    fd = mSerialport->open();
+
+    if(fd < 0) {
+        qDebug() << "[Scale]" << "[read]" << "Cannot read because file descriptor not open.";
+        return "-1";
     }
+
     switch (mProtocol) {
       case 0:
         weight = doSamsungSpain();
         break;
       default:
-        qDebug() << "Scale::read(): This protocol number is not implemented.";
+        qDebug() << "[Scale]" << "[read]" << "This protocol number is not implemented.";
+        return "-1";
     }
-    close();
+    mSerialport->close();
     return weight;
 }
 
-void Scale::open() {
-#ifdef LINUX
-     struct termios options;
-
-     mFiledescriptor = ::open(mPath.toLatin1().data(), O_RDWR | O_NOCTTY | O_NDELAY);
-     if (mFiledescriptor == -1) {
-         qDebug() << "Scale::open(): Unable to open port for scale" << mPath;
-     } else {
-         qDebug() << "Opened port for scale" << mPath;
-         tcgetattr(mFiledescriptor, &options); // Get the current options for the port...
-         cfsetispeed(&options, B9600); // Set the baud rates
-         cfsetospeed(&options, B9600);
-         options.c_cflag |= (CLOCAL | CREAD); // Enable the receiver and set local mode...
-         tcsetattr(mFiledescriptor, TCSANOW, &options); // Set the new options for the port...
-     }
-#endif
-}
-
-void Scale::close() {
-    ::close(mFiledescriptor);
-}
-
-
-char * Scale::doSamsungSpain() {
-    char buffer[10];
+// this is a 100 millisecond one-shot write-read action
+QString Scale::doSamsungSpain() {
     int count;
+    QByteArray promptCode;
+    QByteArray weight;
 
-    qDebug() << "Scale::samsungSpain(): filedescriptor" << mFiledescriptor;
+    promptCode = "$";
+    count = mSerialport->write(promptCode);
+    qDebug() << "[Scale]" << "[doSamsungSpain]" << "wrote" << count << "bytes to promt scale for submission.";
+    usleep(50000);
+    weight = mSerialport->read();
+    qDebug() << "[Scale]" << "[doSamsungSpain]" << "read" << weight.size() << "bytes from scale:" << weight.toHex();
 
-    // write the character $ to cause the scale to submit the weight
-    ::write(mFiledescriptor, "$", 1);
-
-    usleep(100000);
-
-
-    count = ::read(mFiledescriptor, buffer, 7);
-    qDebug() << "Scale::samsungSpain(): read" << QString(*buffer);
-    //int i;
-    //for (i=0;i<count;i++) { printf("%X|",*(buffer+i)); } // debug
-    return buffer;
+    return QString(weight);
 }

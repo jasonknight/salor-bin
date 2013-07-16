@@ -8,16 +8,8 @@
 SalorJsApi::SalorJsApi(QObject *parent, QNetworkAccessManager *nm) :
     QObject(parent)
 {
-    //drawerThread = 0;
     networkManager = nm;
     drawerObserver = 0;
-    //drawerObserver = new DrawerObserver();
-    //drawerThread = new QThread(this);
-    //connect(drawerThread, SIGNAL(started()),
-    //        drawerObserver, SLOT(observe()));
-    //connect(drawerThread, SIGNAL(finished()),
-    //        this, SLOT(cashDrawerThreadFinished()));
-    //drawerObserver->moveToThread(drawerThread);
 }
 
 void SalorJsApi::echo(QString msg) {
@@ -58,16 +50,18 @@ void SalorJsApi::printPage() {
 
 void SalorJsApi::newOpenCashDrawer(QString addy) {
 #ifdef LINUX
-    int count;    
-    qDebug() << "Attempting to open CashDrawer at " << addy;
-    FILE * fd = fopen(addy.toLatin1().data(),"w");
-    if (fd <= 0) {
-        qDebug() << "CashDrawer failed to open!";
-        return;
-    }
-    count = fwrite("\x1B\x70\x00\x55\x55", sizeof(char), 6, fd);
-    qDebug() << "Wrote "  << count << " bytes to printer.";
-    fclose(fd);
+    QByteArray openCode;
+    Serialport *serialport;
+    int count;
+
+    openCode = QByteArray("\x1B\x70\x30\x55\x55");
+
+    serialport = new Serialport(addy);
+    serialport->open();
+    count = serialport->write(openCode);
+    serialport->close();
+
+    qDebug() << "[SalorJsApi]" << "[newOpenCashDrawer]" << "Wrote" << count << "bytes to" << addy;
 #endif
 }
 
@@ -90,14 +84,16 @@ void SalorJsApi::stopDrawerObserver() {
         drawerObserver->stop();
         drawerObserver->deleteLater();
         drawerObserver = 0;
-        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver] Stopped and deleted it.";
+        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Stopped and deleted it.";
     } else {
-        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver] no drawerObserver instantiated. Doing nothing.";
+        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "no drawerObserver instantiated. Doing nothing.";
     }
 }
 
 void SalorJsApi::drawerCloseDetected() {
-    qDebug() << "SalorJsApi::cashDrawerCloseDetected()";
+    qDebug() << "[SalorJsApi]" << "[drawerCloseDetected]";
+    drawerObserver->deleteLater();
+    drawerObserver = 0;
     webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
 }
 
@@ -154,7 +150,7 @@ void SalorJsApi::mimoImage(QString imagepath) {
 }
 
 QString SalorJsApi::weigh(QString addy, int protocol) {
-  char *weight;
+  QString weight;
   Scale *sc = new Scale(addy, protocol);
   weight = sc->read();
   return weight;

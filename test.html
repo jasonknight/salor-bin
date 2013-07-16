@@ -142,7 +142,8 @@
     
     function weigh() {
       var path = document.getElementById("polePath").value;
-      var weight = parseFloat(Salor.weigh(path, 0));
+      //var weight = parseFloat(Salor.weigh(path, 0));
+      var weight = Salor.weigh(path, 0);
       document.getElementById('weight').innerHTML = weight + " " + typeof weight;
     }
   </script>

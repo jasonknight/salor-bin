@@ -1,5 +1,6 @@
 #include "salorprinter.h"
 #include "common_includes.h"
+#include "serialport.h"
 #ifdef WIN32
 #include "winspool.h"
 #endif
@@ -52,39 +53,23 @@ void SalorPrinter::print(QByteArray printdata) {
         return;
     qDebug() << "SalorPrinter::print(): Printer is" << m_printer << "Buffer is" << printdata;
 #ifdef LINUX
-    QFile f(m_printer);
 
-    if (false && m_printer.indexOf("tty") != -1) {
-        // disabled for now since printing images is not working on Metapace T1 (Metapace T3 not tried)
-        qDebug() << "SalorPrinter::print(): Printing to a serial port.";
-        int fd;
-        struct termios options;
-        char * port = m_printer.toAscii().data();
+    if (m_printer.indexOf("tty") != -1 || m_printer.indexOf("usb") != -1) {
 
-        fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
+        qDebug() << "[SalorPrinter]" << "[print]" << "Printing to a serial port" << m_printer;
 
-        if (fd == -1) {
-          qDebug() << "SalorPrinter::print(): Unable to open" << m_printer;
-        } else {
-          tcgetattr(fd, &options); // Get the current options for the port...
-          cfsetispeed(&options, B9600); // Set the baud rates
-          cfsetospeed(&options, B9600);
-          tcsetattr(fd, TCSANOW, &options); // Set the new options for the port...
-          int r = write(fd, printdata, printdata.size());
-          close(fd);
-          //qDebug() << "SalorPrinter::print(): printed " << QString::number(r) << "bytes";
-        }
+        Serialport *serialport = new Serialport(m_printer);
+        serialport->open();
+        serialport->write(printdata);
+        serialport->close();
 
-    } else if (f.exists() && f.open(QIODevice::WriteOnly) && printdata.size() > 10) {
-        // limited to minimum of 4 characters, since QFile seems to write FF to /dev/ttyUSB0 every time it is opened, even when printdata is ""
-        qDebug() << "SalorPrinter::print(): Printing to everything that QFile supports.";
-        QDataStream out(&f);
-        out << printdata;
+    } else {
+        qDebug() << "[SalorPrinter]" << "[print]" << "Printing to a file" << m_printer;
+        QFile f(m_printer);
+        f.open(QIODevice::WriteOnly);
+        f.write(printdata);
         f.close();
 
-    } else if (printdata.size() > 10) {
-        qDebug() << "SalorPrinter::print(): failed to open as either file or serial port" << m_printer;
-        //emit printerDoesNotExist();
     }
 #endif
 #ifdef MAC
