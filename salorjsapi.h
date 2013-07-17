@@ -14,6 +14,7 @@ public:
     explicit SalorJsApi(QObject *parent = 0, QNetworkAccessManager *nm = 0);
     QWebView *webView;
     DrawerObserver *drawerObserver;
+    QThread *drawerThread;
 
 private:
     QNetworkAccessManager *networkManager;
@@ -39,7 +40,7 @@ public slots:
     void cuteWriteData(QString);
     void _cuteBubbleDataRead(QString data);
     QString weigh(QString addy, int protocol);
-    void drawerCloseDetected();
+    void drawerThreadFinished();
     
 };
 

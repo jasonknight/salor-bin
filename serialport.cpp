@@ -148,12 +148,12 @@ int Serialport::write(QByteArray bytes) {
 
 // this reads the amount of bytes in the serial hardware buffer, maximum 2024 bytes
 QByteArray Serialport::read() {
-    char buf[1024] = {"\0"};
+    char buf[7] = {"\0"};
     int count;
     QByteArray bytes;
 
-    count = ::read(m_fd, &buf, 1000);
-    bytes = QByteArray(buf);
+    count = ::read(m_fd, &buf, 7);
+    bytes = QByteArray(buf, 7);
     qDebug() << "[Serialport]" << "[read]" << "Read" << count << "bytes which were" << QString(bytes) << "or in hex" << bytes.toHex();
     return bytes;
 }
