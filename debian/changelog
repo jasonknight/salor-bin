@@ -1,3 +1,9 @@
+salor-bin (2.5.11-1wheezy) wheezy; urgency=low
+
+  * changed back to drawer thread, since QSocketNotificator doesn't work well with USB
+
+ -- Michael Franzl <office@michaelfranzl.com>  Wed, 17 Jul 2013 16:58:11 +0200
+
 salor-bin (2.5.10-1wheezy) wheezy; urgency=low
 
   * abstracted serial port out
