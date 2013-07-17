@@ -12,6 +12,9 @@ public:
     explicit DrawerObserver();
     QString mPath;
 
+    bool doStop;
+    bool drawerClosed;
+
 private:
     bool mdrawerClosed;
     bool mdrawerOpened;
@@ -23,7 +26,7 @@ protected:
     void closeDevice();
     
 private slots:
-    void readData(int);
+    //void readData(int);
 
 public slots:
     void start();
