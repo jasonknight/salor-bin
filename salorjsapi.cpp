@@ -85,46 +85,16 @@ void SalorJsApi::startDrawerObserver(QString path, int baudrate) {
     connect(drawerThread, SIGNAL(started()), drawerObserver, SLOT(start()));
     connect(drawerThread, SIGNAL(finished()), this, SLOT(drawerThreadFinished()));
     drawerObserver->moveToThread(drawerThread);
-
-    //if (drawerThread->isRunning() == false) {
-      drawerThread->start(); // this also calls drawerObserver.start() due to the connect above
-      drawerThread->quit(); // this will finish the thread AFTER the while loop of the start method has finished.
-    //} else {
-    //    qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerThread is already running. Doing nothing.";
-    //}
+    drawerThread->start(); // this also calls drawerObserver.start() due to the connect above
+    drawerThread->quit(); // this will finish the thread AFTER the while loop of the start method has finished.
     qDebug() << "[SalorJsApi]" << "[startDrawerObserver]" << "Finished";
-
-
-    /*
-    if (drawerObserver) {
-      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] A drawerObserver was already instantiated. Doing nothing.";
-      return;
-    } else {
-      drawerObserver = new DrawerObserver();
-      connect(drawerObserver, SIGNAL(drawerCloseDetected()), this, SLOT(drawerCloseDetected()));
-      drawerObserver->mPath = path;
-      drawerObserver->start();
-      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Instantiated a new drawerObserver which is now observing.";
-    }
-    */
 }
 
 void SalorJsApi::stopDrawerObserver() {
     qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Setting member variable doStop to true";
-
     if ( drawerObserver ) {
         drawerObserver->doStop = true;
     }
-    /*
-    if (drawerObserver) {
-        drawerObserver->stop();
-        drawerObserver->deleteLater();
-        drawerObserver = 0;
-        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Stopped and deleted it.";
-    } else {
-        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "no drawerObserver instantiated. Doing nothing.";
-    }
-    */
 }
 
 void SalorJsApi::drawerThreadFinished() {
@@ -144,11 +114,6 @@ void SalorJsApi::drawerThreadFinished() {
     drawerObserver = NULL;
     drawerThread = NULL;
     return;
-    /*
-    drawerObserver->deleteLater();
-    drawerObserver = 0;
-    webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
-    */
 }
 
 void SalorJsApi::printURL(QString printer, QString url, QString confirm_url, int baudrate) {
