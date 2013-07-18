@@ -52,9 +52,13 @@ void myMessageOutput(QtMsgType type, const char *msg)
     QFile f(PathLog);
     f.open(QIODevice::Append);
     QDataStream out(&f);
-    out << msg << "\n";
-    f.close();
 
+    QDateTime datetime = QDateTime::currentDateTime();
+    QString timestamp = datetime.toString("yyyyMMddHHmmss");
+
+    out << timestamp << msg << "\n";
+
+    /*
      //in this function, you can write the message to any stream!
      switch (type) {
      case QtDebugMsg:
@@ -70,17 +74,31 @@ void myMessageOutput(QtMsgType type, const char *msg)
          fprintf(stderr, "Fatal: %s\n", msg);
          abort();
      }
+     */
+
+     f.close();
  }
+
+void purgeLogfile() {
+    qDebug() << "Truncating Logfile";
+    QFile f(PathLog);
+    f.open(QFile::WriteOnly|QFile::Truncate);
+    f.close();
+}
 
 
 int main(int argc, char *argv[])
 {
-    //qInstallMsgHandler(myMessageOutput);
+    qInstallMsgHandler(myMessageOutput);
     QApplication a(argc, argv);
     MainWindow w;
     QString arg;
     bool fullscreen = false;
     QVariant url;
+
+#ifdef WINDOWS
+    purgeLogfile();
+#endif
 
     // go to default URL if none specified in .ini file
     url = _get("url");

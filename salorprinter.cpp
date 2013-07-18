@@ -55,6 +55,7 @@ void SalorPrinter::print(QByteArray printdata) {
     }
 
     if (printdata.size() < 3) {
+        qDebug() << "[SalorPrinter]" << "[print]" << "Not printing anything shorter than 3 characters." << m_printer;
         return;
     }
 
