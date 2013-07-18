@@ -179,13 +179,22 @@ void MainWindow::setPrinterNames() {
     }
 
 #endif
-#ifdef WIN32
+#ifdef WINDOWS
     qDebug() << "[MainWindow]" << "[setPrinterNames] WIN32 is defined.";
     QList<QPrinterInfo> printer_list = QPrinterInfo::availablePrinters();
     for (int i = 0; i < printer_list.length(); i++) {
         QPrinterInfo info = printer_list.at(i);
         localPrinterNames << info.printerName();
-     }
+    }
+    localPrinterNames << "COM1";
+    localPrinterNames << "COM2";
+    localPrinterNames << "COM3";
+    localPrinterNames << "COM4";
+    localPrinterNames << "COM5";
+    localPrinterNames << "COM6";
+    localPrinterNames << "COM7";
+    localPrinterNames << "COM8";
+
 #endif
 #ifdef MAC
     qDebug() << "[MainWindow]" << "[setPrinterNames] MAC is defined.";
