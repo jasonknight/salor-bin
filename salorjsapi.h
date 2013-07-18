@@ -24,9 +24,9 @@ signals:
     void _cuteWriteData(QString);
     
 public slots:
-    void poleDancer(QString path, QString message);
-    void newOpenCashDrawer(QString addy);
-    void startDrawerObserver(QString addy);
+    void poleDancer(QString path, QString message, int baudrate = 9600);
+    void newOpenCashDrawer(QString addy, int baudrate = 9600);
+    void startDrawerObserver(QString addy, int baudrate = 9600);
     void stopDrawerObserver();
     void printPage();
     void playSound(QString name);
@@ -34,12 +34,12 @@ public slots:
     void mimoRefresh(QString path, int h, int w);
     void mimoImage(QString imagepath);
     QStringList ls(QString path,QStringList filters);
-    void printURL(QString printer, QString url, QString confirm_url);
-    void printText(QString printer, QString text);
+    void printURL(QString printer, QString url, QString confirm_url = "", int baudrate = 9600);
+    void printText(QString printer, QString text, int baudrate = 9600);
     void shutdown();
     void cuteWriteData(QString);
     void _cuteBubbleDataRead(QString data);
-    QString weigh(QString addy, int protocol);
+    QString weigh(QString addy, int protocol, int baudrate = 9600);
     void drawerThreadFinished();
     
 };

@@ -5,12 +5,13 @@
 #include "winspool.h"
 #endif
 
-SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString printer) :
+SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString printer, int baudrate) :
     QObject(parent)
 {
     auth_tried = false;
     m_printer = printer;
     m_manager = nm;
+    m_serialport = new Serialport(printer, baudrate);
 }
 
 void SalorPrinter::printURL(QString url) {
@@ -49,28 +50,15 @@ void SalorPrinter::printDataReady() {
 }
 
 void SalorPrinter::print(QByteArray printdata) {
-    if (m_printer == "")
+    if (m_printer == "") {
         return;
-    qDebug() << "SalorPrinter::print(): Printer is" << m_printer << "Buffer is" << printdata;
-#ifdef LINUX
-
-    if (m_printer.indexOf("tty") != -1 || m_printer.indexOf("usb") != -1) {
-
-        qDebug() << "[SalorPrinter]" << "[print]" << "Printing to a serial port" << m_printer;
-
-        Serialport *serialport = new Serialport(m_printer);
-        serialport->open();
-        serialport->write(printdata);
-        serialport->close();
-
-    } else {
-        qDebug() << "[SalorPrinter]" << "[print]" << "Printing to a file" << m_printer;
-        QFile f(m_printer);
-        f.open(QIODevice::WriteOnly);
-        f.write(printdata);
-        f.close();
-
     }
+
+#ifdef LINUX
+    qDebug() << "[SalorPrinter]" << "[print]" << "Printing to a serial port" << m_printer;
+    m_serialport->open();
+    m_serialport->write(printdata);
+    m_serialport->close();
 #endif
 #ifdef MAC
     QString printer_name = m_printer;

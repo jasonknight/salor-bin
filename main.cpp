@@ -44,13 +44,6 @@ QSettings *settings = new QSettings(PathSettings, QSettings::IniFormat);
 
 
 void help() {
-    std::cout << "Usage:\n";
-    std::cout << "\tsalor -[uh] [value]\n";
-    std::cout << "Example: \n";
-    std::cout << "\tsalor -u http://localhost:3000\n";
-    std::cout << "\tRunning salor with no arguments will load http://salor\n";
-    std::cout << "\tOther arguments could be: salor -u http://salortrainer\n";
-    exit(0);
     return;
 }
 

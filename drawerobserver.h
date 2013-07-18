@@ -9,15 +9,15 @@ class DrawerObserver : public QObject
     Q_OBJECT
 
 public:
-    explicit DrawerObserver();
-    QString mPath;
-
+    explicit DrawerObserver(QString path, int baudrate = 9600);
     bool doStop;
     bool drawerClosed;
 
 private:
     bool mdrawerClosed;
     bool mdrawerOpened;
+    QString mPath;
+    int mBaudrate;
     QSocketNotifier *m_notifier;
     Serialport *mSerialport;
 

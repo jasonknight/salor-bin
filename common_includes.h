@@ -1,26 +1,34 @@
 #ifndef COMMON_INCLUDES_H
 #define COMMON_INCLUDES_H
 
-#include <iostream>
-using namespace std;
+//#include <iostream>
+//using namespace std;
 
-#include <errno.h>
 #include <unistd.h>
+#include <errno.h>
 #include <ctype.h>
-#include <sys/ioctl.h>
-#include <sys/termios.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/select.h>
 #include <fcntl.h>
+#include <termios.h>
+#include <signal.h>
+
+#include <sys/ioctl.h> // for ioctl calls
+#include <sys/stat.h> // for chmod
+#include <sys/types.h>
+
+//#include <sys/termios.h>
+
+//#include <sys/time.h>
+
+//#include <sys/select.h>
+
+
 
 #include <stdlib.h>
-#include <string.h>  /* String function definitions */
-#include <stdio.h>   /* Standard input/output definitions */
+//#include <string.h>  /* String function definitions */
+//#include <stdio.h>   /* Standard input/output definitions */
 
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+
+
 
 #include <QApplication>
 #include <QMainWindow>

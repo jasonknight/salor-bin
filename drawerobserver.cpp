@@ -2,12 +2,14 @@
 #include "salorjsapi.h"
 #include "common_includes.h"
 
-DrawerObserver::DrawerObserver() :
+DrawerObserver::DrawerObserver(QString path, int baudrate) :
     QObject()
 {
+    mPath = path;
     mSerialport = 0;
     mdrawerClosed = false;
     mdrawerOpened = false;
+    mBaudrate = baudrate;
 }
 
 void DrawerObserver::start() {
@@ -31,6 +33,8 @@ void DrawerObserver::start() {
     count = mSerialport->write(opencode);
     qDebug() << "[DrawerObserver]" << "[start]" << "Wrote "  << count << " bytes to enable printer feedback.";
 
+
+    mSerialport->setNonblock();
 
     while (i < (2 * close_after_seconds) && !doStop) {
         i += 1;
@@ -66,11 +70,13 @@ void DrawerObserver::start() {
 }
 
 void DrawerObserver::stop() {
+    /*
     qDebug() << "[DrawerObserver]" << "[stop]";
     m_notifier->setEnabled(false);
     m_notifier->deleteLater();
     //m_notifier = 0;
     closeDevice();
+    */
 }
 
 void DrawerObserver::openDevice() {
@@ -78,7 +84,7 @@ void DrawerObserver::openDevice() {
         qDebug() << "[DrawerObserver]" << "[openDevice]" << "A Serialport is already existing. Must call DrawerObserver::closeDevice before you can open this one again.";
         return;
     } else {
-        mSerialport = new Serialport(mPath);
+        mSerialport = new Serialport(mPath, mBaudrate);
         mSerialport->open();
     }
 }

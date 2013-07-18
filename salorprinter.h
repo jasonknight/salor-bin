@@ -2,6 +2,7 @@
 #define SALORPRINTER_H
 
 #include "common_includes.h"
+#include "serialport.h"
 
 #ifdef WIN32
 extern void display_last_error(DWORD dw);
@@ -12,7 +13,7 @@ class SalorPrinter : public QObject
     Q_OBJECT
 
 public:
-    explicit SalorPrinter(QObject *parent = 0, QNetworkAccessManager *nm = 0, QString printer = "");
+    explicit SalorPrinter(QObject *parent = 0, QNetworkAccessManager *nm = 0, QString printer = "", int baudrate = 9600);
 
 private:
     QNetworkAccessManager *m_manager;
@@ -20,6 +21,7 @@ private:
     void printed();
     bool auth_tried;
     QNetworkRequest *m_request;
+    Serialport *m_serialport;
 
 public slots:
     void printURL(QString url);

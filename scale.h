@@ -7,7 +7,7 @@
 class Scale
 {
 public:
-    Scale(const QString path, int protocol);
+    Scale(const QString path, int protocol, int baudrate = 9600);
     QString read();
 
 
