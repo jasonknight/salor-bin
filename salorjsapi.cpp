@@ -9,13 +9,8 @@ SalorJsApi::SalorJsApi(QObject *parent, QNetworkAccessManager *nm) :
     QObject(parent)
 {
     networkManager = nm;
-    drawerObserver = new DrawerObserver();
-    drawerThread = new QThread(this);
-    connect(drawerThread, SIGNAL(started()),
-            drawerObserver, SLOT(start()));
-    connect(drawerThread, SIGNAL(finished()),
-            this, SLOT(drawerThreadFinished()));
-    drawerObserver->moveToThread(drawerThread);
+    drawerObserver = NULL;
+    drawerThread = NULL;
 }
 
 void SalorJsApi::echo(QString msg) {
@@ -47,99 +42,128 @@ void SalorJsApi::printPage() {
     if (dialog->exec() == QDialog::Accepted) {
         webView->page()->mainFrame()->print(&printer);
         if (printer.outputFileName().indexOf(".pdf") != -1) {
-            chmod(printer.outputFileName().toLatin1().data(),0666);
+            chmod(printer.outputFileName().toLatin1().data(),0775);
         }
     }
     delete dialog;
     qDebug() << "SalorJsApi::printPage complete";
 }
 
-void SalorJsApi::newOpenCashDrawer(QString addy) {
-#ifdef LINUX
+void SalorJsApi::newOpenCashDrawer(QString addy, int baudrate) {
     QByteArray openCode;
-    Serialport *serialport;
-    int count;
+    //Serialport *serialport;
+    //int count;
 
     openCode = QByteArray("\x1B\x70\x30\x55\x55");
-
-    serialport = new Serialport(addy);
+    SalorPrinter *salorprinter;
+    salorprinter = new SalorPrinter(this, networkManager, addy, baudrate);
+    salorprinter->print(openCode);
+    /*
+    serialport = new Serialport(addy, baudrate);
     serialport->open();
     count = serialport->write(openCode);
     serialport->close();
+    serialport->deleteLater();
+    */
 
-    qDebug() << "[SalorJsApi]" << "[newOpenCashDrawer]" << "Wrote" << count << "bytes to" << addy;
-#endif
+    qDebug() << "[SalorJsApi]" << "[newOpenCashDrawer]";
 }
 
-void SalorJsApi::startDrawerObserver(QString path) {
-  qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Beginning with argument" << path;
-  if (drawerThread->isRunning() == false) {
-      drawerObserver->mPath = path;
-      drawerThread->start();
-      drawerThread->quit(); // this will finish the thread AFTER the while loop of the start method has finished.
-  } else {
-      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerThread is already running. Doing nothing.";
-  }
-  qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Ending.";
+void SalorJsApi::startDrawerObserver(QString path, int baudrate) {
+    qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Beginning with argument" << path << ", baudrate" << baudrate;
 
+    if (path.indexOf("tty") != -1 ) {
+        // real RS232 ports work with QNetworkNotifer which is a more elegant solution
+        if ( drawerObserver ) {
+          qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerObserver already existing. Doing nothing.";
+          return;
+        }
+        drawerObserver = new DrawerObserver(path, baudrate);
+        connect(drawerObserver, SIGNAL(drawerCloseDetected()), this, SLOT(drawerCloseDetected()));
+        drawerObserver->startWithNotifier();
 
-  /*
-  if (drawerObserver) {
-      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] A drawerObserver was already instantiated. Doing nothing.";
-      return;
-  } else {
-      drawerObserver = new DrawerObserver();
-      connect(drawerObserver, SIGNAL(drawerCloseDetected()), this, SLOT(drawerCloseDetected()));
-      drawerObserver->mPath = path;
-      drawerObserver->start();
-      qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Instantiated a new drawerObserver which is now observing.";
-  }
-  */
+    } else if ( path.indexOf("COM") != -1 || path.indexOf("usb") != -1 ) {
+        // USB printers need the loop/thread method, since QSocketNotifer doesn't work on USB device nodes in Linux, nor with HANDLE file descriptors in Windows.
+        if ( drawerThread ) {
+          qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerThread already existing. Doing nothing.";
+          return;
+        }
+        if ( drawerObserver ) {
+          qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerObserver already existing. Doing nothing.";
+          return;
+        }
+
+        drawerObserver = new DrawerObserver(path, baudrate);
+        drawerThread = new QThread(this);
+        connect(drawerThread, SIGNAL(started()), drawerObserver, SLOT(startWithLoop()));
+        connect(drawerThread, SIGNAL(finished()), this, SLOT(drawerThreadFinished()));
+        drawerObserver->moveToThread(drawerThread);
+        drawerThread->start(); // this also calls drawerObserver.start() due to the connect above
+        drawerThread->quit(); // this will finish the thread AFTER the while loop of the start method has finished.
+
+    } else {
+        qDebug() << "[SalorJsApi]" << "[startDrawerObserver]" << "Drawer close detection not supported for device" << path;
+    }
+    qDebug() << "[SalorJsApi]" << "[startDrawerObserver]" << "Finished";
 }
 
 void SalorJsApi::stopDrawerObserver() {
-    qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Setting member variable doStop to true";
-    drawerObserver->doStop = true;
-    /*
-    if (drawerObserver) {
-        drawerObserver->stop();
-        drawerObserver->deleteLater();
-        drawerObserver = 0;
-        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Stopped and deleted it.";
-    } else {
-        qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "no drawerObserver instantiated. Doing nothing.";
+    qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]";
+    if ( drawerObserver ) {
+        if (drawerObserver->mPath.indexOf("usb") != -1 ) {
+            qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Setting member variable doStop to true to break the thread loop.";
+            drawerObserver->doStop = true;
+
+        } else {
+            qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Stopping drawerObserver with stopWithNotifier()";
+            drawerObserver->stopWithNotifier();
+            drawerObserver->deleteLater();
+            drawerObserver = NULL;
+        }
     }
-    */
 }
 
+
+// this is called when drawerThread finishes
 void SalorJsApi::drawerThreadFinished() {
     qDebug() << "[SalorJsApi]" << "[drawerThreadFinished]";
     if (drawerObserver->doStop == true) {
         qDebug() << "[SalorJsApi]" << "[drawerThreadFinished]" << "drawerObserver was interrupted manually. Not calling JS";
-        drawerObserver->doStop = false;
     }
 
     if (drawerObserver->drawerClosed == true) {
         qDebug() << "[SalorJsApi]" << "[drawerThreadFinished]" << "evaluating Javascript 'onCashDrawerClose()";
         webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
-        drawerObserver->drawerClosed = false;
+        //drawerObserver->drawerClosed = false;
     }
-    /*
+
     drawerObserver->deleteLater();
-    drawerObserver = 0;
-    webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
-    */
+    drawerThread->deleteLater();
+    drawerObserver = NULL;
+    drawerThread = NULL;
+    return;
 }
 
-void SalorJsApi::printURL(QString printer, QString url, QString confirm_url) {
-    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer);
+// this is called when QSocketNotifier signals incoming data
+void SalorJsApi::drawerCloseDetected() {
+    qDebug() << "[SalorJsApi]" << "[drawerCloseDetected]" << "evaluating Javascript 'onCashDrawerClose()";
+    webView->page()->mainFrame()->evaluateJavaScript("onCashDrawerClose();");
+
+    if ( drawerObserver ) {
+      drawerObserver->deleteLater();
+      drawerObserver = NULL;
+    }
+}
+
+void SalorJsApi::printURL(QString printer, QString url, QString confirm_url, int baudrate) {
+    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer, baudrate);
     salorprinter->printURL(url);
     // printer will delete itself later
     qDebug() << "[SalorJsApi]" << "[printURL] Ending.";
 }
 
-void SalorJsApi::printText(QString printer, QString text) {
-    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer);
+void SalorJsApi::printText(QString printer, QString text, int baudrate) {
+    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer, baudrate);
     QByteArray bytes;
     bytes = QByteArray();
     bytes.append(text);
@@ -148,7 +172,7 @@ void SalorJsApi::printText(QString printer, QString text) {
     qDebug() << "[SalorJsApi]" << "[printText] Ending.";
 }
 
-QStringList SalorJsApi::ls(QString path,QStringList filters) {
+QStringList SalorJsApi::ls(QString path, QStringList filters) {
     QDir d(path);
     if (d.exists()) {
         d.setFilter(QDir::Files | QDir::Hidden | QDir::System);
@@ -158,7 +182,7 @@ QStringList SalorJsApi::ls(QString path,QStringList filters) {
 }
 
 /* output plain text to Serial pole display */
-void SalorJsApi::poleDancer(QString path, QString message) {
+void SalorJsApi::poleDancer(QString path, QString message, int baudrate) {
     SalorProcess *sp = new SalorProcess(this);
     qDebug() << "calling poledancer " << path << " " << message;
     sp->run("poledancer",QStringList() << "-p" << path << message, 2000);
@@ -183,11 +207,12 @@ void SalorJsApi::mimoImage(QString imagepath) {
     qDebug() << "[SalorJsApi]" << "[mimoImage] Ending.";
 }
 
-QString SalorJsApi::weigh(QString addy, int protocol) {
-  QString weight;
-  Scale *sc = new Scale(addy, protocol);
-  weight = sc->read();
-  return weight;
+QString SalorJsApi::weigh(QString addy, int protocol, int baudrate) {
+    qDebug() << "[SalorJsApi]" << "[weigh]" << "Called with path" << addy << ", protocol" << protocol << ", baudrate" << baudrate;
+    QString weight;
+    Scale *sc = new Scale(addy, protocol, baudrate);
+    weight = sc->read();
+    return weight;
 }
 
 void SalorJsApi::cuteWriteData(QString data) {

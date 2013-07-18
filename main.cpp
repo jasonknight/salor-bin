@@ -44,13 +44,6 @@ QSettings *settings = new QSettings(PathSettings, QSettings::IniFormat);
 
 
 void help() {
-    std::cout << "Usage:\n";
-    std::cout << "\tsalor -[uh] [value]\n";
-    std::cout << "Example: \n";
-    std::cout << "\tsalor -u http://localhost:3000\n";
-    std::cout << "\tRunning salor with no arguments will load http://salor\n";
-    std::cout << "\tOther arguments could be: salor -u http://salortrainer\n";
-    exit(0);
     return;
 }
 
@@ -59,9 +52,13 @@ void myMessageOutput(QtMsgType type, const char *msg)
     QFile f(PathLog);
     f.open(QIODevice::Append);
     QDataStream out(&f);
-    out << msg << "\n";
-    f.close();
 
+    QDateTime datetime = QDateTime::currentDateTime();
+    QString timestamp = datetime.toString("yyyyMMddHHmmss");
+
+    out << timestamp << msg << "\n";
+
+    /*
      //in this function, you can write the message to any stream!
      switch (type) {
      case QtDebugMsg:
@@ -77,7 +74,17 @@ void myMessageOutput(QtMsgType type, const char *msg)
          fprintf(stderr, "Fatal: %s\n", msg);
          abort();
      }
+     */
+
+     f.close();
  }
+
+void purgeLogfile() {
+    qDebug() << "Truncating Logfile";
+    QFile f(PathLog);
+    f.open(QFile::WriteOnly|QFile::Truncate);
+    f.close();
+}
 
 
 int main(int argc, char *argv[])
@@ -88,6 +95,10 @@ int main(int argc, char *argv[])
     QString arg;
     bool fullscreen = false;
     QVariant url;
+
+#ifdef WINDOWS
+    purgeLogfile();
+#endif
 
     // go to default URL if none specified in .ini file
     url = _get("url");
