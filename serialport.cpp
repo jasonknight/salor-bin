@@ -4,6 +4,7 @@
 Serialport::Serialport(QString path, int baudrate) :
     QObject()
 {
+#ifdef LINUX
     m_path = path;
 
     switch(baudrate) {
@@ -81,6 +82,48 @@ Serialport::Serialport(QString path, int baudrate) :
         qDebug() << "[Serialport]" << "[initialize]" << "Invalid baudrate" << baudrate << ". Defaulting to 9600.";
         break;
     }
+#endif
+#ifdef WIN32
+    m_path = "\\\\.\\";
+    m_path.append(path);
+    switch(baudrate)
+     {
+       case     110 : strcpy(m_baudrate, "baud=110 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case     300 : strcpy(m_baudrate, "baud=300 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case     600 : strcpy(m_baudrate, "baud=600 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case    1200 : strcpy(m_baudrate, "baud=1200 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case    2400 : strcpy(m_baudrate, "baud=2400 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case    4800 : strcpy(m_baudrate, "baud=4800 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case    9600 : strcpy(m_baudrate, "baud=9600 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case   19200 : strcpy(m_baudrate, "baud=19200 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case   38400 : strcpy(m_baudrate, "baud=38400 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case   57600 : strcpy(m_baudrate, "baud=57600 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case  115200 : strcpy(m_baudrate, "baud=115200 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case  128000 : strcpy(m_baudrate, "baud=128000 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case  256000 : strcpy(m_baudrate, "baud=256000 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case  500000 : strcpy(m_baudrate, "baud=500000 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       case 1000000 : strcpy(m_baudrate, "baud=1000000 data=8 parity=N stop=1 dtr=on rts=on");
+                      break;
+       default      : strcpy(m_baudrate, "baud=9600 data=8 parity=N stop=1 dtr=on rts=on");
+                      qDebug() << "[Serialport]" << "[initialize]" << "Invalid baudrate" << baudrate << ". Defaulting to 9600.";
+                      break;
+     }
+    qDebug() << "[Serialport]" << "[initialize]" << "Initialization done. m_fd is" << m_fd << ", m_path is" << m_path;
+#endif
 }
 
 int Serialport::open() {
@@ -194,8 +237,54 @@ int Serialport::open() {
     }
 
 #endif
-#ifdef WIN32
-    // TODO
+#ifdef WINDOWS
+    const char *comport;
+    comport = m_path.toLocal8Bit().data();
+    m_fd = CreateFileA(
+                comport,
+                GENERIC_READ|GENERIC_WRITE,
+                0,                          /* no share  */
+                NULL,                       /* no security */
+                OPEN_EXISTING,
+                0,                          /* no threads */
+                NULL                        /* no templates */
+                );
+    if (m_fd == INVALID_HANDLE_VALUE) {
+        qDebug() << "[Serialport]" << "[open]" << "Unable to open" << m_path;
+        return(-99);
+    }
+
+    DCB port_settings;
+    memset(&port_settings, 0, sizeof(port_settings));  /* clear the new struct  */
+    port_settings.DCBlength = sizeof(port_settings);
+
+    if ( !BuildCommDCBA(m_baudrate, &port_settings) ) {
+        qDebug() << "unable to set comport dcb settings. Closing m_fd.";
+        close();
+        return(-98);
+    }
+
+    if ( !SetCommState(m_fd, &port_settings) ) {
+       qDebug() << "unable to set comport cfg settings. closing m_fd";
+       close();
+       return(-97);
+     }
+
+     COMMTIMEOUTS Cptimeouts;
+
+     Cptimeouts.ReadIntervalTimeout         = MAXDWORD;
+     Cptimeouts.ReadTotalTimeoutMultiplier  = 0;
+     Cptimeouts.ReadTotalTimeoutConstant    = 0;
+     Cptimeouts.WriteTotalTimeoutMultiplier = 0;
+     Cptimeouts.WriteTotalTimeoutConstant   = 0;
+
+     if(!SetCommTimeouts(m_fd, &Cptimeouts))
+     {
+       qDebug() << "unable to set comport time-out settings. closing m_fd";
+       close();
+       return(-96);
+     }
+
 #endif
     qDebug() << "[Serialport]" << "[open]" << "Finished.";
 }
@@ -203,10 +292,12 @@ int Serialport::open() {
 
 // POSIX, modern way of setting O_NONBLOCK. This breaks WRITE() to USB nodes. Nonblock is only useful for READ().
 void Serialport::setNonblock() {
+#ifdef LINUX
     qDebug() << "[Serialport]" << "[setNonblock]";
     if ( fcntl(m_fd, F_SETFL, O_NONBLOCK) < 0 ) {
         qDebug() << "[Serialport]" << "[setNonblock]" << "fcntl() F_SETFL O_NONBLOCK failed with Error:" << strerror(errno);
     }
+#endif
 }
 
 int Serialport::close() {
@@ -217,12 +308,13 @@ int Serialport::close() {
     }
 #endif
 #ifdef WIN32
-    // TODO
+    CloseHandle(m_fd);
 #endif
     qDebug() << "[Serialport]" << "[close]" << "Finished";
 }
 
 int Serialport::write(QByteArray bytes) {
+#ifdef LINUX
     ssize_t written_bytes;
     size_t length;
     const char *constdata;
@@ -234,6 +326,18 @@ int Serialport::write(QByteArray bytes) {
     if ( written_bytes < 0 ) {
         qDebug() << "[Serialport]" << "[write]" << "Writing failed with Error:" << strerror(errno);
     }
+
+#endif
+#ifdef WINDOWS
+    int written_bytes;
+    const char *constdata;
+    int length;
+
+    length = bytes.size();
+    constdata = bytes.constData();
+
+    WriteFile(m_fd, constdata, length, (LPDWORD)((void *)&written_bytes), NULL);
+#endif
     qDebug() << "[Serialport]" << "[write]" << "Wrote" << written_bytes << "bytes out of" << bytes.size() << "bytes which were in hex" << bytes.left(10).toHex();
     return written_bytes;
 }
@@ -241,15 +345,23 @@ int Serialport::write(QByteArray bytes) {
 
 QByteArray Serialport::read() {
     char buf[7] = {"\0"};
+    int size;
     int count;
     QByteArray bytes;
 
-    count = ::read(m_fd, &buf, 7);
+    size = 7;
+#ifdef LINUX
+    count = ::read(m_fd, &buf, size);
     if ( count < 0 ) {
         qDebug() << "[Serialport]" << "[read]" << "read() failed with errno" << errno << ", Error:" << strerror(errno);
         return "Error";
     }
-    bytes = QByteArray(buf, 7);
+#endif
+#ifdef WINDOWS
+    ReadFile(m_fd, buf, size, (LPDWORD)((void *)&count), NULL);
+#endif
+
+    bytes = QByteArray(buf, size);
     qDebug() << "[Serialport]" << "[read]" << "Read" << count << "bytes which were" << QString(bytes) << "or in hex" << bytes.toHex();
     return bytes;
 }

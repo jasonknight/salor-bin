@@ -54,8 +54,12 @@ void SalorPrinter::print(QByteArray printdata) {
         return;
     }
 
+    if (printdata.size() < 3) {
+        return;
+    }
+
 #ifdef LINUX
-    qDebug() << "[SalorPrinter]" << "[print]" << "Printing to a serial port" << m_printer;
+    qDebug() << "[SalorPrinter]" << "[print]" << "Printing to serial port" << m_printer;
     m_serialport->open();
     m_serialport->write(printdata);
     m_serialport->close();
@@ -78,48 +82,58 @@ void SalorPrinter::print(QByteArray printdata) {
     }
 #endif
 #ifdef WIN32
-    BOOL       bStatus = FALSE;
-    DOC_INFO_1 DocInfo;
-    DWORD      dwJob = 0L;
-    DWORD      dwBytesWritten = 0L;
-    HANDLE     hPrinter;
-    wchar_t * name = new wchar_t[m_printer.length()+1];
-    m_printer.toWCharArray(name);
-    name[m_printer.length()] = 0;
-    bStatus = OpenPrinter(name,&hPrinter, NULL);
+    if (m_printer.indexOf("COM") != -1 ) {
+        qDebug() << "[SalorPrinter]" << "[print]" << "Printing to serial port" << m_printer;
+        m_serialport->open();
+        m_serialport->write(printdata);
+        m_serialport->close();
 
-    if (bStatus) {
-        DocInfo.pDocName = L"My Document";
-        DocInfo.pOutputFile = NULL;
-        DocInfo.pDatatype = L"RAW";
-        dwJob = StartDocPrinter( hPrinter, 1, (LPBYTE)&DocInfo );
-        if (dwJob > 0) {
-            bStatus = StartPagePrinter(hPrinter);
-            if (bStatus) {
-                bStatus = WritePrinter(hPrinter, printdata.data(), printdata.length(),&dwBytesWritten);
-                EndPagePrinter(hPrinter);
-                //qDebug() << "Page Ended";
+    } else {
+        qDebug() << "[SalorPrinter]" << "[print]" << "Printing to system printer" << m_printer;
+
+        BOOL       bStatus = FALSE;
+        DOC_INFO_1 DocInfo;
+        DWORD      dwJob = 0L;
+        DWORD      dwBytesWritten = 0L;
+        HANDLE     hPrinter;
+        wchar_t * name = new wchar_t[m_printer.length()+1];
+        m_printer.toWCharArray(name);
+        name[m_printer.length()] = 0;
+        bStatus = OpenPrinter(name,&hPrinter, NULL);
+
+        if (bStatus) {
+            DocInfo.pDocName = L"My Document";
+            DocInfo.pOutputFile = NULL;
+            DocInfo.pDatatype = L"RAW";
+            dwJob = StartDocPrinter( hPrinter, 1, (LPBYTE)&DocInfo );
+            if (dwJob > 0) {
+                bStatus = StartPagePrinter(hPrinter);
+                if (bStatus) {
+                    bStatus = WritePrinter(hPrinter, printdata.data(), printdata.length(),&dwBytesWritten);
+                    EndPagePrinter(hPrinter);
+                    //qDebug() << "Page Ended";
+                } else {
+                    qDebug() << "could not start printer";
+                }
+                EndDocPrinter(hPrinter);
             } else {
-                qDebug() << "could not start printer";
+                qDebug() << "Couldn't create job";
             }
-            EndDocPrinter(hPrinter);
+            ClosePrinter(hPrinter);
         } else {
-            qDebug() << "Couldn't create job";
+            DWORD dw = GetLastError();
+            qDebug() << "Could not open printer";
+            qDebug() << QString::number(dw);
+            //display_last_error(dw);
         }
-        ClosePrinter(hPrinter);
-    } else {
-        DWORD dw = GetLastError();
-        qDebug() << "Could not open printer";
-        qDebug() << QString::number(dw);
-        //display_last_error(dw);
-    }
-    if (dwBytesWritten != printdata.length()) {
-        DWORD dw = GetLastError();
-        qDebug() << "Wrong number of bytes";
-        qDebug() << QString::number(dw);
-        //display_last_error(dw);
-    } else {
-        //qDebug() << " Bytes were written";
+        if (dwBytesWritten != printdata.length()) {
+            DWORD dw = GetLastError();
+            qDebug() << "Wrong number of bytes";
+            qDebug() << QString::number(dw);
+            //display_last_error(dw);
+        } else {
+            //qDebug() << " Bytes were written";
+        }
     }
 #endif
     printed();

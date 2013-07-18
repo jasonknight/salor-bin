@@ -50,28 +50,40 @@ void SalorJsApi::printPage() {
 }
 
 void SalorJsApi::newOpenCashDrawer(QString addy, int baudrate) {
-#ifdef LINUX
     QByteArray openCode;
-    Serialport *serialport;
-    int count;
+    //Serialport *serialport;
+    //int count;
 
     openCode = QByteArray("\x1B\x70\x30\x55\x55");
-
+    SalorPrinter *salorprinter;
+    salorprinter = new SalorPrinter(this, networkManager, addy, baudrate);
+    salorprinter->print(openCode);
+    /*
     serialport = new Serialport(addy, baudrate);
     serialport->open();
     count = serialport->write(openCode);
     serialport->close();
     serialport->deleteLater();
+    */
 
-    qDebug() << "[SalorJsApi]" << "[newOpenCashDrawer]" << "Wrote" << count << "bytes to" << addy;
-#endif
+    qDebug() << "[SalorJsApi]" << "[newOpenCashDrawer]";
 }
 
 void SalorJsApi::startDrawerObserver(QString path, int baudrate) {
     qDebug() << "[SalorJsApi]" << "[startDrawerObserver] Beginning with argument" << path << ", baudrate" << baudrate;
 
-    if (path.indexOf("usb") != -1 ) {
-        // USB printers need the loop/thread method, since QSocketNotifer doesn't work on USB device nodes
+    if (path.indexOf("tty") != -1 ) {
+        // real RS232 ports work with QNetworkNotifer which is a more elegant solution
+        if ( drawerObserver ) {
+          qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerObserver already existing. Doing nothing.";
+          return;
+        }
+        drawerObserver = new DrawerObserver(path, baudrate);
+        connect(drawerObserver, SIGNAL(drawerCloseDetected()), this, SLOT(drawerCloseDetected()));
+        drawerObserver->startWithNotifier();
+
+    } else if ( path.indexOf("COM") != -1 || path.indexOf("usb") != -1 ) {
+        // USB printers need the loop/thread method, since QSocketNotifer doesn't work on USB device nodes in Linux, nor with HANDLE file descriptors in Windows.
         if ( drawerThread ) {
           qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerThread already existing. Doing nothing.";
           return;
@@ -90,21 +102,14 @@ void SalorJsApi::startDrawerObserver(QString path, int baudrate) {
         drawerThread->quit(); // this will finish the thread AFTER the while loop of the start method has finished.
 
     } else {
-        // real RS232 ports work with QNetworkNotifer which is a more elegant solution
-        if ( drawerObserver ) {
-          qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerObserver already existing. Doing nothing.";
-          return;
-        }
-        drawerObserver = new DrawerObserver(path, baudrate);
-        connect(drawerObserver, SIGNAL(drawerCloseDetected()), this, SLOT(drawerCloseDetected()));
-        drawerObserver->startWithNotifier();
+        qDebug() << "[SalorJsApi]" << "[startDrawerObserver]" << "Drawer close detection not supported for device" << path;
     }
     qDebug() << "[SalorJsApi]" << "[startDrawerObserver]" << "Finished";
 }
 
 void SalorJsApi::stopDrawerObserver() {
+    qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]";
     if ( drawerObserver ) {
-
         if (drawerObserver->mPath.indexOf("usb") != -1 ) {
             qDebug() << "[SalorJsApi]" << "[stopDrawerObserver]" << "Setting member variable doStop to true to break the thread loop.";
             drawerObserver->doStop = true;

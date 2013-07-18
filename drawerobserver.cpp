@@ -95,8 +95,14 @@ void DrawerObserver::startWithNotifier() {
     count = mSerialport->write(opencode);
     qDebug() << "[DrawerObserver]" << "[startWithNotifier]" << "Wrote "  << count << " bytes to enable printer feedback.";
 
+#ifdef LINUX
     m_notifier = new QSocketNotifier(mSerialport->m_fd, QSocketNotifier::Read, this);
     connect(m_notifier, SIGNAL(activated(int)), this, SLOT(readData(int)));
+#endif
+#ifdef WINDOWS
+    // Windows does not support QSocketNotifier on a filedescriptor of type HANDLE void*
+#endif
+
 }
 
 
