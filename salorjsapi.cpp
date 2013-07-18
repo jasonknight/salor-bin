@@ -90,7 +90,7 @@ void SalorJsApi::startDrawerObserver(QString path, int baudrate) {
         drawerThread->quit(); // this will finish the thread AFTER the while loop of the start method has finished.
 
     } else {
-        // real serial ports work with QNetworkNotifer which is a more elegant solution
+        // real RS232 ports work with QNetworkNotifer which is a more elegant solution
         if ( drawerObserver ) {
           qDebug() << "[SalorJsApi]" << "[startDrawerObserver] drawerObserver already existing. Doing nothing.";
           return;
