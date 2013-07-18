@@ -10,27 +10,34 @@ class DrawerObserver : public QObject
 
 public:
     explicit DrawerObserver(QString path, int baudrate = 9600);
+    QString mPath;
+
+    // for loop method (USB)
     bool doStop;
     bool drawerClosed;
 
 private:
+    int mBaudrate;
+    Serialport *mSerialport;
+
+    // for notifier method (RS232)
+    QSocketNotifier *m_notifier;
     bool mdrawerClosed;
     bool mdrawerOpened;
-    QString mPath;
-    int mBaudrate;
-    QSocketNotifier *m_notifier;
-    Serialport *mSerialport;
+
 
 protected:
     void openDevice();
     void closeDevice();
     
 private slots:
-    //void readData(int);
+    void readData(int);
 
 public slots:
-    void start();
-    void stop();
+    void startWithLoop();
+
+    void startWithNotifier();
+    void stopWithNotifier();
 
 signals:
     void drawerCloseDetected();

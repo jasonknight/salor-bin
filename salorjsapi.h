@@ -41,6 +41,7 @@ public slots:
     void _cuteBubbleDataRead(QString data);
     QString weigh(QString addy, int protocol, int baudrate = 9600);
     void drawerThreadFinished();
+    void drawerCloseDetected();
     
 };
 

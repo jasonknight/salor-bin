@@ -6,77 +6,11 @@ DrawerObserver::DrawerObserver(QString path, int baudrate) :
     QObject()
 {
     mPath = path;
-    mSerialport = 0;
+    mSerialport = NULL;
     mdrawerClosed = false;
     mdrawerOpened = false;
     mBaudrate = baudrate;
-}
-
-void DrawerObserver::start() {
-    qDebug() << "[DrawerObserver]" << "[start]";
-
-    int count;
-    int close_after_seconds = 30;
-    int i = 0;
-    int j = 0;
-    bool drawer_was_open = false;
-    QByteArray readbuf;
-    QByteArray closedCode = "\x14";
-    QByteArray openedCode = "\x10";
-
-    openDevice();
-    doStop = false;
-    drawerClosed = false;
-
-
-    QByteArray opencode = "\x1D\x61\x01";
-    count = mSerialport->write(opencode);
-    qDebug() << "[DrawerObserver]" << "[start]" << "Wrote "  << count << " bytes to enable printer feedback.";
-
-
-    mSerialport->setNonblock();
-
-    while (i < (2 * close_after_seconds) && !doStop) {
-        i += 1;
-
-        readbuf = mSerialport->read();
-
-        if (drawer_was_open) {
-            if (readbuf.indexOf(closedCode) != -1) {
-                drawerClosed = true;
-                qDebug() << "[DrawerObserver]" << "[start]" << "Closed drawer detected.";
-            }
-            qDebug() << "[DrawerObserver]" << "[start]" << (5*close_after_seconds-i) << "Waiting for Drawer close." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
-        } else {
-            if (readbuf.indexOf(openedCode) != -1) {
-                drawer_was_open = true;
-                qDebug() << "[DrawerObserver]" << "[start]" << "Open drawer detected.";
-            }
-            qDebug() << "[DrawerObserver]" << "[start]" << (5*close_after_seconds-i) << "Waiting for Drawer open." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
-        }
-
-        if (doStop || drawerClosed) {
-            qDebug() << "[DrawerObserver]" << "[start]" << "Finishing thread by halting this loop.";
-            break;
-        }
-        usleep(250000);
-    }
-    closeDevice();
-    qDebug() << "[DrawerObserver]" << "[start]" << "Closed device.";
-
-
-    //m_notifier = new QSocketNotifier(mSerialport->m_fd, QSocketNotifier::Read, this);
-    //connect(m_notifier, SIGNAL(activated(int)), this, SLOT(readData(int)));
-}
-
-void DrawerObserver::stop() {
-    /*
-    qDebug() << "[DrawerObserver]" << "[stop]";
-    m_notifier->setEnabled(false);
-    m_notifier->deleteLater();
-    //m_notifier = 0;
-    closeDevice();
-    */
+    m_notifier = NULL;
 }
 
 void DrawerObserver::openDevice() {
@@ -100,7 +34,81 @@ void DrawerObserver::closeDevice() {
     }
 }
 
-/*
+void DrawerObserver::startWithLoop() {
+    qDebug() << "[DrawerObserver]" << "[startWithLoop]";
+
+    int count;
+    int close_after_seconds = 30;
+    int i = 0;
+    int j = 0;
+    bool drawer_was_open = false;
+    QByteArray readbuf;
+    QByteArray closedCode = "\x14";
+    QByteArray openedCode = "\x10";
+
+    openDevice();
+    doStop = false;
+    drawerClosed = false;
+
+    QByteArray opencode = "\x1D\x61\x01";
+    count = mSerialport->write(opencode);
+    qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Wrote "  << count << " bytes to enable printer feedback.";
+
+
+    mSerialport->setNonblock();
+
+    while (i < (2 * close_after_seconds) && !doStop) {
+        i += 1;
+
+        readbuf = mSerialport->read();
+
+        if (drawer_was_open) {
+            if (readbuf.indexOf(closedCode) != -1) {
+                drawerClosed = true;
+                qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Closed drawer detected.";
+            }
+            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << (5*close_after_seconds-i) << "Waiting for Drawer close." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
+        } else {
+            if (readbuf.indexOf(openedCode) != -1) {
+                drawer_was_open = true;
+                qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Open drawer detected.";
+            }
+            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << (5*close_after_seconds-i) << "Waiting for Drawer open." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
+        }
+
+        if (doStop || drawerClosed) {
+            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Finishing thread by halting this loop.";
+            break;
+        }
+        usleep(250000);
+    }
+    closeDevice();
+    qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Finished.";
+}
+
+
+void DrawerObserver::startWithNotifier() {
+    int count;
+    QByteArray opencode = "\x1D\x61\x01";
+
+    openDevice();
+    count = mSerialport->write(opencode);
+    qDebug() << "[DrawerObserver]" << "[startWithNotifier]" << "Wrote "  << count << " bytes to enable printer feedback.";
+
+    m_notifier = new QSocketNotifier(mSerialport->m_fd, QSocketNotifier::Read, this);
+    connect(m_notifier, SIGNAL(activated(int)), this, SLOT(readData(int)));
+}
+
+
+void DrawerObserver::stopWithNotifier() {
+    qDebug() << "[DrawerObserver]" << "[stopWithNotifier]";
+    m_notifier->setEnabled(false);
+    m_notifier->deleteLater();
+    m_notifier = NULL;
+    closeDevice();
+}
+
+
 void DrawerObserver::readData(int fd) {
     QByteArray closedCode = "\x14";
     QByteArray openedCode = "\x10";
@@ -124,8 +132,7 @@ void DrawerObserver::readData(int fd) {
     if (mdrawerOpened == true && printerFeedback.indexOf(closedCode) != -1) {
         qDebug() << "[DrawerObserver] [readData] Closed Drawer detected after it was open. Stopping.";
         mdrawerClosed = true;
-        stop();
+        stopWithNotifier();
         emit drawerCloseDetected();
     }
 }
-*/
