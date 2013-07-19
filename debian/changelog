@@ -1,3 +1,10 @@
+salor-bin (2.6.3-1wheezy) wheezy; urgency=low
+
+  * COM ports listed for Windows
+  * re-added console output
+
+ -- Michael Franzl <office@michaelfranzl.com>  Fri, 19 Jul 2013 07:22:22 +0200
+
 salor-bin (2.6.1-1wheezy) wheezy; urgency=low
 
   * more open/close/read/write consolidation
