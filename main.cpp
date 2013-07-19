@@ -58,25 +58,23 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
     out << timestamp << msg << "\n";
 
-    /*
-     //in this function, you can write the message to any stream!
-     switch (type) {
-     case QtDebugMsg:
-         fprintf(stderr, "Debug: %s\n", msg);
-         break;
-     case QtWarningMsg:
-         fprintf(stderr, "Warning: %s\n", msg);
-         break;
-     case QtCriticalMsg:
-         fprintf(stderr, "Critical: %s\n", msg);
-         break;
-     case QtFatalMsg:
-         fprintf(stderr, "Fatal: %s\n", msg);
-         abort();
-     }
-     */
+    //in this function, you can write the message to any stream!
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s\n", msg);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s\n", msg);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s\n", msg);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s\n", msg);
+        abort();
+    }
 
-     f.close();
+    f.close();
  }
 
 void purgeLogfile() {
