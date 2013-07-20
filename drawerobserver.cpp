@@ -38,7 +38,10 @@ void DrawerObserver::startWithLoop() {
     qDebug() << "[DrawerObserver]" << "[startWithLoop]";
 
     int count;
-    int close_after_seconds = 30;
+    int stop_after_seconds;
+    int usleep_time;
+    int loopcount;
+    int countdown;
     int i = 0;
     int j = 0;
     bool drawer_was_open = false;
@@ -46,10 +49,14 @@ void DrawerObserver::startWithLoop() {
     QByteArray closedCode = "\x14";
     QByteArray openedCode = "\x10";
 
+    stop_after_seconds = 30;
+    usleep_time = 250000;
+    loopcount = 1000000 * 30 / 250000;
+
     openDevice();
 
     if(mSerialport->m_fd < 0) {
-        qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Error: Serialports file descriptor is invalid" << mSerialport->m_fd;
+        qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Error: Serialport file descriptor is invalid" << mSerialport->m_fd;
         return;
     }
 
@@ -63,8 +70,9 @@ void DrawerObserver::startWithLoop() {
 
     mSerialport->setNonblock();
 
-    while (i < (2 * close_after_seconds) && !doStop) {
+    while (i < loopcount && !doStop) {
         i += 1;
+        countdown = stop_after_seconds * (loopcount - i) / loopcount;
 
         readbuf = mSerialport->read();
 
@@ -73,13 +81,13 @@ void DrawerObserver::startWithLoop() {
                 drawerClosed = true;
                 qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Closed drawer detected.";
             }
-            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << (5*close_after_seconds-i) << "Waiting for Drawer close." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
+            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << countdown << "Waiting for Drawer close." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
         } else {
             if (readbuf.indexOf(openedCode) != -1) {
                 drawer_was_open = true;
                 qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Open drawer detected.";
             }
-            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << (5*close_after_seconds-i) << "Waiting for Drawer open." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
+            qDebug() << "[DrawerObserver]" << "[startWithLoop]" << countdown << "Waiting for Drawer open." << readbuf.size() << "bytes read, in hex: " << readbuf.toHex();
         }
 
         if (doStop || drawerClosed) {
