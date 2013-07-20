@@ -51,8 +51,24 @@
   <span class="button" onclick="start_drawer_observer();">Start DrawerObserver</span>
   <span class="button" onclick="stop_drawer_observer();">Stop DrawerObserver</span>
   <div><b>Drawer Status:</b> <span id='drawerstatus'>&nbsp;</span></div>
-  
 
+  
+  <hr />
+  <h2>Sounds</h2>
+  <span class="button" onclick="Salor.playSound('beep1');">beep1</span>
+  <span class="button" onclick="Salor.playSound('big_warning');">big_warning</span>
+  <span class="button" onclick="Salor.playSound('complete');">playing complete</span>
+  <span class="button" onclick="Salor.playSound('drop1');">drop1</span>
+  <span class="button" onclick="Salor.playSound('drop2');">drop2</span>
+  <span class="button" onclick="Salor.playSound('drop3');">drop3</span>
+  <span class="button" onclick="Salor.playSound('medium_warning');">medium_warning</span>
+  <span class="button" onclick="Salor.playSound('notice');">notice</span>
+  
+  <hr />
+  <h2>Scale functions</h2>
+  <p><label for="scalePath">Scale</label><input id='scalePath' value="/dev/ttyUSB0"></input></p>
+  <span class="button" onclick="weigh();">Weigh!</span>
+  <div><b>Weight:</b> <span id='weight'>&nbsp;</span></div>
   
   <hr />
   <h2>Customer Display functions (Linux only)</h2>
@@ -64,28 +80,9 @@
   <span class="button" onclick="Salor.mimoRefresh('http://red-e.eu',800,400);">Screenshot of http://red-e.eu</span>
   <span class="button" onclick="Salor.mimoImage('/usr/share/poledancer/startup.bmp',800,400);">Test Mimo BMP Image copy from poledancer</span>
   
-
-
   
   <hr />
-  <h2>Sounds (Windows and Linux)</h2>
-  <span class="button" onclick="Salor.playSound('beep1');">beep1</span>
-  <span class="button" onclick="Salor.playSound('big_warning');">big_warning</span>
-  <span class="button" onclick="Salor.playSound('complete');">playing complete</span>
-  <span class="button" onclick="Salor.playSound('drop1');">drop1</span>
-  <span class="button" onclick="Salor.playSound('drop2');">drop2</span>
-  <span class="button" onclick="Salor.playSound('drop3');">drop3</span>
-  <span class="button" onclick="Salor.playSound('medium_warning');">medium_warning</span>
-  <span class="button" onclick="Salor.playSound('notice');">notice</span>
-  
-  <hr />
-  <h2>Scale functions (Linux only)</h2>
-  <p><label for="scalePath">Scale</label><input id='scalePath' value="/dev/ttyUSB0"></input></p>
-  <span class="button" onclick="weigh();">Weigh!</span>
-  <div><b>Weight:</b> <span id='weight'>&nbsp;</span></div>
-  
-  <hr />
-  <h2>Other (Windows and Linux)</h2>
+  <h2>Other</h2>
   <span class="button" onclick="Salor.shutdown();">Shutdown</span>
 
 
