@@ -28,6 +28,7 @@ public:
     int counterPrint;
     int counterTcp;
     QString customerScreenId;
+    bool fullscreen;
     
 private:
     Ui::MainWindow *ui;

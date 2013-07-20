@@ -91,7 +91,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     QString arg;
-    bool fullscreen = false;
     QVariant url;
 
 #ifdef WINDOWS
@@ -106,6 +105,11 @@ int main(int argc, char *argv[])
         w.to_url = "http://documentation.red-e.eu";
     }
 
+    w.fullscreen = false;
+    if ( settings->value("kiosk").toString() == "true" ) {
+        w.fullscreen = true;
+    }
+
     for (int i = 1; i < argc; i++) {
         arg = QString(argv[i]);
 
@@ -115,8 +119,8 @@ int main(int argc, char *argv[])
         } else if (arg == "-h") {
             help();
         } else if (arg == "-w") {
-            qDebug() << "[main.cpp]" << " Setting fullscreen to true";
-            fullscreen = true;
+            qDebug() << "[main.cpp]" << "Inverting fullscreen setting";
+            w.fullscreen = ! w.fullscreen;
         } else if (arg == "--customerscreenid") {
             // acts as a customer screen
             w.customerScreenId = QString(argv[i + 1]);
@@ -127,7 +131,7 @@ int main(int argc, char *argv[])
     w.init();
 
     qDebug() << "[main.cpp]" << " Initialization complete.";
-    if (fullscreen == true || settings->value("kiosk").toString() == "true") {
+    if (w.fullscreen) {
         qDebug() << "[main.cpp]" << " Showing fullscreen.";
         w.showFullScreen();
     } else {

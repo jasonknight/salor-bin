@@ -15,12 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     qDebug() << "[MainWindow]" << "[Constructor] Contructing MainWindow Object.";
-    if (settings->value("kiosk").toString() == "true") {
-        setWindowFlags(Qt::FramelessWindowHint);
-        qDebug() << "[MainWindow]" << "[Constructor] Setting Qt::FramelessWindowHint";
-    }
 
-    //networkManager = new QNetworkAccessManager(this);
     networkManager = new SalorNetwork(this);
     qDebug() << "[MainWindow]" << "[Constructor] SalorNetwork instantiated.";
 
@@ -39,6 +34,11 @@ void MainWindow::init()
     qDebug() << "[MainWindow]" << "[init] Beginning.";
     shown = false;
     progress = 0;
+
+    if (fullscreen == true) {
+        setWindowFlags(Qt::FramelessWindowHint);
+        qDebug() << "[MainWindow]" << "[Constructor] Setting Qt::FramelessWindowHint";
+    }
 
     QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     QWebSettings::globalSettings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));

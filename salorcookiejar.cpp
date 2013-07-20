@@ -25,10 +25,10 @@ void SalorCookieJar::setup() {
     if (m_readonlyMode) {
         qDebug() << "SalorCookieJar::setup(): readonly mode: never writing any cookies, but loading them regularly from the cookiejar file";
         connect(&m_timer, SIGNAL(timeout()), this, SLOT(loadFromDisk()));
+        m_timer.start();
     } else {
         qDebug() << "SalorCookieJar::setup(): normal mode";
     }
-    m_timer.start();
 }
 
 bool SalorCookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url)
