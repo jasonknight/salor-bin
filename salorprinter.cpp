@@ -50,6 +50,7 @@ void SalorPrinter::printDataReady() {
 }
 
 void SalorPrinter::print(QByteArray printdata) {
+
     if (m_printer == "") {
         return;
     }
@@ -61,7 +62,15 @@ void SalorPrinter::print(QByteArray printdata) {
 
 #ifdef LINUX
     qDebug() << "[SalorPrinter]" << "[print]" << "Printing to serial port" << m_printer;
-    m_serialport->open();
+
+    int fd;
+    fd = m_serialport->open();
+
+    if(fd < 0) {
+        qDebug() << "[SalorPrinter]" << "[print]" << "Error: Serialport returned file descriptor" << fd;
+        return;
+    }
+
     m_serialport->write(printdata);
     m_serialport->close();
 #endif

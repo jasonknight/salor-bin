@@ -47,6 +47,12 @@ void DrawerObserver::startWithLoop() {
     QByteArray openedCode = "\x10";
 
     openDevice();
+
+    if(mSerialport->m_fd < 0) {
+        qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Error: Serialports file descriptor is invalid" << fd;
+        return;
+    }
+
     doStop = false;
     drawerClosed = false;
 

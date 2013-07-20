@@ -265,28 +265,28 @@ int Serialport::open() {
     }
 
     if ( !SetCommState(m_fd, &port_settings) ) {
-       qDebug() << "unable to set comport cfg settings. closing m_fd";
-       close();
-       return(-97);
-     }
+        qDebug() << "unable to set comport cfg settings. closing m_fd";
+        close();
+        return(-97);
+    }
 
-     COMMTIMEOUTS Cptimeouts;
+    COMMTIMEOUTS Cptimeouts;
 
-     Cptimeouts.ReadIntervalTimeout         = MAXDWORD;
-     Cptimeouts.ReadTotalTimeoutMultiplier  = 0;
-     Cptimeouts.ReadTotalTimeoutConstant    = 0;
-     Cptimeouts.WriteTotalTimeoutMultiplier = 0;
-     Cptimeouts.WriteTotalTimeoutConstant   = 0;
+    Cptimeouts.ReadIntervalTimeout         = MAXDWORD;
+    Cptimeouts.ReadTotalTimeoutMultiplier  = 0;
+    Cptimeouts.ReadTotalTimeoutConstant    = 0;
+    Cptimeouts.WriteTotalTimeoutMultiplier = 0;
+    Cptimeouts.WriteTotalTimeoutConstant   = 0;
 
-     if(!SetCommTimeouts(m_fd, &Cptimeouts))
-     {
-       qDebug() << "unable to set comport time-out settings. closing m_fd";
-       close();
-       return(-96);
-     }
+    if(!SetCommTimeouts(m_fd, &Cptimeouts)) {
+        qDebug() << "unable to set comport time-out settings. closing m_fd";
+        close();
+        return(-96);
+    }
 
 #endif
     qDebug() << "[Serialport]" << "[open]" << "Finished.";
+    return(m_fd);
 }
 
 
