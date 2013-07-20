@@ -49,7 +49,7 @@ void DrawerObserver::startWithLoop() {
     openDevice();
 
     if(mSerialport->m_fd < 0) {
-        qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Error: Serialports file descriptor is invalid" << fd;
+        qDebug() << "[DrawerObserver]" << "[startWithLoop]" << "Error: Serialports file descriptor is invalid" << mSerialport->m_fd;
         return;
     }
 
