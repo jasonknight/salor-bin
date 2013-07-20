@@ -1,3 +1,9 @@
+salor-bin (2.6.4-1wheezy) wheezy; urgency=low
+
+  * return value for serialport open()
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sat, 20 Jul 2013 07:26:52 +0200
+
 salor-bin (2.6.3-1wheezy) wheezy; urgency=low
 
   * COM ports listed for Windows
