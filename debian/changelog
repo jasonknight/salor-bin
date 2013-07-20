@@ -1,3 +1,9 @@
+salor-bin (2.6.6-1wheezy) wheezy; urgency=low
+
+  * fullscreen inversion, longer drawer observer interval
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sat, 20 Jul 2013 09:07:43 +0200
+
 salor-bin (2.6.5-1wheezy) wheezy; urgency=low
 
   * return value for serialport open()
