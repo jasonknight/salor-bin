@@ -193,7 +193,7 @@ void SalorJsApi::poleDancer(QString path, QString message, int baudrate) {
 /* output screenshot of url */
 void SalorJsApi::mimoRefresh(QString path,int h, int w) {
     qDebug() << "calling mimoRefresh";
-    CustomerScreen *cs = new CustomerScreen(this);
+    CustomerScreen *cs = new CustomerScreen(this, networkManager);
     cs->refresh(path, h, w);
     qDebug() << "[SalorJsApi]" << "[mimoRefresh] Ending.";
 }
