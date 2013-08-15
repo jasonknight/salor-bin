@@ -146,5 +146,6 @@ void SalorPage::setAttribute(QWebSettings::WebAttribute option,
 
 
 void SalorPage::setSalorCapture(SalorCapture* SalorCapture) {
-  mSalorCapture = SalorCapture;
+    qDebug() << "[SalorPage]" << "[setSalorCapture]" << "Called.";
+    mSalorCapture = SalorCapture;
 }

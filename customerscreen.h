@@ -14,7 +14,7 @@ class CustomerScreen : public QObject
 {
     Q_OBJECT
 public:
-    explicit CustomerScreen(QObject *parent = 0);
+    explicit CustomerScreen(QObject *parent = 0, QNetworkAccessManager *nm = 0);
     ~CustomerScreen();
     QPicture * background;
     QPicture * screen;
@@ -22,6 +22,7 @@ public:
     SalorCapture * capt;
     QWebView * webView;
     SalorPage * page;
+    QNetworkAccessManager *m_manager;
     
 signals:
     void painted();

@@ -8,67 +8,72 @@ SalorCapture::SalorCapture(SalorPage* page,
                            int delay,
                            const QString& scriptProp,
                            const QString& scriptCode) {
-  mPage = page;
-  mOutput = output;
-  mDelay = delay;
-  mSawInitialLayout = false;
-  mSawDocumentComplete = false;
-  mScriptProp = scriptProp;
-  mScriptCode = scriptCode;
-  mScriptObj = new QObject();
 
-  qDebug() << "In SalorCapture";
-  mPage->setSalorCapture(this);
+    qDebug() << "[SalorCapture]" << "[Initializer]" << "Called.";
 
-  qDebug() << "setSalorCapture done";
+    mPage = page;
+    mOutput = output;
+    mDelay = delay;
+    mSawInitialLayout = false;
+    mSawDocumentComplete = false;
+    mScriptProp = scriptProp;
+    mScriptCode = scriptCode;
+    mScriptObj = new QObject();
+    mPage->setSalorCapture(this);
 }
 
 void SalorCapture::InitialLayoutCompleted() {
-    qDebug() << "in InitialLayoutCompleted";
-  mSawInitialLayout = true;
+    qDebug() << "[SalorCapture]" << "[InitialLayoutCompleted]" << "Called.";
+    /*
+    mSawInitialLayout = true;
 
-  if (mSawInitialLayout && mSawDocumentComplete)
-    TryDelayedRender();
+    if (mSawInitialLayout && mSawDocumentComplete) {
+        TryDelayedRender();
+    }
+    */
 }
 
 void SalorCapture::DocumentComplete(bool /*ok*/) {
-  qDebug() << "In DocumentComplete";
+    qDebug() << "[SalorCapture]" << "[DocumentComplete]" << "Called. Calling saveSnapshot().";
+    saveSnapshot();
+    /*
+    return;
+    mSawDocumentComplete = true;
 
-  saveSnapshot();
-  return;
-  mSawDocumentComplete = true;
-
-  if (mSawInitialLayout && mSawDocumentComplete)
+    if (mSawInitialLayout && mSawDocumentComplete)
     TryDelayedRender();
+    */
 }
 
 void SalorCapture::JavaScriptWindowObjectCleared() {
-
+    qDebug() << "[SalorCapture]" << "[JavaScriptWindowObjectCleared]" << "Called.";
 }
 
 void SalorCapture::TryDelayedRender() {
-    qDebug() << "TryDelayRender called";
-  if (!mPage->getAlertString().isEmpty())
-    return;
+    qDebug() << "[SalorCapture]" << "[TryDelayedRender]" << "Called.";
+    if (!mPage->getAlertString().isEmpty())
+        return;
 
-  if (mDelay > 0) {
-    QTimer::singleShot(mDelay, this, SLOT(Delayed()));
-    return;
-  }
+    if (mDelay > 0) {
+        QTimer::singleShot(mDelay, this, SLOT(Delayed()));
+        return;
+    }
 
-  saveSnapshot();
+    saveSnapshot();
 }
 
 void SalorCapture::Timeout() {
+    qDebug() << "[SalorCapture]" << "[Timeout]" << "Called.";
     saveSnapshot();
 }
 
 void SalorCapture::Delayed() {
+    qDebug() << "[SalorCapture]" << "[Delayed]" << "Called.";
     saveSnapshot();
 }
 
 void SalorCapture::saveSnapshot() {
-    qDebug() << "saveSnapshot was called";
+    qDebug() << "[SalorCapture]" << "[saveSnapshot]" << "Called.";
     QWebFrame *mainFrame = mPage->mainFrame();
 
     QSize size(800,480);
@@ -77,24 +82,24 @@ void SalorCapture::saveSnapshot() {
     mPage->setViewportSize(size); //mainFrame->contentsSize()
     QImage image(size, QImage::Format_ARGB32); // mPage->viewportSize()
 
+    qDebug() << "[SalorCapture]" << "[saveSnapshot]" << "Painting.";
     QPainter painter;
     painter.begin(&image);
     mainFrame->render(&painter);
     painter.end();
 
-    // Here is where we hook in.
-    qDebug() << "Saving to: " << mOutput;
+    qDebug() << "[SalorCapture]" << "[saveSnapshot]" << "Saving image to" << mOutput;
     image.save(mOutput, "bmp");
-    SalorProcess *sp = new SalorProcess(this);
-    qDebug() << "Running poledancer";
-    sp->run("poledancer",QStringList() << "-dlo" <<  mOutput,2000);
 
+    qDebug() << "[SalorCapture]" << "[saveSnapshot]" << "Instantiating SalorProcess for running poledancer";
+    SalorProcess *sp = new SalorProcess(this);
+    sp->run("poledancer", QStringList() << "-dlo" <<  mOutput, 2000);
     delete sp;
     emit done();
 }
 
 void SalorCapture::DocumentPrint() {
-    qDebug() << "DocumentPrint was called";
+    qDebug() << "[SalorCapture]" << "[DocumentPrint]" << "Called";
     QWebFrame *mainFrame = mPage->mainFrame();
 
     QSize size(800,480);
