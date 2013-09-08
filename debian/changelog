@@ -1,3 +1,9 @@
+salor-bin (2.6.7-1wheezz) wheezy; urgency=low
+
+  * build
+
+ -- Michael Franzl <office@michaelfranzl.com>  Sun, 08 Sep 2013 12:13:00 +0200
+
 salor-bin (2.6.7-1wheezy) wheezy; urgency=low
 
   * enabled cookies for customerscreen via salorcapture
