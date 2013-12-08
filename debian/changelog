@@ -1,11 +1,8 @@
-salor-bin (1.6.7-2wheezy) wheezy; urgency=low
+salor-bin (2.6.7-2wheezy) wheezy; urgency=low
 
-  * build
-  * build
-  * build
-  * build
+  * stuff
 
- -- Michael Franzl <office@michaelfranzl.com>  Sun, 08 Sep 2013 12:20:13 +0200
+ -- Michael Franzl <office@michaelfranzl.com>  Fri, 06 Sep 2013 17:00:51 +0200
 
 salor-bin (2.6.7-1wheezy) wheezy; urgency=low
 
