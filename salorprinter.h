@@ -13,7 +13,7 @@ class SalorPrinter : public QObject
     Q_OBJECT
 
 public:
-    explicit SalorPrinter(QObject *parent = 0, QNetworkAccessManager *nm = 0, QString printer = "", int baudrate = 9600);
+    explicit SalorPrinter(QObject *parent = 0, QNetworkAccessManager *nm = 0, QString printer = "", int baudrate = 9600, QString callback_js = "console.log('SalorPrinter done');");
 
 private:
     QNetworkAccessManager *m_manager;
@@ -22,6 +22,11 @@ private:
     bool auth_tried;
     QNetworkRequest *m_request;
     Serialport *m_serialport;
+    QString m_callback_js;
+
+signals:
+    void printingDone(QString evaluate_js);
+
 
 public slots:
     void printURL(QString url);

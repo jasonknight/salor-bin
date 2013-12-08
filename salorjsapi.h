@@ -34,7 +34,7 @@ public slots:
     void mimoRefresh(QString path, int h, int w);
     void mimoImage(QString imagepath);
     QStringList ls(QString path,QStringList filters);
-    void printURL(QString printer, QString url, QString confirm_url = "", int baudrate = 9600);
+    void printURL(QString printer, QString url, QString callback_js = "", int baudrate = 9600);
     void printText(QString printer, QString text, int baudrate = 9600);
     void shutdown();
     void cuteWriteData(QString);
@@ -42,6 +42,7 @@ public slots:
     QString weigh(QString addy, int protocol, int baudrate = 9600);
     void drawerThreadFinished();
     void drawerCloseDetected();
+    void evaluateJS(QString js);
     
 };
 

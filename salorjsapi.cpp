@@ -155,12 +155,20 @@ void SalorJsApi::drawerCloseDetected() {
     }
 }
 
-void SalorJsApi::printURL(QString printer, QString url, QString confirm_url, int baudrate) {
-    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer, baudrate);
+void SalorJsApi::printURL(QString printer, QString url, QString callback_js, int baudrate) {
+    qDebug() << "[SalorJsApi]" << "[printURL] Start.";
+    SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer, baudrate, callback_js);
     salorprinter->printURL(url);
+    connect(salorprinter, SIGNAL(printingDone(QString)), this, SLOT(evaluateJS(QString)));
     // printer will delete itself later
-    qDebug() << "[SalorJsApi]" << "[printURL] Ending.";
+    qDebug() << "[SalorJsApi]" << "[printURL] End.";
 }
+
+void SalorJsApi::evaluateJS(QString js) {
+    qDebug() << "[SalorJsApi]" << "[evaluateJS]" << "evaluating Javascript" << js;
+    webView->page()->mainFrame()->evaluateJavaScript(js);
+}
+
 
 void SalorJsApi::printText(QString printer, QString text, int baudrate) {
     SalorPrinter *salorprinter = new SalorPrinter(this, networkManager, printer, baudrate);

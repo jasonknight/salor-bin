@@ -5,13 +5,14 @@
 #include "winspool.h"
 #endif
 
-SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString printer, int baudrate) :
+SalorPrinter::SalorPrinter(QObject *parent, QNetworkAccessManager *nm, QString printer, int baudrate, QString callback_js) :
     QObject(parent)
 {
     auth_tried = false;
     m_printer = printer;
     m_manager = nm;
     m_serialport = new Serialport(printer, baudrate);
+    m_callback_js = callback_js;
 }
 
 void SalorPrinter::printURL(QString url) {
@@ -32,7 +33,7 @@ void SalorPrinter::onError(QNetworkReply::NetworkError error) {
 }
 
 void SalorPrinter::printDataReady() {
-    qDebug() << "SalorPrinter::printDataReady";
+    qDebug() << "[SalorPrinter]" << "[printDataReady]" << "called";
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     QVariant statusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute );
     int status = statusCode.toInt();
@@ -45,6 +46,10 @@ void SalorPrinter::printDataReady() {
         printdata = reply->readAll();
     }
     print(printdata);
+
+    qDebug() << "[SalorPrinter]" << "[printDataReady]" << "emitting signal 'printingDone' for evaluating callback JS" << m_callback_js;
+    emit printingDone(m_callback_js);
+
     reply->deleteLater(); // good practice according to the Qt documentation of QNetworkAccessManager
     qDebug() << "[SalorPrinter]" << "[printDataReady] Ending.";
 }
