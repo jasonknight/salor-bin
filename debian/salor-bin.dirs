@@ -1,0 +1,5 @@
+/usr/share/salor-bin
+/etc/salor-bin
+/var/log/salor-bin
+/var/cache/salor-bin
+/var/lib/salor-bin
