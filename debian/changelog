@@ -1,16 +1,4 @@
-salor-bin (2.6.7-2wheezz) wheezy; urgency=low
-
-  * added JS string callback evaluation for SalorPrinter
-  * build
-  * build
-  * build
-  * removed debian
-  * re-added debian dir
-  * cleaned changelog
-
- -- Michael Franzl <office@michaelfranzl.com>  Sun, 08 Dec 2013 15:15:15 +0100
-
-salor-bin (2.6.7-2wheezy) wheezy; urgency=low
+salor-bin (1.6.7-2wheezy) wheezy; urgency=low
 
   * build
   * build
