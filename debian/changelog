@@ -1,8 +1,9 @@
-salor-bin (2.6.8-1wheezy) wheezy; urgency=low
+salor-bin (2.6.7-2wheezz) wheezy; urgency=low
 
   * added JS string callback evaluation for SalorPrinter
+  * build
 
- -- Michael Franzl <office@michaelfranzl.com>  Sun, 08 Dec 2013 15:06:37 +0100
+ -- Michael Franzl <office@michaelfranzl.com>  Sun, 08 Dec 2013 15:07:52 +0100
 
 salor-bin (2.6.7-2wheezy) wheezy; urgency=low
 
