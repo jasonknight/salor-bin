@@ -125,5 +125,6 @@ void SalorNotificator::slotSocketDisconnected(){
 
 void SalorNotificator::slotSocketStateChanged(QAbstractSocket::SocketState state) {
     currentState = (int)state;
+    emit(connectionStatusChanged(state));
     qDebug() << "SalorNotificator::slotSocketStateChange:" << QString::number(currentState);
 }

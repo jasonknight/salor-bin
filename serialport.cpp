@@ -286,7 +286,7 @@ int Serialport::open() {
 
 #endif
     qDebug() << "[Serialport]" << "[open]" << "Finished.";
-    return(m_fd);
+    return((int)m_fd);
 }
 
 

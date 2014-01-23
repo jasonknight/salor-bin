@@ -23,6 +23,7 @@ private:
 signals:
     void onTcpPrintNotified();
     void navigateToUrl(QString);
+    void connectionStatusChanged(QAbstractSocket::SocketState state);
 
 private slots:
 

@@ -109,6 +109,11 @@ void MainWindow::init()
              this,
              SLOT(onTcpPrintNotified())
     );
+    connect( salorNotificator,
+             SIGNAL(connectionStatusChanged(QAbstractSocket::SocketState)),
+             this,
+             SLOT(updateNotificatorLabel(QAbstractSocket::SocketState))
+    );
     // when customer screen event is sent
     connect(
             salorNotificator, SIGNAL(navigateToUrl(QString)),
@@ -127,11 +132,13 @@ void MainWindow::init()
     progressBar->setMaximumWidth(70);
     urlLabel = new QLabel("Location");
     printCounterLabel = new QLabel();
+    notificatorStatusLabel = new QLabel();
     closeButton = new QPushButton();
     closeButton->setText("X");
     statusBar->addPermanentWidget(urlLabel);
     statusBar->addPermanentWidget(progressBar);
     statusBar->addPermanentWidget(printCounterLabel);
+    statusBar->addPermanentWidget(notificatorStatusLabel);
     statusBar->addPermanentWidget(closeButton);
     qDebug() << "[MainWindow]" << "[init] Status bar created, widgets added.";
 
@@ -496,6 +503,7 @@ void MainWindow::timerTimeout() {
 
         mainurl = settings->value("url").toString();
         if (mainurl != "") {
+            //notificatorStatusLabel->setText(QString::number(salorNotificator->currentState));
             if (salorNotificator->currentState == 0) {
                 //QAbstractSocket::UnconnectedState
                 salorNotificator->start();
@@ -516,4 +524,9 @@ void MainWindow::timerTimeout() {
 
 void MainWindow::setPrinterCounter(int value){
     counterPrint = value;
+}
+
+void MainWindow::updateNotificatorLabel(QAbstractSocket::SocketState state) {
+    qDebug() << "[MainWindow]" << "[updateNotificatorLabel] Start.";
+    notificatorStatusLabel->setText(QString::number(state));
 }

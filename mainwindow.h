@@ -41,6 +41,7 @@ private:
     QPushButton *closeButton;
     QLabel *urlLabel;
     QLabel *printCounterLabel;
+    QLabel *notificatorStatusLabel;
     void attach();
     QTimer *mainTimer;
     void timerSetup();
@@ -54,6 +55,7 @@ private:
 private slots:
     void timerTimeout();
     void onTcpPrintNotified();
+    void updateNotificatorLabel(QAbstractSocket::SocketState state);
 
 public slots:
     void setPrinterCounter(int);
