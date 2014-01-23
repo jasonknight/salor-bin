@@ -6,8 +6,9 @@
 
 QT       += core gui webkit network
 
-# Don't commit a change to the following line into a repository.
-LIBS += -lwinspool
+win32 {
+  LIBS += -lwinspool
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
